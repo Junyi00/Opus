@@ -1,0 +1,14 @@
+* {
+  font-family: "Courier New" /* Site Default Font */
+}
+
+/* Force html to fill page */
+html, body, #root, .App {
+  height: 100%;
+}
+
+/* Remove Body Margin */
+body { 
+  margin: 0px; 
+  padding: 0px; 
+}
