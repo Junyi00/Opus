@@ -1,44 +1,19 @@
 import React from 'react'
-import styled from 'styled-components'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
-import Header from './Components/Header'
-import SideBar from './Components/SideBar'
-
-const VerticalContentDiv = styled.div`
-  display: flex;
-  flex-flow: column; 
-  height: 100%;
-`
-
-const HorizontalContentDiv = styled.div`
-  display: flex;
-  flex-flow: row; 
-  width: 100%;
-`
-
-const GrowDiv = styled.div`
-  display: flex;
-  flex: 1 1 auto;
-`
+import TaskPage from './Components/TaskPage'
+import NotFoundPage from './NotFoundPage'
 
 const App = () => {
 
   return (
-    <VerticalContentDiv>
-      <Header />
+    <Router>
+      <Routes>
+        <Route path="/" element={<TaskPage />} />
 
-      <GrowDiv>
-        <HorizontalContentDiv>
-          <SideBar />
-          
-          <GrowDiv>
-            <div>
-              Content!
-            </div>
-            </GrowDiv>
-          </HorizontalContentDiv>
-      </GrowDiv>
-    </VerticalContentDiv>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Router>
   )
 }
 
