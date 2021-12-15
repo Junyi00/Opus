@@ -25,7 +25,6 @@ const Project = (props) => {
 
   useEffect( () => {
     if (projectData) {
-      console.log('wat')
       axios.get('/api/v1/project_lanes/' + projectData.id)
         .then( resp => {
           setLanesData(resp.data.data)
@@ -42,14 +41,15 @@ const Project = (props) => {
   }
   else {
     if (!isLoading) {
-      const lanes = lanesData.map((lane, index) => 
-        <Lane key={index} data={lane}></Lane>)
+      const lanes = lanesData
+        .sort((lane1, lane2) => lane1.attributes.pos - lane2.attributes.pos)
+        .map((lane, index) => <Lane key={index} data={lane}></Lane>)
 
-        return (
-          <LanesDiv>
-            {lanes}
-          </LanesDiv>
-        )
+      return (
+        <LanesDiv>
+          {lanes}
+        </LanesDiv>
+      )
     }
     else {
       return (<a>Loading...</a>)
