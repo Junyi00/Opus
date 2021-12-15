@@ -45,7 +45,7 @@ module Api
 			private
 
 			def lane_params
-				params.require(:lane).permit(:id, :name, :project_id)
+				params.require(:lane).permit(:id, :name, :pos, :project_id)
 			end
 
 		end
