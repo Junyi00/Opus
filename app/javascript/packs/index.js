@@ -12,7 +12,9 @@ root.id = 'root'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <App />,
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>,
     document.body.appendChild(root),
   )
 })
