@@ -24,15 +24,18 @@ projects = Project.create([
 lanes = Lane.create([
     {
         name: "New",
-        project: projects.first
+        project: projects.first,
+        pos: 0
     },
     {
         name: "In Progress",
-        project: projects.first
+        project: projects.first,
+        pos: 1
     },
     {
         name: "Completed",
-        project: projects.first
+        project: projects.first,
+        pos: 2
     }
 ])
 
