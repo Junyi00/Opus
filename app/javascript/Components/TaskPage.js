@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
 
 import Header from './Header'
 import SideBar from './SideBar'
+import Project from './Project/Project'
 
 const VerticalContentDiv = styled.div`
   display: flex;
@@ -21,7 +23,30 @@ const GrowDiv = styled.div`
   flex: 1 1 auto;
 `
 
+const projectButtonOnClick = (projects, f) => {
+  return (index) => {
+    return () => {
+      f(projects[index])
+    }
+  }
+}
+
 const TaskPage = () => {
+  const [projects, setProjects] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [projectToLoad, setProjectToLoad] = useState(null)
+
+  // Load Data
+  useEffect( () => {
+    axios.get('/api/v1/projects')
+    .then( resp => {
+      setIsLoading(false)
+      setProjects(resp.data.data)
+    })
+    .catch( data => {
+      debugger
+    })
+  }, [])
 
   return (
     <VerticalContentDiv>
@@ -29,12 +54,10 @@ const TaskPage = () => {
 
       <GrowDiv>
         <HorizontalContentDiv>
-          <SideBar />
-          
+          <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)}/>
+
           <GrowDiv>
-            <div>
-              Content!
-            </div>
+            <Project project={projectToLoad}/>
             </GrowDiv>
           </HorizontalContentDiv>
       </GrowDiv>

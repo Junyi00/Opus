@@ -10,7 +10,7 @@ module Api
 			end
 
 			def show
-				lane = Lane.find_by(id: params[:id])
+				lane = Lane.find_by(project_id: params[:project_id])
 
 				render json: LaneSerializer.new(lane).serializable_hash.to_json
 			end

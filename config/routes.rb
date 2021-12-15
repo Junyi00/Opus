@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       # resources :users
       resources :projects
       resources :lanes
+      resources :project_lanes, only: [:show], param: :project_id
       resources :tasks
       resources :tags
     end
