@@ -87,6 +87,7 @@ const Lane = (props) => {
 
   // Get Tasks in Lane
   useEffect( () => {
+    console.log(data.attributes.name, id, data.attributes.pos)
     axios.get('/api/v1/lane_tasks/' + id)
       .then( resp => {
         setTasksData(resp.data.data)
@@ -95,10 +96,10 @@ const Lane = (props) => {
       .catch( data => {
         debugger
     })
-  }, [])
+  }, [data])
 
   return (
-    <BaseDiv ref={ref}  data-handler-id={handlerId}>
+    <BaseDiv ref={ref}>
       <b>{data.attributes.name}</b>
       {
         isLoading

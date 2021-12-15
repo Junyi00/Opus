@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, forceUpdate } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import update from 'immutability-helper';
@@ -53,13 +53,11 @@ const Project = (props) => {
     axios.patch('/api/v1/lanes/' + dragLane.id, {
       pos: hoverLane.attributes.pos
     })
-      .then(()=> console.log('success'))
       .catch(()=> {setErrorUpdating(true)})
     
     axios.patch('/api/v1/lanes/' + hoverLane.id, {
       pos: dragPos
     })
-    .then(()=> console.log('success'))
       .catch(()=> {setErrorUpdating(true)}) // TODO: Does not trigger on first error
 
     if (!errorUpdating) { 
@@ -77,6 +75,8 @@ const Project = (props) => {
   }
   else {
     if (!isLoading) {
+      console.log('rendering')
+      console.log(lanesData)
       const lanes = lanesData
         .sort((lane1, lane2) => lane1.attributes.pos - lane2.attributes.pos)
         .map((lane, index) => <Lane key={index} index={index} data={lane} moveLane={moveLane}> </Lane>)
