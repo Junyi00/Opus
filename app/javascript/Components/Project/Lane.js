@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDrag, useDrop } from 'react-dnd';
 
 import { ItemTypes } from "./ItemTypes";
+import Task from "./Task";
 
 const BaseDiv = styled.div`
   border-radius: 10px;
@@ -15,16 +16,18 @@ const BaseDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px;
 `
 
 const Lane = (props) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [tasksData, setTasksData] = useState([])
 
   const data = props.data
   const id = data.id
   const index = props.index
   const moveLane = props.moveLane
 
+  // Setup Drag n Drop (DnD)
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
       accept: ItemTypes.LANE,
@@ -82,11 +85,28 @@ const Lane = (props) => {
   });
   drag(drop(ref));
 
+  // Get Tasks in Lane
+  useEffect( () => {
+    axios.get('/api/v1/lane_tasks/' + id)
+      .then( resp => {
+        setTasksData(resp.data.data)
+        setIsLoading(false)
+      })
+      .catch( data => {
+        debugger
+    })
+  }, [])
+
   return (
     <BaseDiv ref={ref}  data-handler-id={handlerId}>
-      <div>
-        <b>{data.attributes.name}</b>
-      </div>
+      <b>{data.attributes.name}</b>
+      {
+        isLoading
+          ? <a>Loading...</a>
+          : tasksData.map(
+            (task, index) => <Task key={index} data={task}> </Task>
+          )
+      }
     </BaseDiv>
   )
 }

@@ -27,7 +27,6 @@ const Project = (props) => {
 
   useEffect( () => {
     if (projectData) {
-      console.log('refresh')
       axios.get('/api/v1/project_lanes/' + projectData.id)
         .then( resp => {
           setLanesData(resp.data.data)

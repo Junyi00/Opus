@@ -8,8 +8,7 @@ module Api
 
 				render json: LaneSerializer.new(lanes).serializable_hash.to_json
 			end
-
-
+			
 		end
 	end
 end
