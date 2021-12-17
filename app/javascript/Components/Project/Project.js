@@ -8,8 +8,7 @@ import { ItemTypes } from "./ItemTypes";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
-  handleMoveSidebarComponentIntoParent,
-  handleRemoveItemFromLayout
+  handleMoveToNewParent
 } from "./DnDHelpers";
 
 const BaseDiv = styled.div`
@@ -69,7 +68,8 @@ const Project = (props) => {
             projectLayout,
             splitDropZonePath,
             splitItemPath,
-            newItem
+            newItem,
+            projectInfo.id
           )
         );
         setToUpdateLayout(true)
@@ -77,14 +77,15 @@ const Project = (props) => {
       }
 
       // 3. Move + Create
-      setProjectLayout(
-        handleMoveToDifferentParent(
-          projectLayout,
-          splitDropZonePath,
-          splitItemPath,
-          newItem
-        )
-      );
+      handleMoveToNewParent(
+        projectLayout,
+        splitDropZonePath,
+        splitItemPath,
+        newItem,
+        projectInfo.id
+      ).then (newLayout => {
+        setProjectLayout(newLayout)
+      })
       setToUpdateLayout(true)
 
     },

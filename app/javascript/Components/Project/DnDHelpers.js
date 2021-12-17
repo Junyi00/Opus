@@ -1,5 +1,6 @@
 // import shortid from "shortid";
 import { ItemTypes } from "./ItemTypes";
+import { requestNewLane } from "./DatabaseOp"
 
 // a little function to help us with reordering the result
 export const reorder = (list, startIndex, endIndex) => {
@@ -126,29 +127,8 @@ export const handleMoveToDifferentParent = (
 ) => {
   let newLayoutStructure = null;
 
-  const LANE_STRUCTURE = {
-    type: ItemTypes.LANE,
-    id: 500,
-    name: 'New Lane'
-  };
-
 	const updatedLayout = layout
   let [removed, updatedLayout1] = removeChildFromChildren(updatedLayout, splitItemPath);
-  // updatedLayout = handleAddColumDataToRow(updatedLayout); // fill in empty data when a new row is created
-
-  switch (splitDropZonePath.length) {
-    case 1: { // into Project
-      // moving column outside into new row made on the fly
-      if (item.type === ItemTypes.TASK) {
-        newLayoutStructure = {
-          ...LANE_STRUCTURE,
-          children: [removed]
-        };
-      }
-      break;
-    }
-  }
-
   updatedLayout1 = addChildToChildren(
     updatedLayout1,
     splitDropZonePath,
@@ -156,6 +136,49 @@ export const handleMoveToDifferentParent = (
   );
 
   return updatedLayout1;
+};
+
+export const handleMoveToNewParent = (
+  layout,
+  splitDropZonePath,
+  splitItemPath,
+  item,
+  project_id
+) => {
+  let newLayoutStructure = null
+
+  return requestNewLane(project_id)
+    .then (resp => {
+      const updatedLayout = layout
+      let [removed, updatedLayout1] = removeChildFromChildren(updatedLayout, splitItemPath);
+      // updatedLayout = handleAddColumDataToRow(updatedLayout); // fill in empty data when a new row is created
+
+      switch (splitDropZonePath.length) {
+        case 1: { // into Project
+          // moving column outside into new row made on the fly
+          if (item.type === ItemTypes.TASK) {
+
+            newLayoutStructure = {
+              ...resp.data,
+              children: [removed]
+            };
+          }
+          break;
+        }
+      }
+
+      updatedLayout1 = addChildToChildren(
+        updatedLayout1,
+        splitDropZonePath,
+        newLayoutStructure ? newLayoutStructure : removed
+      );
+
+      return updatedLayout1;
+    })
+    .catch(data => {
+      debugger
+    })
+	
 };
 
 export const handleRemoveItemFromLayout = (layout, splitItemPath) => {
