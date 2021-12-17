@@ -5,20 +5,21 @@ module Api
 				
 			def index
 				lanes = Lane.all
-
-				render json: LaneSerializer.new(lanes).serializable_hash.to_json
+				
+				render json: lanes
 			end
 
 			def show
 				lane = Lane.find_by(id: params[:id])
 
-				render json: LaneSerializer.new(lane).serializable_hash.to_json
+				render json: lane
 			end
 
 			def create
 				lane = Lane.new(lane_params)
         if lane.save
-          render json: LaneSerializer.new(lane).serializable_hash.to_json
+
+					render json: lane
         else
           render json: { error: lane.errors.messages }, status: 422
         end
@@ -27,7 +28,8 @@ module Api
 			def update
         lane = Lane.find_by(id: params[:id])
         if lane.update(lane_params)
-          render json: LaneSerializer.new(lane).serializable_hash.to_json
+
+					render json: lane
         else
           render json: { error: lane.errors.messages }, status: 422
         end

@@ -6,19 +6,19 @@ module Api
 			def index
 				tags = Tag.all
 
-				render json: TagSerializer.new(tags).serializable_hash.to_json
+				render json: tags
 			end
 
 			def show
 				tag = Tag.find_by(id: params[:id])
 
-				render json: TagSerializer.new(tag).serializable_hash.to_json
+				render json: tag
 			end
 
 			def create
 				tag = Tag.new(tag_params)
         if tag.save
-          render json: TagSerializer.new(tag).serializable_hash.to_json
+					render json: tag
         else
           render json: { error: tag.errors.messages }, status: 422
         end
@@ -27,7 +27,7 @@ module Api
 			def update
         tag = Tag.find_by(id: params[:id])
         if tag.update(tag_params)
-          render json: TagSerializer.new(tag).serializable_hash.to_json
+					render json: tag
         else
           render json: { error: tag.errors.messages }, status: 422
         end

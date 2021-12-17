@@ -6,19 +6,19 @@ module Api
 			def index
 				tasks = Task.all
 
-				render json: TaskSerializer.new(tasks).serializable_hash.to_json
+				render json: tasks
 			end
 
 			def show
 				task = Task.find_by(id: params[:id])
 
-				render json: TaskSerializer.new(task).serializable_hash.to_json
+				render json: task
 			end
 
 			def create
 				task = Task.new(task_params)
         if task.save
-          render json: TaskSerializer.new(task).serializable_hash.to_json
+          render json: task
         else
           render json: { error: task.errors.messages }, status: 422
         end
@@ -27,7 +27,8 @@ module Api
 			def update
         task = Task.find_by(id: params[:id])
         if task.update(task_params)
-          render json: TaskSerializer.new(task).serializable_hash.to_json
+					
+          render json: task
         else
           render json: { error: task.errors.messages }, status: 422
         end
