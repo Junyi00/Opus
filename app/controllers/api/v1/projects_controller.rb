@@ -6,7 +6,8 @@ module Api
 			def index
 				projects = Project.all
 
-				render json: ProjectSerializer.new(projects).serializable_hash.to_json
+				# render json: ProjectSerializer.new(projects)
+				render json: projects
 			end
 
 			def show
