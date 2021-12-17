@@ -7,16 +7,46 @@ import Tag from "./Tag";
 import axios from "axios";
 
 const BaseDiv = styled.div`
-  border: 1px solid gray;
+  border: 1px solid var(--light-gray);
+  ${({ starred }) => starred && `
+    border-color: #dbbf1f;
+  `}
   border-radius: 5px;
-  padding: 5px;
+  // padding: 5px;
   margin: 5px;
 
-  width: 100%;
+  flex: 1 0 0;
   max-width: 300px;
+  min-width: 200px;
+
+  min-height: 100px;
+  max-height: 100px;
   background-color: white;
 
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const TaskTitle = styled.div`
+  width: 100%;
+  height: fit-content;
+  background-color: var(--light-gray);
+  ${({ starred }) => starred && `
+    background-color: #dbbf1f;
+  `}
+  flex: 0 0 0;
+  
+  padding: 2px;
+  margin-top: 0px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+`
+
+const TaskContent = styled.div`
+  flex: 1 0 0;
+  width: 100%;
+  padding: 5px;
 `
 
 const Square = styled.div`
@@ -69,25 +99,20 @@ const Task = (props) => {
   drag(ref);
 
   return (
-    <BaseDiv ref={ref}>
-      <Square starred={taskStarred}></Square>
-      <a>{taskName}</a><br />
-      <hr  style={{
-        color: '#000000',
-        backgroundColor: '#000000',
-        height: .1,
-        borderColor : '#000000'
-      }}/>
-      
-      {/* <Tag data={{attributes: {name: 'duck'}}}></Tag> */}
-      <TagsDiv>
-        {
-          props.data.tags.map((tag, index) => 
-            <Tag key={index} data={tag}></Tag>
-          )
-        }
-      </TagsDiv>
-      <a style={{fontSize: '12px'}}>{taskDesc}</a>
+    <BaseDiv ref={ref} starred={taskStarred}>
+      {/* <Square starred={taskStarred}></Square> */}
+      {/* <a>{taskName}</a><br /> */}
+      <TaskTitle starred={taskStarred}>{taskName}</TaskTitle>
+      <TaskContent>
+        <TagsDiv>
+          {
+            props.data.tags.map((tag, index) => 
+              <Tag key={index} data={tag}></Tag>
+            )
+          }
+        </TagsDiv>
+        <a style={{fontSize: '12px'}}>{taskDesc}</a>
+      </TaskContent>
     </BaseDiv>
   )
 }

@@ -6,21 +6,19 @@ import Header from './Header'
 import SideBar from './SideBar'
 import Project from './Project/Project'
 
-const VerticalContentDiv = styled.div`
-  display: flex;
-  flex-flow: column; 
+const ContainerDiv = styled.div`
+  margin-top: var(--header-height);
+
+  width: 100%;
   height: 100%;
 `
 
-const HorizontalContentDiv = styled.div`
-  display: flex;
-  flex-flow: row; 
-  width: 100%;
-`
-
-const GrowDiv = styled.div`
-  display: flex;
-  flex: 1 1 auto;
+const ContentDiv = styled.div`
+  position: absolute;
+  top: var(--header-height);
+  left: var(--sidebar-width);
+  right: 0px;
+  bottom: 0px;
 `
 
 const projectButtonOnClick = (projects, f) => {
@@ -44,28 +42,23 @@ const TaskPage = () => {
       setProjects(resp.data)
     })
     .catch( data => {
+      
       debugger
     })
   }, [])
 
   return (
-    <VerticalContentDiv>
+    <React.Fragment>
       <Header />
-
-      <GrowDiv>
-        <HorizontalContentDiv>
-          <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)}/>
-
-          <GrowDiv>
-            {
-              !projectToLoad
-                ? <div style={{textAlign: 'center', width: '100%'}}>Select a Project!</div>
-                : <Project projectInfo={projectToLoad}/>
-            }
-            </GrowDiv>
-          </HorizontalContentDiv>
-      </GrowDiv>
-    </VerticalContentDiv>
+      <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)}/>
+      <ContentDiv>
+        {
+          !projectToLoad
+            ? <div style={{textAlign: 'center', width: '100%'}}>Select a Project!</div>
+            : <Project projectInfo={projectToLoad}/>
+        }
+      </ContentDiv>
+    </React.Fragment>
   )
 }
 

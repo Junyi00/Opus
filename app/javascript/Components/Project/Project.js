@@ -16,9 +16,11 @@ import {
 const BaseDiv = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
-  justify-content: space-evenly;
+  // justify-content: space-evenly;
 
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
   padding: 10px;
 
   .column {

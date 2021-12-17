@@ -3,23 +3,24 @@ import styled from 'styled-components'
 
 import OpusLogo from 'images/Opus_Logo.png'
 
-const HeaderBase = styled.div`
+const HeaderBase = styled.header`
   background-color: #fcfcfc;
-  border-bottom: 1px solid gray;
-
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  border-bottom: 1px solid var(--light-gray);
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  // padding: 5px;
 
   flex: 0 1 auto;
   overflow: hidden;
 
-  display: inline-flex; 
+  display: flex; 
   flex-direction: horizontal; 
   justify-content: space-between; 
   align-items: center;
-  width: 100%
+
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: var(--header-height);
 `
 
 const Logo = styled.img`
@@ -40,7 +41,7 @@ const Header = () => {
       <Logo src={OpusLogo}></Logo>
       <UserInfo>
         <a style={{fontSize: '10px'}}>Logged in:</a><br />
-        <b>System</b>
+        <b style={{color: 'var(--highlight-color)'}}>System</b>
       </UserInfo>
     </HeaderBase>
   )

@@ -1,5 +1,19 @@
 * {
-  font-family: "Courier New" /* Site Default Font */
+  font-family: "Courier New"; /* Site Default Font */
+  margin: 0px;
+  padding: 0px;
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+:root {
+  --highlight-color: #035efc;
+  --light-gray: #dedede;
+
+  --header-height: 60px;
+  --sidebar-width: 100px;
 }
 
 /* Force html to fill page */

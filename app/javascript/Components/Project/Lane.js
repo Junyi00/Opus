@@ -8,15 +8,27 @@ import DropZone from "./DropZone";
 import Task from "./Task";
 
 const BaseDiv = styled.div`
-  border-radius: 10px;
-  background-color: #e4e9f2;
-  border: 1px solid #e4e9f2;
+  // border-radius: 10px;
+  // background-color: #e4e9f2;
+  border: 1px solid lightgray;
   flex: 1 0 0;
+  min-width: 250px;
   margin: 5px;
-
+  
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const LaneDiv = styled.div`
+  width: 100%; 
+  height: 100%;
+
+  display: flex;
+  flexDirection: column;
+  alignItems: center;
+
+  border: 1px solid var(--light-gray);
 `
 
 const Lane = (props) => {
