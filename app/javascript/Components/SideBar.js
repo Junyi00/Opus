@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import ProjIcon from 'images/Project_Icon.png'
+import styled from "styled-components"
 
 const Base = styled.div`
   display: flex;
@@ -47,6 +46,9 @@ const ProjectsList = styled.ul`
 `
 
 const ProjectsItem = styled.li`
+  margin-top: 5px;
+  margin-bottom: 5px;
+
   > button {
     color: gray;
     ${({ selected }) => selected && `
@@ -61,10 +63,27 @@ const ProjectButton = styled.button`
   font-size: 15px;
 `
 
+const AddProjectBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  margin-top: 5px;
+
+  width: 15px;
+  height: 15px;
+
+  color: var(--highlight-color);
+
+  &:hover {
+    border: 1px solid var(--highlight-color);
+    border-radius: 15px;
+  }
+`
+
 const SideBar = (props) => {
   const isLoading = props.isLoading
   const projects = props.projects
   const projOnClick = props.onClick
+  const addProjOnClick = props.addProjOnClick
 
   const [selectedIndex, setSelectedIndex] = useState(-1)
 
@@ -95,6 +114,7 @@ const SideBar = (props) => {
           ? <a>Loading...</a>
           : <ProjectsList>
             {createProjectsElements(projects, projOnClick, selectedIndex)}
+            <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
           </ProjectsList>
       }
     </Base>

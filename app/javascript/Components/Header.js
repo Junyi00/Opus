@@ -21,6 +21,7 @@ const HeaderBase = styled.header`
   top: 0;
   width: 100%;
   height: var(--header-height);
+  z-index: 1;
 `
 
 const Logo = styled.img`

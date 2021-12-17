@@ -50,6 +50,8 @@ body {
 
 .dropZone.active,
 .trashDropZone.active {
-  background: #00a2ff;
+  /* background: var(--highlight-color); */
+  border: 1px dotted var(--highlight-color);
+  border-radius: 10px;
   transition: 100ms all;
 }

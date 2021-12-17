@@ -5,6 +5,7 @@ import axios from 'axios'
 import Header from './Header'
 import SideBar from './SideBar'
 import Project from './Project/Project'
+import { requestNewProject } from "./Project/DatabaseOp";
 
 const ContainerDiv = styled.div`
   margin-top: var(--header-height);
@@ -47,10 +48,16 @@ const TaskPage = () => {
     })
   }, [])
 
+  const addProjOnClick = () => {
+    requestNewProject().then((resp) => {
+      setProjects([...projects, resp.data])
+    })
+  }
+
   return (
     <React.Fragment>
       <Header />
-      <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)}/>
+      <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)} addProjOnClick={addProjOnClick}/>
       <ContentDiv>
         {
           !projectToLoad

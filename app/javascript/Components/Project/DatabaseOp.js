@@ -10,6 +10,16 @@ export const requestNewLane = (project_id) => {
   ).then(resp => resp)
 }
 
+export const requestNewProject = () => {
+  return axios.post(
+    '/api/v1/projects',
+    {
+      name: 'New Project',
+      user_id: 1
+    }
+  ).then(resp => resp)
+}
+
 export const updateLanesPos = (projectLayout) => {
   projectLayout.map((lane, index) => {
     axios.patch('/api/v1/lanes/' + lane.id, {

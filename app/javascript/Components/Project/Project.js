@@ -5,12 +5,13 @@ import axios from "axios";
 import Lane from "./Lane";
 import DropZone from "./DropZone"
 import { ItemTypes } from "./ItemTypes";
-import { updateLanesPos, updateTasksPos } from "./DatabaseOp";
+import { updateLanesPos, updateTasksPos, requestNewLane } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
   handleMoveToNewParent,
-  favourStarredTasks
+  favourStarredTasks,
+  insert
 } from "./DnDHelpers";
 
 const BaseDiv = styled.div`
@@ -26,6 +27,56 @@ const BaseDiv = styled.div`
   .column {
     margin: 0 5 px;
   }
+`
+
+const NewLaneButton = styled.button`
+  height: auto;
+  width: 20px;
+  
+  background-color: transparent;
+  border: none;
+
+  font-size: 20px;
+  color: var(--highlight-color);
+
+  &:hover {
+    border: 1px solid var(--highlight-color);
+    border-radius: 10px;
+  }
+
+  &:hover > div {
+    border: none;
+  }
+
+  ${({ emptyDiv }) => emptyDiv && `
+    width: 40px;
+    height: 40px;
+
+    border-radius: 30px;
+
+    &:hover {
+      border-radius: 30px;
+    }
+  `}
+`
+
+const Circle = styled.div`
+  border: 1px solid var(--highlight-color);
+  border-radius: 20px;
+`
+
+const EmptyBaseDiv = styled.div`
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `
 
 const Project = (props) => {
@@ -124,10 +175,19 @@ const Project = (props) => {
 
   }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
 
+  const addLaneOnClick = () => {
+    requestNewLane(projectInfo.id).then(resp => {
+      const newLane = resp.data
+      setProjectLayout(insert(projectLayout, projectLayout.length, newLane))
+      toUpdateLaneLayout(true)
+    })
+  }
+
   if (projectLayout) {
 
-    return (
-      <BaseDiv>
+    if (projectLayout.length > 0) {
+      return (
+        <BaseDiv>
           {
             projectLayout
               .map((lane, index) => {
@@ -158,8 +218,23 @@ const Project = (props) => {
             isLast
             className="horizontalDrag"
           />
-      </BaseDiv>
-    )
+          <NewLaneButton onClick={addLaneOnClick}>
+            <Circle>+</Circle>
+          </NewLaneButton>
+        </BaseDiv>
+      )
+    }
+    else {
+      return (
+        <EmptyBaseDiv>
+          <NewLaneButton emptyDiv={true} onClick={addLaneOnClick}>
+            <Circle>+</Circle>
+          </NewLaneButton>
+          <a style={{color: 'var(--highlight-color)'}}>Add a Lane!</a>
+        </EmptyBaseDiv>
+      )
+    }
+    
   }
   else {
     return (<a>Loading...</a>)
