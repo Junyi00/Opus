@@ -1,11 +1,18 @@
-import React, { useEffect, useState, useCallback, forceUpdate } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import update from 'immutability-helper';
 
 import Lane from "./Lane";
+import DropZone from "./DropZone"
+import { ItemTypes } from "./ItemTypes";
+import {
+  handleMoveWithinParent,
+  handleMoveToDifferentParent,
+  handleMoveSidebarComponentIntoParent,
+  handleRemoveItemFromLayout
+} from "./DnDHelpers";
 
-const LanesDiv = styled.div`
+const BaseDiv = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -20,78 +27,141 @@ const LanesDiv = styled.div`
 
 const Project = (props) => {
   const [isLoading, setIsLoading] = useState(true)
-  const [lanesData, setLanesData] = useState([])
-  const [errorUpdating, setErrorUpdating] = useState(false)
+  const [projectLayout, setProjectLayout] = useState(null)
+  const [toUpdateLayout, setToUpdateLayout] = useState(false)
 
-  const projectData = props.project
+  const projectInfo = props.projectInfo
 
-  useEffect( () => {
-    if (projectData) {
-      axios.get('/api/v1/project_lanes/' + projectData.id)
-        .then( resp => {
-          setLanesData(resp.data.data)
-          setIsLoading(false)
+  useEffect(()=> console.log(projectLayout), [projectLayout])
+
+  const handleDrop = useCallback(
+    (dropZone, item) => {
+      // console.log("dropZone", dropZone);
+      // console.log("item", item);
+
+      const splitDropZonePath = dropZone.path.split("-");
+      const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
+
+      const newItem = { id: item.id, type: item.type };
+      if (item.type === ItemTypes.LANE) {
+        newItem.children = item.children;
+      }
+
+      // move down here since sidebar items dont have path
+      const splitItemPath = item.path.split("-");
+      const pathToItem = splitItemPath.slice(0, -1).join("-");
+
+      // 2. Pure move (no create)
+      if (splitItemPath.length === splitDropZonePath.length) {
+        // 2.a. move within parent
+        if (pathToItem === pathToDropZone) {
+          setProjectLayout(
+            handleMoveWithinParent(projectLayout, splitDropZonePath, splitItemPath)
+          );
+          setToUpdateLayout(true)
+          return;
+        }
+
+        // 2.b. OR move different parent
+        // TODO FIX columns. item includes children
+        setProjectLayout(
+          handleMoveToDifferentParent(
+            projectLayout,
+            splitDropZonePath,
+            splitItemPath,
+            newItem
+          )
+        );
+        setToUpdateLayout(true)
+        return;
+      }
+
+      // 3. Move + Create
+      setProjectLayout(
+        handleMoveToDifferentParent(
+          projectLayout,
+          splitDropZonePath,
+          splitItemPath,
+          newItem
+        )
+      );
+      setToUpdateLayout(true)
+
+    },
+    [projectLayout]
+  );
+  
+  useEffect(() => {
+    axios.get('/api/v1/projects/' + projectInfo.id)
+    .then( resp => {
+      setProjectLayout(
+        resp.data.children.sort((lane1, lane2) => lane1.pos - lane2.pos)
+      )
+      setIsLoading(false)
+    })
+    .catch( data => {
+      debugger
+    })
+  }, [projectInfo])
+
+  // Update Database on Layout Changes
+  useEffect(() => {
+    if (toUpdateLayout) {
+      projectLayout.map((lane, index) => {
+        axios.patch('/api/v1/lanes/' + lane.id, {
+          pos: index
         })
-        .catch( data => {
+        .catch(data => {
           debugger
+        })
       })
+
+      setToUpdateLayout(false)
     }
-  }, [projectData])
 
-  const moveLane = useCallback((dragIndex, hoverIndex) => {
-    const dragLane = lanesData[dragIndex]
-    const hoverLane = lanesData[hoverIndex]
-    const reordered = update(lanesData, {
-      $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, dragLane],
-      ],
-    })
+  }, [toUpdateLayout])
 
-    const dragPos = dragLane.attributes.pos
+  if (projectLayout) {
 
-    axios.patch('/api/v1/lanes/' + dragLane.id, {
-      pos: hoverLane.attributes.pos
-    })
-      .catch(()=> {setErrorUpdating(true)})
-    
-    axios.patch('/api/v1/lanes/' + hoverLane.id, {
-      pos: dragPos
-    })
-      .catch(()=> {setErrorUpdating(true)}) // TODO: Does not trigger on first error
+    return (
+      <BaseDiv>
+          {
+            projectLayout
+              .map((lane, index) => {
+                const currentPath = `${index}`;
 
-    if (!errorUpdating) { 
-      dragLane.attributes.pos = hoverLane.attributes.pos
-      hoverLane.attributes.pos = dragPos
-      setLanesData(reordered) 
-    }
-    else {
-      debugger // Inform user to refresh
-    }
-  }, [lanesData])
-
-  if (!projectData) {
-    return <a>Select a Project!</a>
+                return (
+                  <React.Fragment key={lane.id}>
+                    <DropZone
+                      data={{
+                        path: currentPath,
+                        childrenCount: projectLayout.length
+                      }}
+                      onDrop={handleDrop}
+                      path={currentPath}
+                      className="horizontalDrag"
+                    />
+                    {<Lane key={index} data={lane} handleDrop={handleDrop} path={currentPath}> </Lane>}
+                  </React.Fragment>
+                );
+              })
+          }
+          <DropZone
+            data={{
+              path: `${projectLayout.length}`,
+              childrenCount: projectLayout.length
+            }}
+            onDrop={handleDrop}
+            isLast
+            className="horizontalDrag"
+          />
+      </BaseDiv>
+    )
   }
   else {
-    if (!isLoading) {
-      console.log('rendering')
-      console.log(lanesData)
-      const lanes = lanesData
-        .sort((lane1, lane2) => lane1.attributes.pos - lane2.attributes.pos)
-        .map((lane, index) => <Lane key={index} index={index} data={lane} moveLane={moveLane}> </Lane>)
-
-      return (
-        <LanesDiv>
-          {lanes}
-        </LanesDiv>
-      )
-    }
-    else {
-      return (<a>Loading...</a>)
-    }
-
+    return (<a>Loading...</a>)
   }
+
 }
 
 export default Project

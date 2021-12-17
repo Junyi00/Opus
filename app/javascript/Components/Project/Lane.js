@@ -4,6 +4,7 @@ import axios from "axios";
 import { useDrag, useDrop } from 'react-dnd';
 
 import { ItemTypes } from "./ItemTypes";
+import DropZone from "./DropZone";
 import Task from "./Task";
 
 const BaseDiv = styled.div`
@@ -19,95 +20,60 @@ const BaseDiv = styled.div`
 `
 
 const Lane = (props) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [tasksData, setTasksData] = useState([])
 
   const data = props.data
-  const id = data.id
-  const index = props.index
-  const moveLane = props.moveLane
+  const path = props.path
+  const handleDrop = props.handleDrop
 
-  // Setup Drag n Drop (DnD)
-  const ref = useRef(null);
-  const [{ handlerId }, drop] = useDrop({
-      accept: ItemTypes.LANE,
-      collect(monitor) {
-          return {
-              handlerId: monitor.getHandlerId(),
-          };
-      },
-      hover(item, monitor) {
-          if (!ref.current) {
-              return;
-          }
-          const dragIndex = item.index;
-          const hoverIndex = index;
-          // Don't replace items with themselves
-          if (dragIndex === hoverIndex) {
-              return;
-          }
-          // Determine rectangle on screen
-          const hoverBoundingRect = ref.current?.getBoundingClientRect();
-          // Get vertical middle
-          const hoverMiddleY = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
-          // Determine mouse position
-          const clientOffset = monitor.getClientOffset();
-          // Get pixels to the top
-          const hoverClientY = clientOffset.x - hoverBoundingRect.left;
-          // Only perform the move when the mouse has crossed half of the items height
-          // When dragging downwards, only move when the cursor is below 50%
-          // When dragging upwards, only move when the cursor is above 50%
-          // Dragging downwards
-          if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-              return;
-          }
-          // Dragging upwards
-          if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-              return;
-          }
-          // Time to actually perform the action
-          moveLane(dragIndex, hoverIndex);
-          // Note: we're mutating the monitor item here!
-          // Generally it's better to avoid mutations,
-          // but it's good here for the sake of performance
-          // to avoid expensive index searches.
-          item.index = hoverIndex;
-      },
-  });
-  const [{ isDragging }, drag] = useDrag({
-      type: ItemTypes.LANE,
-      item: () => {
-          return { id, index };
-      },
-      collect: (monitor) => ({
-          isDragging: monitor.isDragging(),
-      }),
-  });
-  drag(drop(ref));
+  const ref = useRef(null)
 
-  // Get Tasks in Lane
-  useEffect( () => {
-    console.log(data.attributes.name, id, data.attributes.pos)
-    axios.get('/api/v1/lane_tasks/' + id)
-      .then( resp => {
-        setTasksData(resp.data.data)
-        setIsLoading(false)
-      })
-      .catch( data => {
-        debugger
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.LANE,
+    item: () => {
+      return {
+        type: ItemTypes.LANE,
+        id: data.id,
+        children: data.children,
+        path: path
+    }},
+    collect: monitor => ({
+      isDragging: monitor.isDragging()
     })
-  }, [data])
+  }), [path]);
+
+  const opacity = isDragging ? 0 : 1;
+  drag(ref);
 
   return (
     <BaseDiv ref={ref}>
-      <b>{data.attributes.name}</b>
-      {
-        isLoading
-          ? <a>Loading...</a>
-          : tasksData.map(
-            (task, index) => <Task key={index} data={task}> </Task>
-          )
-      }
+      <b>{data.name}</b>
+      <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+          {
+            data.children.map((task, index) => {
+              const currentPath = `${path}-${index}`;
+              return (
+                <React.Fragment key={task.id}>
+                  <DropZone
+                    data={{
+                      path: currentPath,
+                      childrenCount: data.children.length,
+                    }}
+                    onDrop={handleDrop}
+                  />
+                  {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath}/>}
+                </React.Fragment>
+              )
+            })
+          }
+          <DropZone
+              data={{
+                  path: `${path}-${data.children.length}`,
+                  childrenCount: data.children.length,
+              }}
+              onDrop={handleDrop}
+              isLast
+          />
+      </div>
     </BaseDiv>
   )
 }

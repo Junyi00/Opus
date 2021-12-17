@@ -1,9 +1,9 @@
 class ProjectSerializer < ActiveModel::Serializer
   # include JSONAPI::Serializer
-  attributes :name, :lanes
+  attributes :id, :name, :children
   # has_many :lanes
 
-  def lanes
+  def children
     ActiveModel::SerializableResource.new(object.lanes,  each_serializer: LaneSerializer)
   end
 end

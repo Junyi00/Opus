@@ -1,9 +1,9 @@
 class LaneSerializer < ActiveModel::Serializer
   # include JSONAPI::Serializer
-  attributes :name, :pos, :tasks
+  attributes :id, :name, :pos, :children
   # has_many :tasks
 
-  def tasks
+  def children
     ActiveModel::SerializableResource.new(object.tasks,  each_serializer: TaskSerializer)
   end
 end

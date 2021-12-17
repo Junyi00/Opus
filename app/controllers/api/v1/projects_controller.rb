@@ -5,21 +5,22 @@ module Api
 				
 			def index
 				projects = Project.all
-
-				# render json: ProjectSerializer.new(projects)
-				render json: projects
+				
+				render json: projects.to_json(only: [:name, :id])
 			end
 
 			def show
 				project = Project.find_by(id: params[:id])
 
-				render json: ProjectSerializer.new(project).serializable_hash.to_json
+				# render json: ProjectSerializer.new(project).serializable_hash.to_json
+				render json: project
 			end
 
 			def create
 				project = Project.new(project_params)
         if project.save
-          render json: ProjectSerializer.new(project).serializable_hash.to_json
+          # render json: ProjectSerializer.new(project).serializable_hash.to_json
+					render json: project
         else
           render json: { error: project.errors.messages }, status: 422
         end
@@ -28,7 +29,8 @@ module Api
 			def update
         project = Project.find_by(id: params[:id])
         if project.update(project_params)
-          render json: ProjectSerializer.new(project).serializable_hash.to_json
+          # render json: ProjectSerializer.new(project).serializable_hash.to_json
+					render json: project
         else
           render json: { error: project.errors.messages }, status: 422
         end

@@ -46,7 +46,7 @@ const ProjectButton = styled.button`
 
 const createProjectsElements = (projects, projOnClick) => {
   return projects.map((project, index) => {
-    return (<li id={project.attributes.name} key={index}><ProjectButton onClick={projOnClick(index)}>{project.attributes.name}</ProjectButton></li>)
+    return (<li id={project.name} key={index}><ProjectButton onClick={projOnClick(index)}>{project.name}</ProjectButton></li>)
   })
 }
 

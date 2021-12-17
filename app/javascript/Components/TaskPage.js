@@ -41,7 +41,7 @@ const TaskPage = () => {
     axios.get('/api/v1/projects')
     .then( resp => {
       setIsLoading(false)
-      setProjects(resp.data.data)
+      setProjects(resp.data)
     })
     .catch( data => {
       debugger
@@ -57,7 +57,11 @@ const TaskPage = () => {
           <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)}/>
 
           <GrowDiv>
-            <Project project={projectToLoad}/>
+            {
+              !projectToLoad
+                ? <div style={{textAlign: 'center', width: '100%'}}>Select a Project!</div>
+                : <Project projectInfo={projectToLoad}/>
+            }
             </GrowDiv>
           </HorizontalContentDiv>
       </GrowDiv>
