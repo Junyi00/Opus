@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import styled from "styled-components";
 
 import Tag from "./Tag";
+import axios from "axios";
 
 const BaseDiv = styled.div`
   border: 1px solid gray;
@@ -37,15 +38,17 @@ const Square = styled.div`
   `}
 `
 
+const TagsDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-flow: wrap
+`
+
 const Task = (props) => {
-
-  const data = props.data
-
   const path = props.path
-  
-  const taskName = data.name
-  const taskDesc = data.description
-  const taskStarred = data.starred
+  const taskName = props.data.name
+  const taskDesc = props.data.description
+  const taskStarred = props.data.starred
 
   const ref = useRef(null)
 
@@ -54,8 +57,7 @@ const Task = (props) => {
     item: () => {
       return {
         type: ItemTypes.TASK,
-        id: data.id,
-        children: data.children,
+        id: props.data.id,
         path: path
     }},
     collect: monitor => ({
@@ -77,7 +79,14 @@ const Task = (props) => {
         borderColor : '#000000'
       }}/>
       
-      <Tag data={{attributes: {name: 'duck'}}}></Tag>
+      {/* <Tag data={{attributes: {name: 'duck'}}}></Tag> */}
+      <TagsDiv>
+        {
+          props.data.tags.map((tag, index) => 
+            <Tag key={index} data={tag}></Tag>
+          )
+        }
+      </TagsDiv>
       <a style={{fontSize: '12px'}}>{taskDesc}</a>
     </BaseDiv>
   )

@@ -1,12 +1,16 @@
 // import shortid from "shortid";
 import { ItemTypes } from "./ItemTypes";
-import { requestNewLane } from "./DatabaseOp"
+import { requestNewLane, moveTaskToLane } from "./DatabaseOp"
 
 // a little function to help us with reordering the result
 export const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
-  result.splice(Math.max(endIndex-1, 0), 0, removed); // inserting task in new index
+  result.splice(
+    startIndex > endIndex ? endIndex : Math.max(endIndex-1, 0), 
+    0, 
+    removed
+  ); // inserting task in new index
 
   return result;
 };
@@ -134,6 +138,8 @@ export const handleMoveToDifferentParent = (
     splitDropZonePath,
     newLayoutStructure ? newLayoutStructure : removed
   );
+  
+  moveTaskToLane(removed.id, layout[Number(splitDropZonePath[0])].id)
 
   return updatedLayout1;
 };
@@ -184,3 +190,14 @@ export const handleMoveToNewParent = (
 export const handleRemoveItemFromLayout = (layout, splitItemPath) => {
   return removeChildFromChildren(layout, splitItemPath);
 };
+
+export const favourStarredTasks = (laneLayout) => {
+  laneLayout.children = laneLayout.children.sort((task1, task2) => {
+    if ((task1.starred && !task2.starred) || (task2.starred && !task1.starred)) {
+      return task1.starred ? -1 : 1
+    }
+    return 0
+  })
+
+  return laneLayout
+}

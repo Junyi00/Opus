@@ -7,7 +7,8 @@ const BaseDiv = styled.div`
   background-color: green;
 
   width: fit-content;
-  padding: 1px;
+  height: fit-content;
+  padding: 2px;
 `
 
 const Tag = (props) => {
@@ -16,7 +17,7 @@ const Tag = (props) => {
 
   return (
     <BaseDiv>
-      <i>#{data.attributes.name}</i>
+      <i>#{data.name}</i>
     </BaseDiv>
   )
 }

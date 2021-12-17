@@ -44,18 +44,28 @@ tasks = Task.create([
         name: "Draw Mindmap",
         description: "MODULE 1",
         starred: false,
+        pos: 0,
         lane: Lane.find_or_create_by(name: "New")
     },
     {
         name: "Cheatsheet",
         description: "MODULE 1",
         starred: true,
+        pos: 0,
+        lane: Lane.find_or_create_by(name: "In Progress")
+    },
+    {
+        name: "Another Cheatsheet",
+        description: "MODULE 1",
+        starred: false,
+        pos: 1,
         lane: Lane.find_or_create_by(name: "In Progress")
     },
     {
         name: "PYP",
         description: "MODULE 1",
         starred: true,
+        pos: 0,
         lane: Lane.find_or_create_by(name: "Completed")
     }
 ])

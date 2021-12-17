@@ -5,10 +5,12 @@ import axios from "axios";
 import Lane from "./Lane";
 import DropZone from "./DropZone"
 import { ItemTypes } from "./ItemTypes";
+import { updateLanesPos, updateTasksPos } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
-  handleMoveToNewParent
+  handleMoveToNewParent,
+  favourStarredTasks
 } from "./DnDHelpers";
 
 const BaseDiv = styled.div`
@@ -27,16 +29,13 @@ const BaseDiv = styled.div`
 const Project = (props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [projectLayout, setProjectLayout] = useState(null)
-  const [toUpdateLayout, setToUpdateLayout] = useState(false)
+  const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
+  const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
 
   const projectInfo = props.projectInfo
 
-  useEffect(()=> console.log(projectLayout), [projectLayout])
-
   const handleDrop = useCallback(
     (dropZone, item) => {
-      // console.log("dropZone", dropZone);
-      // console.log("item", item);
 
       const splitDropZonePath = dropZone.path.split("-");
       const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
@@ -57,7 +56,9 @@ const Project = (props) => {
           setProjectLayout(
             handleMoveWithinParent(projectLayout, splitDropZonePath, splitItemPath)
           );
-          setToUpdateLayout(true)
+          if (splitItemPath.length === 1) { setToUpdateLaneLayout(true) }
+          else { setToUpdateTaskLayout(true) }
+          
           return;
         }
 
@@ -68,11 +69,10 @@ const Project = (props) => {
             projectLayout,
             splitDropZonePath,
             splitItemPath,
-            newItem,
-            projectInfo.id
+            newItem
           )
         );
-        setToUpdateLayout(true)
+        setToUpdateTaskLayout(true)
         return;
       }
 
@@ -95,9 +95,7 @@ const Project = (props) => {
   useEffect(() => {
     axios.get('/api/v1/projects/' + projectInfo.id)
     .then( resp => {
-      setProjectLayout(
-        resp.data.children.sort((lane1, lane2) => lane1.pos - lane2.pos)
-      )
+      setProjectLayout(resp.data.children)
       setIsLoading(false)
     })
     .catch( data => {
@@ -107,20 +105,22 @@ const Project = (props) => {
 
   // Update Database on Layout Changes
   useEffect(() => {
-    if (toUpdateLayout) {
+    if (toUpdateLaneLayout) {
+      updateLanesPos(projectLayout)
+
+      setToUpdateLaneLayout(false)
+    }
+    else if (toUpdateTaskLayout) {
       projectLayout.map((lane, index) => {
-        axios.patch('/api/v1/lanes/' + lane.id, {
-          pos: index
-        })
-        .catch(data => {
-          debugger
-        })
+        lane = favourStarredTasks(lane)
+        updateTasksPos(lane.children)
+        return lane
       })
 
-      setToUpdateLayout(false)
+      setToUpdateTaskLayout(false)
     }
 
-  }, [toUpdateLayout])
+  }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
 
   if (projectLayout) {
 
