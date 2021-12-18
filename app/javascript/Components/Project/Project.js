@@ -5,7 +5,7 @@ import axios from "axios";
 import Lane from "./Lane";
 import DropZone from "./DropZone"
 import { ItemTypes } from "./ItemTypes";
-import { updateLanesPos, updateTasksPos, requestNewLane } from "./DatabaseOp";
+import { updateLanesPos, updateTasksPos, requestNewLane, requestNewTask } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
@@ -177,6 +177,17 @@ const Project = (props) => {
     })
   }
 
+  const addTaskOnClick = (lane_id) => () => {
+    requestNewTask(lane_id).then(resp => {
+      const newTask = resp.data
+
+      const lane = projectLayout.filter((lane, index) => lane.id == lane_id)[0]
+      lane.children = insert(lane.children, lane.children.length, newTask)
+
+      setToUpdateTaskLayout(true)
+    })
+  }
+
   if (projectLayout) {
 
     if (projectLayout.length > 0) {
@@ -198,7 +209,7 @@ const Project = (props) => {
                       path={currentPath}
                       className="horizontalDrag"
                     />
-                    {<Lane key={index} data={lane} handleDrop={handleDrop} path={currentPath}> </Lane>}
+                    {<Lane key={index} data={lane} handleDrop={handleDrop} path={currentPath} addTaskOnClick={addTaskOnClick(lane.id)} />}
                   </React.Fragment>
                 );
               })

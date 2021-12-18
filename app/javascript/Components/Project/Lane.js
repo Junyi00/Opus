@@ -20,11 +20,54 @@ const BaseDiv = styled.div`
   align-items: center;
 `
 
+const NewTaskBtn = styled.button`
+  height: 20px;
+  width: 100%;
+  
+  background-color: transparent;
+  border: none;
+
+  font-size: 20px;
+  color: var(--highlight-color);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    border: 1px solid var(--highlight-color);
+    border-radius: 10px;
+  }
+
+  &:hover > div {
+    border: none;
+  }
+  
+  ${({ emptyDiv }) => emptyDiv && `
+    width: 40px;
+    height: 40px;
+
+    &:hover {
+      border-radius: 30px;
+    }
+  `}
+`
+
+const Circle = styled.div`
+  height: 20px;
+  width: 20px;
+  border: 1px solid var(--highlight-color);
+  border-radius: 20px;
+
+  line-height: 20px;
+`
+
 const Lane = (props) => {
 
   const data = props.data
   const path = props.path
   const handleDrop = props.handleDrop
+  const addTaskOnClick = props.addTaskOnClick
 
   const ref = useRef(null)
 
@@ -74,6 +117,9 @@ const Lane = (props) => {
               onDrop={handleDrop}
               isLast
           />
+          <NewTaskBtn onClick={addTaskOnClick}>
+            <Circle><a style={{top: '-5px'}}>+</a></Circle>
+          </NewTaskBtn>
       </div>
     </BaseDiv>
   )
