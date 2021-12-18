@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components"
+import { withPopups } from "react-popup-manager";
+
+import EditProjectModal from "./Project/EditProjectModal";
 
 const Base = styled.div`
   display: flex;
@@ -79,46 +82,76 @@ const AddProjectBtn = styled.button`
   }
 `
 
-const SideBar = (props) => {
-  const isLoading = props.isLoading
-  const projects = props.projects
-  const projOnClick = props.onClick
-  const addProjOnClick = props.addProjOnClick
+class SideBar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.props = props
 
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-
-  const createButtonOnClick = (index) => {
-    const fn = projOnClick(index)
-    return () => {
-      setSelectedIndex(index)
-      fn()
+    this.state = {
+      selectedIndex: -1
     }
   }
 
-  const createProjectsElements = (projects, projOnClick, selectedIndex) => {
-    return projects.map((project, index) => {
-      return (
-        <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
-          <ProjectButton onClick={createButtonOnClick(index)}>
-            {project.name}
-          </ProjectButton>
-        </ProjectsItem>)
-    })
-  }
+  render() {
+    const isLoading = this.props.isLoading
+    const projects = this.props.projects
+    const projOnClick = this.props.onClick
+    const addProjOnClick = this.props.addProjOnClick
+    const editProjName = this.props.editProjName
+    const delProj = this.props.delProj
 
-  return (
-    <Base>
-      <TitleText>Projects</TitleText>
-      {
-        isLoading
-          ? <a>Loading...</a>
-          : <ProjectsList>
-            {createProjectsElements(projects, projOnClick, selectedIndex)}
-            <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
-          </ProjectsList>
+    const openProjectEditor = (projName, projId) => {
+      this.props.popupManager.open(EditProjectModal, {
+        projName: projName, 
+        onClose: (...params) => {
+          const [toDelete, newName] = params;
+          if (!toDelete) {
+            if (newName !== projName && newName != "") {
+              editProjName(projId, newName)
+            }
+          }
+          else {
+            delProj(projId)
+          }
+        }}); 
+    }
+
+    const createButtonOnClick = (index) => {
+      const fn = projOnClick(index)
+      return () => {
+        this.setState({selectedIndex: index})
+        fn()
       }
-    </Base>
-  )
+    }
+
+    const createProjectsElements = (projects, projOnClick, selectedIndex) => {
+      return projects.map((project, index) => {
+        return (
+          <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
+            <ProjectButton onClick={createButtonOnClick(index)} onDoubleClick={() => openProjectEditor(project.name, project.id)}>
+              {project.name}
+            </ProjectButton>
+          </ProjectsItem>)
+      })
+    }
+
+    return (
+      <Base>
+        <TitleText>Projects</TitleText>
+        {
+          isLoading
+            ? <a>Loading...</a>
+            : <ProjectsList>
+              {createProjectsElements(projects, projOnClick, this.state.selectedIndex)}
+              <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
+            </ProjectsList>
+        }
+
+      </Base>
+    )
+
+  }
 }
 
-export default SideBar
+const WrappedSideBar = withPopups()(SideBar)
+export {WrappedSideBar as SideBar};

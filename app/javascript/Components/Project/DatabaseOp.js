@@ -1,14 +1,6 @@
 import axios from "axios"
 
-export const requestNewLane = (project_id) => {
-  return axios.post(
-    '/api/v1/lanes',
-    {
-      name: 'New Lane',
-      project_id: project_id
-    }
-  ).then(resp => resp)
-}
+// PROJECTS LEVEL OPERATIONS
 
 export const requestNewProject = () => {
   return axios.post(
@@ -16,6 +8,33 @@ export const requestNewProject = () => {
     {
       name: 'New Project',
       user_id: 1
+    }
+  ).then(resp => resp)
+}
+
+export const updateProjectName = (project_id, name) => {
+  return axios.patch(
+    '/api/v1/projects/' + project_id,
+    {
+      name: name
+    }
+  ).then(resp => resp)
+}
+
+export const deleteProject = (project_id) => {
+  return axios.delete(
+    '/api/v1/projects/' + project_id
+  ).then(resp => resp)
+}
+
+// INDIVIDUAL PROJECT OPERATIONS
+
+export const requestNewLane = (project_id) => {
+  return axios.post(
+    '/api/v1/lanes',
+    {
+      name: 'New Lane',
+      project_id: project_id
     }
   ).then(resp => resp)
 }

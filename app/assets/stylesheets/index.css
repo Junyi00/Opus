@@ -10,6 +10,7 @@
 
 :root {
   --highlight-color: #035efc;
+  --dark-red: #9e1c25;
   --light-gray: #dedede;
 
   --header-height: 60px;
@@ -54,4 +55,10 @@ body {
   border: 1px dotted var(--highlight-color);
   border-radius: 10px;
   transition: 100ms all;
+}
+
+/* react-popup-manager*/
+.ReactModal__Overlay {
+  z-index: 100; /* ensure popups are infront */
+  background-color: rgba(0,0,0,0.3) !important;
 }

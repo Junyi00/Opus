@@ -23,10 +23,6 @@ const BaseDiv = styled.div`
   top: 0px;
   bottom: 0px;
   padding: 10px;
-
-  .column {
-    margin: 0 5 px;
-  }
 `
 
 const NewLaneButton = styled.button`
@@ -47,12 +43,10 @@ const NewLaneButton = styled.button`
   &:hover > div {
     border: none;
   }
-
+  
   ${({ emptyDiv }) => emptyDiv && `
     width: 40px;
     height: 40px;
-
-    border-radius: 30px;
 
     &:hover {
       border-radius: 30px;
@@ -179,7 +173,7 @@ const Project = (props) => {
     requestNewLane(projectInfo.id).then(resp => {
       const newLane = resp.data
       setProjectLayout(insert(projectLayout, projectLayout.length, newLane))
-      toUpdateLaneLayout(true)
+      setToUpdateLaneLayout(true)
     })
   }
 
