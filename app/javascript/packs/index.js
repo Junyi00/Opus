@@ -5,7 +5,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { DndProvider } from 'react-dnd'
+import { DndProvider, DndContext } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { PopupProvider } from "react-popup-manager";
 
@@ -20,11 +20,9 @@ Modal.setAppElement(root)
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <PopupProvider>
-      <DndProvider backend={HTML5Backend}>
-        <App />
-      </DndProvider>
-    </PopupProvider>,
+    <DndProvider backend={HTML5Backend}>
+      <App />
+    </DndProvider>,
     document.body.appendChild(root),
   )
 })

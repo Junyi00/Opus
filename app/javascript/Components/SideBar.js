@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components"
-import { withPopups } from "react-popup-manager";
 
-import EditProjectModal from "./Project/EditProjectModal";
+import EditProjectModal from "./Project/Modals/EditProjectModal";
 
 const Base = styled.div`
   display: flex;
@@ -73,85 +72,82 @@ const AddProjectBtn = styled.button`
 
   width: 15px;
   height: 15px;
+  line-height: 15px;
 
   color: var(--highlight-color);
 
   &:hover {
     border: 1px solid var(--highlight-color);
     border-radius: 15px;
+
+
   }
 `
 
-class SideBar extends React.Component {
-  constructor(props) {
-    super(props)
-    this.props = props
+const SideBar = (props) => {
+  const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [showModal, setShowModal] = useState(false)
+  const [modalRes, setModalRes] = useState({})
 
-    this.state = {
-      selectedIndex: -1
+  const isLoading = props.isLoading
+  const projects = props.projects
+  const projOnClick = props.onClick
+  const addProjOnClick = props.addProjOnClick
+  const editProjName = props.editProjName
+  const delProj = props.delProj
+
+  useEffect(()=> {
+    if (Object.keys(modalRes).length > 0) {
+      if (modalRes.toDelete) {
+        delProj(modalRes.projId)
+        setSelectedIndex(-1)
+      }
+      else {
+        editProjName(modalRes.projId, modalRes.newName)
+      }
+
+      setModalRes({})
+    }
+  }, [modalRes])
+
+  const createButtonOnClick = (index) => {
+    const fn = projOnClick(index)
+    return () => {
+      setSelectedIndex(index)
+      fn()
     }
   }
 
-  render() {
-    const isLoading = this.props.isLoading
-    const projects = this.props.projects
-    const projOnClick = this.props.onClick
-    const addProjOnClick = this.props.addProjOnClick
-    const editProjName = this.props.editProjName
-    const delProj = this.props.delProj
+  const createProjectsElements = (projects, projOnClick, selectedIndex) => {
+    return projects.map((project, index) => {
+      return (
+        <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
+          <ProjectButton 
+            onClick={createButtonOnClick(index)} 
+            onDoubleClick={() => setShowModal(true)}
+          >
+            {project.name}
+          </ProjectButton>
+        </ProjectsItem>)
+    })
+  }
 
-    const openProjectEditor = (projName, projId) => {
-      this.props.popupManager.open(EditProjectModal, {
-        projName: projName, 
-        onClose: (...params) => {
-          const [toDelete, newName] = params;
-          if (!toDelete) {
-            if (newName !== projName && newName != "") {
-              editProjName(projId, newName)
-            }
-          }
-          else {
-            delProj(projId)
-          }
-        }}); 
-    }
-
-    const createButtonOnClick = (index) => {
-      const fn = projOnClick(index)
-      return () => {
-        this.setState({selectedIndex: index})
-        fn()
-      }
-    }
-
-    const createProjectsElements = (projects, projOnClick, selectedIndex) => {
-      return projects.map((project, index) => {
-        return (
-          <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
-            <ProjectButton onClick={createButtonOnClick(index)} onDoubleClick={() => openProjectEditor(project.name, project.id)}>
-              {project.name}
-            </ProjectButton>
-          </ProjectsItem>)
-      })
-    }
-
-    return (
+  return (
+    <React.Fragment>
       <Base>
         <TitleText>Projects</TitleText>
         {
           isLoading
             ? <a>Loading...</a>
             : <ProjectsList>
-              {createProjectsElements(projects, projOnClick, this.state.selectedIndex)}
+              {createProjectsElements(projects, projOnClick, selectedIndex)}
               <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
             </ProjectsList>
         }
-
       </Base>
-    )
-
-  }
+      <EditProjectModal showModal={showModal} setShowModal={setShowModal} projects={projects} selectedIndex={selectedIndex} setModalRes={setModalRes}/>
+    </React.Fragment>
+  )
 }
 
-const WrappedSideBar = withPopups()(SideBar)
-export {WrappedSideBar as SideBar};
+export default SideBar

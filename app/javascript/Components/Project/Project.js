@@ -5,7 +5,13 @@ import axios from "axios";
 import Lane from "./Lane";
 import DropZone from "./DropZone"
 import { ItemTypes } from "./ItemTypes";
-import { updateLanesPos, updateTasksPos, requestNewLane, requestNewTask } from "./DatabaseOp";
+import { 
+  updateLanesPos, 
+  updateTasksPos,
+  updateLaneName, 
+  requestNewLane, 
+  requestNewTask, 
+  deleteLane } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
@@ -74,10 +80,11 @@ const EmptyBaseDiv = styled.div`
 `
 
 const Project = (props) => {
-  const [isLoading, setIsLoading] = useState(true)
   const [projectLayout, setProjectLayout] = useState(null)
+  const [dummyValue, setDummyValue] = useState(0)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
+  const [laneModalRes, setLaneModalRes] = useState({})
 
   const projectInfo = props.projectInfo
 
@@ -138,17 +145,20 @@ const Project = (props) => {
     },
     [projectLayout]
   );
+
+  const forceUpdate = () => {
+    setDummyValue(dummyValue + 1)
+  }
   
   useEffect(() => {
     axios.get('/api/v1/projects/' + projectInfo.id)
     .then( resp => {
       setProjectLayout(resp.data.children)
-      setIsLoading(false)
     })
     .catch( data => {
       debugger
     })
-  }, [projectInfo])
+  }, [projectInfo, dummyValue])
 
   // Update Database on Layout Changes
   useEffect(() => {
@@ -168,6 +178,33 @@ const Project = (props) => {
     }
 
   }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
+
+  // Update Database on Lane Changes
+  useEffect(()=> {
+    if (Object.keys(laneModalRes).length > 0) {
+      if (laneModalRes.toDelete) {
+        deleteLane(laneModalRes.laneId).then(resp => {
+          setProjectLayout(
+            projectLayout.filter((lane, index) => 
+              lane.id != laneModalRes.laneId
+            )
+          )
+        })
+      }
+      else {
+        updateLaneName(laneModalRes.laneId, laneModalRes.newName).then(
+          resp => {
+            projectLayout.filter((lane, index) => 
+              lane.id == laneModalRes.laneId
+            )[0].name = laneModalRes.newName
+          }
+        )
+      }
+
+      setLaneModalRes({})
+      forceUpdate()
+    }
+  }, [laneModalRes])
 
   const addLaneOnClick = () => {
     requestNewLane(projectInfo.id).then(resp => {
@@ -209,7 +246,14 @@ const Project = (props) => {
                       path={currentPath}
                       className="horizontalDrag"
                     />
-                    {<Lane key={index} data={lane} handleDrop={handleDrop} path={currentPath} addTaskOnClick={addTaskOnClick(lane.id)} />}
+                    {<Lane 
+                      key={index} 
+                      data={lane} 
+                      handleDrop={handleDrop} 
+                      path={currentPath} 
+                      addTaskOnClick={addTaskOnClick(lane.id)}
+                      setLaneModalRes={setLaneModalRes}
+                    />}
                   </React.Fragment>
                 );
               })

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import axios from 'axios'
 
 import Header from './Header'
-import { SideBar } from './SideBar'
+import SideBar from './SideBar'
 import Project from './Project/Project'
 import { requestNewProject, updateProjectName, deleteProject } from "./Project/DatabaseOp";
 

@@ -22,11 +22,10 @@ html, body, #root, .App {
   height: 100%;
 }
 
-/* Remove Body Margin */
-body { 
-  margin: 0px; 
-  padding: 0px; 
+* > button:focus {
+  outline: none !important; /* Override tailwind css */
 }
+
 
 /* DropZone styles */
 .dropZone {

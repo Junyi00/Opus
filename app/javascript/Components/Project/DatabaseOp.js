@@ -50,6 +50,19 @@ export const requestNewTask = (lane_id) => {
   ).then(resp => resp)
 }
 
+export const updateLaneName = (lane_id, name) => {
+  return axios.patch('/api/v1/lanes/' + lane_id, {
+    name: name
+  }).then(resp => resp)
+}
+
+export const deleteLane = (lane_id) => {
+  return axios.delete(
+    '/api/v1/lanes/' + lane_id
+  ).then(resp => resp)
+}
+
+
 export const updateLanesPos = (projectLayout) => {
   projectLayout.map((lane, index) => {
     axios.patch('/api/v1/lanes/' + lane.id, {
