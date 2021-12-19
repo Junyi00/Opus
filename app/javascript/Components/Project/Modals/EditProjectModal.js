@@ -81,7 +81,7 @@ const EditProjectModal = (props) => {
 		)}>
 			<Dialog.Overlay className="inset-0 z-5"/>
 
-			<div className="flex flex-col items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl">
+			<div className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl">
 				<Dialog.Title>Project Title</Dialog.Title>
 				<input 
 					style={{textAlign: 'center'}}

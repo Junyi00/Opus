@@ -5,7 +5,7 @@ import OpusLogo from 'images/Opus_Logo.png'
 
 const HeaderBase = styled.header`
   background-color: #fcfcfc;
-  border-bottom: 1px solid var(--light-gray);
+  // border-bottom: 1px solid var(--light-gray);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   // padding: 5px;
 
@@ -32,7 +32,7 @@ const Logo = styled.img`
 
 const UserInfo = styled.div`
   float: right;
-  width: 10%;
+  width: 5%;
 
   text-align: center;
 `

@@ -12,10 +12,9 @@ const BaseDiv = styled.div`
     border-color: #dbbf1f;
   `}
   border-radius: 5px;
-  // padding: 5px;
-  margin: 5px;
 
   flex: 1 0 0;
+  width: 95%;
   max-width: 300px;
   min-width: 200px;
 

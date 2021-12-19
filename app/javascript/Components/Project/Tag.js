@@ -7,8 +7,12 @@ const BaseDiv = styled.div`
   background-color: green;
 
   width: fit-content;
-  height: fit-content;
-  padding: 2px;
+  height: 20px;
+  padding: 0px 2px 0px 2px;
+  
+  align-text: center;
+  font-size: 12px;
+  line-height: 20px;
 `
 
 const Tag = (props) => {
@@ -17,7 +21,7 @@ const Tag = (props) => {
 
   return (
     <BaseDiv>
-      <i>#{data.name}</i>
+      <a>{data.name.toUpperCase()}</a>
     </BaseDiv>
   )
 }

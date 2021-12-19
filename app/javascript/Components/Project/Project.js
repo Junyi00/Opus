@@ -23,12 +23,13 @@ import {
 const BaseDiv = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   // justify-content: space-evenly;
 
   position: absolute;
   top: 0px;
   bottom: 0px;
-  padding: 10px;
+  padding: 10px 10px 0px 10px;
 `
 
 const NewLaneButton = styled.button`
