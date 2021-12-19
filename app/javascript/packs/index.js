@@ -5,9 +5,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { DndProvider, DndContext } from 'react-dnd'
+import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { PopupProvider } from "react-popup-manager";
 
 import Modal from 'react-modal';
 

@@ -27,6 +27,7 @@ const HeaderBase = styled.header`
 const Logo = styled.img`
   float: left;
   width: 10%;
+  padding: 5px;
 `
 
 const UserInfo = styled.div`
