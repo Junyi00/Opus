@@ -29,6 +29,8 @@ const TaskPage = () => {
   const [projectToLoad, setProjectToLoad] = useState(null)
   const [projInfoUpdated, setProjInfoUpdated] = useState(true)
 
+  const [searchQuery, setSearchQuery] = useState('')
+
   // Load Data
   useEffect( () => {
     if (projInfoUpdated) {
@@ -75,13 +77,23 @@ const TaskPage = () => {
 
   return (
     <React.Fragment>
-      <Header />
-      <SideBar isLoading={isLoading} projects={projects} onClick={projectButtonOnClick(projects, setProjectToLoad)} addProjOnClick={addProjOnClick} editProjName={editProjName} delProj={delProj} />
+      <Header 
+        projectLoaded={projectToLoad} 
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery} 
+      />
+      <SideBar 
+        isLoading={isLoading} 
+        projects={projects} 
+        onClick={projectButtonOnClick(projects, setProjectToLoad)} 
+        addProjOnClick={addProjOnClick} 
+        editProjName={editProjName} delProj={delProj} 
+      />
       <ContentDiv>
         {
           !projectToLoad
             ? <div style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>Select a Project!</div>
-            : <Project projectInfo={projectToLoad}/>
+            : <Project projectInfo={projectToLoad} searchQuery={searchQuery}/>
         }
       </ContentDiv>
     </React.Fragment>

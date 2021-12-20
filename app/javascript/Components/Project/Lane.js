@@ -69,6 +69,7 @@ const LaneHeaderBtn = styled.button`
 
 const Lane = (props) => {
   const [showModal, setShowModal] = useState(false)
+  const [childrenToDisplay, setChildrenToDisplay] = useState([])
 
   const data = props.data
   const path = props.path
@@ -93,41 +94,78 @@ const Lane = (props) => {
 
   const opacity = isDragging ? 0 : 1;
 
+  useEffect(()=> {
+    if (props.searchQuery == '') { return }
+
+    if (props.searchQuery.charAt(0) == '#') {
+      // tag filter
+      setChildrenToDisplay(
+        data.children.filter((task, index) => 
+          task.tags.filter((tag, index) => tag.name.toLowerCase() == props.searchQuery.slice(1).toLowerCase()).length > 0
+        )
+      )
+    }
+    else {
+      // title filter
+      setChildrenToDisplay(data.children.filter((task, index) => task.name.includes(props.searchQuery)))
+    }
+  }, [props.searchQuery])
+
+
   return (
     <React.Fragment>
-      <BaseDiv ref={drag}>
-        <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-        <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            {
-              data.children.map((task, index) => {
-                const currentPath = `${path}-${index}`;
-                return (
-                  <React.Fragment key={task.id}>
-                    <DropZone
-                      data={{
-                        path: currentPath,
+      { props.searchQuery == ''
+        ? <BaseDiv ref={drag}>
+            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
+            <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                {
+                  data.children.map((task, index) => {
+                    const currentPath = `${path}-${index}`;
+                    return (
+                      <React.Fragment key={task.id}>
+                        <DropZone
+                          data={{
+                            path: currentPath,
+                            childrenCount: data.children.length,
+                          }}
+                          onDrop={handleDrop}
+                        />
+                        {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
+                      </React.Fragment>
+                    )
+                  })
+                }
+                <DropZone
+                    data={{
+                        path: `${path}-${data.children.length}`,
                         childrenCount: data.children.length,
-                      }}
-                      onDrop={handleDrop}
-                    />
-                    {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
-                  </React.Fragment>
-                )
-              })
-            }
-            <DropZone
-                data={{
-                    path: `${path}-${data.children.length}`,
-                    childrenCount: data.children.length,
-                }}
-                onDrop={handleDrop}
-                isLast
-            />
-            <NewTaskBtn onClick={addTaskOnClick}>
-              <Circle><a style={{top: '-5px'}}>+</a></Circle>
-            </NewTaskBtn>
-        </div>
-      </BaseDiv>
+                    }}
+                    onDrop={handleDrop}
+                    isLast
+                />
+                <NewTaskBtn onClick={addTaskOnClick}>
+                  <Circle><a style={{top: '-5px'}}>+</a></Circle>
+                </NewTaskBtn>
+            </div>
+          </BaseDiv>
+        
+        : <BaseDiv>
+            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
+            <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              {
+                childrenToDisplay.map((task, index) => {
+                  const currentPath = `${path}-${index}`;
+                  return (
+                    <React.Fragment key={task.id}>
+                      {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
+                      <div style={{height:'40px'}}></div>
+                    </React.Fragment>
+                  )
+                })
+              }
+            </div>
+          </BaseDiv>
+      }
       <EditLaneModal showModal={showModal} setShowModal={setShowModal} setModalRes={setLaneModalRes} laneName={data.name} laneId={data.id}/>
     </React.Fragment> 
   )

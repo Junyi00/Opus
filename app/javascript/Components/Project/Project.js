@@ -283,6 +283,7 @@ const Project = (props) => {
                       data={lane} 
                       handleDrop={handleDrop} 
                       path={currentPath} 
+                      searchQuery={props.searchQuery}
                       addTaskOnClick={addTaskOnClick(lane.id)}
                       setLaneModalRes={setLaneModalRes}
                       setTaskModalRes={setTaskModalRes}

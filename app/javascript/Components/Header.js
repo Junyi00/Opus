@@ -36,10 +36,31 @@ const UserInfo = styled.div`
   text-align: center;
 `
 
-const Header = () => {
+const SearchBar = styled.input`
+  float: left;
+
+  height: 70%;
+  width: 30%;
+
+  padding-left: 5px;
+`
+
+const Header = (props) => {
+  const searchQuery = props.searchQuery
+  const setSearchQuery = props.setSearchQuery
+
   return (
     <HeaderBase>
       <Logo src={OpusLogo}></Logo>
+      {
+        (props.projectLoaded === null) ? null :
+          <SearchBar
+            className='rounded-2xl' 
+            value={searchQuery.trim()}
+            onChange={(e)=>{setSearchQuery(e.target.value)}}
+            placeholder="Search..."
+          />
+      }
       <UserInfo>
         <a style={{fontSize: '10px'}}>Logged in:</a><br />
         <b style={{color: 'var(--highlight-color)'}}>System</b>
