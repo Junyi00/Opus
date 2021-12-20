@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 const BaseDiv = styled.div`
-  border: 1px solid green;
+  border: 1px solid ${props => props.color};
   border-radius: 5px;
-  background-color: green;
+
+  background-color: ${props => props.color};
 
   width: fit-content;
   height: 20px;
@@ -20,7 +21,7 @@ const Tag = (props) => {
   const data = props.data
 
   return (
-    <BaseDiv>
+    <BaseDiv color={data.color}>
       <a>{data.name.toUpperCase()}</a>
     </BaseDiv>
   )

@@ -82,6 +82,7 @@ const EditLaneModal = (props) => {
 			<div className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl">
 				<Dialog.Title>Lane Title</Dialog.Title>
 				<input 
+					className="rounded-2xl"
 					style={{textAlign: 'center'}}
 					value={laneNameValue.trim()} 
 					onChange={(e)=>{setLaneNameValue(e.target.value)}} 

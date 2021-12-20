@@ -45,7 +45,7 @@ module Api
 			private
 
 			def tag_params
-				params.require(:tag).permit(:name, :task_id)
+				params.require(:tag).permit(:name, :color, :task_id)
 			end
 
 		end

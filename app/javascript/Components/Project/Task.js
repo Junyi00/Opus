@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import styled from "styled-components";
 
 import Tag from "./Tag";
 import axios from "axios";
+import EditTaskModal from "./Modals/EditTaskModal";
 
 const BaseDiv = styled.div`
   border: 1px solid var(--light-gray);
@@ -27,7 +28,7 @@ const BaseDiv = styled.div`
   align-items: center;
 `
 
-const TaskTitle = styled.div`
+const TaskTitle = styled.button`
   width: 100%;
   height: fit-content;
   background-color: var(--light-gray);
@@ -37,34 +38,20 @@ const TaskTitle = styled.div`
   flex: 0 0 0;
   
   padding: 2px;
+  padding-left: 5px;
   margin-top: 0px;
+
+  border: none;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+
+  text-align: left;
 `
 
 const TaskContent = styled.div`
   flex: 1 0 0;
   width: 100%;
   padding: 5px;
-`
-
-const Square = styled.div`
-  border: 2px solid black;
-  border-radius: 10px;
-
-  width: 10px;
-  height: 10px;
-
-  position: absolute;
-  left: 100%;
-  top: 0%;
-  -webkit-transform: translate(-120%, 20%);
-  -ms-transform:     translate(-120%, 20%);
-  transform:         translate(-120%, 20%);
-
-  ${({ starred }) => starred && `
-    background-color: yellow;
-  `}
 `
 
 const TagsDiv = styled.div`
@@ -74,10 +61,13 @@ const TagsDiv = styled.div`
 `
 
 const Task = (props) => {
+  const [showModal, setShowModal] = useState(false)
+
   const path = props.path
   const taskName = props.data.name
   const taskDesc = props.data.description
   const taskStarred = props.data.starred
+  const setTaskModalRes = props.setTaskModalRes
 
   const ref = useRef(null)
 
@@ -98,21 +88,24 @@ const Task = (props) => {
   drag(ref);
 
   return (
-    <BaseDiv ref={ref} starred={taskStarred}>
-      {/* <Square starred={taskStarred}></Square> */}
-      {/* <a>{taskName}</a><br /> */}
-      <TaskTitle starred={taskStarred}>{taskName}</TaskTitle>
-      <TaskContent>
-        <TagsDiv>
-          {
-            props.data.tags.map((tag, index) => 
-              <Tag key={index} data={tag}></Tag>
-            )
-          }
-        </TagsDiv>
-        <a style={{fontSize: '12px'}}>{taskDesc}</a>
-      </TaskContent>
-    </BaseDiv>
+    <React.Fragment>
+      <BaseDiv ref={ref} starred={taskStarred}>
+        {/* <Square starred={taskStarred}></Square> */}
+        {/* <a>{taskName}</a><br /> */} 
+        <TaskTitle starred={taskStarred} onDoubleClick={()=>setShowModal(true)}>{taskName}</TaskTitle>
+        <TaskContent>
+          <TagsDiv>
+            {
+              props.data.tags.map((tag, index) => 
+                <Tag key={index} data={tag}></Tag>
+              )
+            }
+          </TagsDiv>
+          <a style={{fontSize: '12px'}}>{taskDesc}</a>
+        </TaskContent>
+      </BaseDiv>
+      <EditTaskModal setModalRes={props.setTaskModalRes} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
+    </React.Fragment>
   )
 }
 

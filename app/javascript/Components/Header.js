@@ -25,14 +25,13 @@ const HeaderBase = styled.header`
 `
 
 const Logo = styled.img`
-  float: left;
   width: 10%;
   padding: 5px;
 `
 
 const UserInfo = styled.div`
-  float: right;
-  width: 5%;
+  width: fit-content;
+  margin-right: 10px;
 
   text-align: center;
 `

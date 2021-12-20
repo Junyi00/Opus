@@ -73,10 +73,12 @@ tasks = Task.create([
 tags = Tag.create([
     {
         name: "Exam",
+        color: "#a9d18e",
         task: Task.find_or_create_by(name: "PYP")
     },
     {
         name: "Notes",
+        color: "#ffd966",
         task: Task.find_or_create_by(name: "Draw Mindmap")
     }
 ])

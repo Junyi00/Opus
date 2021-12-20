@@ -75,6 +75,7 @@ const Lane = (props) => {
   const handleDrop = props.handleDrop
   const addTaskOnClick = props.addTaskOnClick
   const setLaneModalRes = props.setLaneModalRes
+  const setTaskModalRes = props.setTaskModalRes
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.LANE,
@@ -109,7 +110,7 @@ const Lane = (props) => {
                       }}
                       onDrop={handleDrop}
                     />
-                    {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath}/>}
+                    {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
                   </React.Fragment>
                 )
               })

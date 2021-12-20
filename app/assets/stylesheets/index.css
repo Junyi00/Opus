@@ -6,7 +6,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-}
+} 
 
 :root {
   --highlight-color: #035efc;
@@ -25,6 +25,14 @@ html, body, #root, .App {
 * > button:focus {
   outline: none !important; /* Override tailwind css */
 }
+
+* > textarea {
+  border: 1px solid gray; /* Override tailwind css */
+}
+
+* > input {
+  border: 1px solid gray; /* Override tailwind css */
+} 
 
 
 /* DropZone styles */

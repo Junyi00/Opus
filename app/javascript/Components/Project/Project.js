@@ -9,9 +9,13 @@ import {
   updateLanesPos, 
   updateTasksPos,
   updateLaneName, 
+  updateTask,
   requestNewLane, 
   requestNewTask, 
-  deleteLane } from "./DatabaseOp";
+  requestNewTag,
+  deleteLane,
+  deleteTask,
+  deleteTag } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
@@ -23,7 +27,7 @@ import {
 const BaseDiv = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: none;
   // justify-content: space-evenly;
 
   position: absolute;
@@ -85,7 +89,9 @@ const Project = (props) => {
   const [dummyValue, setDummyValue] = useState(0)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
+
   const [laneModalRes, setLaneModalRes] = useState({})
+  const [taskModalRes, setTaskModalRes] = useState({})
 
   const projectInfo = props.projectInfo
 
@@ -207,6 +213,31 @@ const Project = (props) => {
     }
   }, [laneModalRes])
 
+  // Update Database on Task Changes
+  useEffect(()=> {
+    if (Object.keys(taskModalRes).length > 0) {
+      if (taskModalRes.toDelete) {
+        deleteTask(taskModalRes.taskId)
+      }
+      else {
+        console.log(taskModalRes)
+        updateTask(taskModalRes.taskId, taskModalRes.data)
+
+        taskModalRes.tagsToAdd.map((tag, index) => {
+          requestNewTag(tag.taskId, tag.name, tag.color)
+        })
+
+        taskModalRes.tagsToDelete.map((tag, index) => {
+          console.log(tag)
+          deleteTag(tag.tagId)
+        })
+      } 
+
+      setLaneModalRes({})
+      forceUpdate()
+    }
+  }, [taskModalRes])
+
   const addLaneOnClick = () => {
     requestNewLane(projectInfo.id).then(resp => {
       const newLane = resp.data
@@ -254,6 +285,7 @@ const Project = (props) => {
                       path={currentPath} 
                       addTaskOnClick={addTaskOnClick(lane.id)}
                       setLaneModalRes={setLaneModalRes}
+                      setTaskModalRes={setTaskModalRes}
                     />}
                   </React.Fragment>
                 );
