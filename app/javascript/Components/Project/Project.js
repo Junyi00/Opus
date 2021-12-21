@@ -257,6 +257,15 @@ const Project = (props) => {
     })
   }
 
+  const completeTaskOnClick = (task_id) => {
+    console.log(task_id)
+    updateTask(task_id, {
+      completed: true
+    }).then(resp => {
+      forceUpdate()
+    })
+  }
+
   if (projectLayout) {
 
     if (projectLayout.length > 0) {
@@ -285,6 +294,7 @@ const Project = (props) => {
                       path={currentPath} 
                       searchQuery={props.searchQuery}
                       addTaskOnClick={addTaskOnClick(lane.id)}
+                      completeTaskOnClick={completeTaskOnClick}
                       setLaneModalRes={setLaneModalRes}
                       setTaskModalRes={setTaskModalRes}
                     />}

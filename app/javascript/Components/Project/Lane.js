@@ -132,7 +132,7 @@ const Lane = (props) => {
                             }}
                             onDrop={handleDrop}
                           />
-                          {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
+                          {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
                         </React.Fragment>
                       )
                   })
@@ -160,7 +160,7 @@ const Lane = (props) => {
                   const currentPath = `${path}-${index}`;
                   return (
                     <React.Fragment key={task.id}>
-                      {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
+                      {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
                       <div style={{height:'40px'}}></div>
                     </React.Fragment>
                   )

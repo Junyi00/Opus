@@ -101,6 +101,7 @@ const Task = (props) => {
   const taskDesc = props.data.description
   const taskStarred = props.data.starred
   const setTaskModalRes = props.setTaskModalRes
+  const completeTaskOnClick = props.completeTaskOnClick
 
   const ref = useRef(null)
 
@@ -124,8 +125,8 @@ const Task = (props) => {
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred}>
         <TaskHeader>
-          <TaskTitleBtn onDoubleClick={()=>setShowModal(true)}>{taskName}</TaskTitleBtn>
-          <CompleteBtn starred={taskStarred}></CompleteBtn>
+          <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}>{taskName}</TaskTitleBtn>
+          <CompleteBtn onDoubleClick={() => completeTaskOnClick(props.data.id)} starred={taskStarred}></CompleteBtn>
         </TaskHeader>
         <TaskContent>
           <TagsDiv>
