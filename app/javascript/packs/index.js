@@ -7,19 +7,17 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-
-import Modal from 'react-modal';
+import { TouchBackend } from 'react-dnd-touch-backend'
+import supportsTouch from './supportsTouch'
 
 import App from '../App'
 
 const root = document.createElement('div')
 root.id = 'root'
 
-Modal.setAppElement(root)
-
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={supportsTouch() ? TouchBackend : HTML5Backend}>
       <App />
     </DndProvider>,
     document.body.appendChild(root),
