@@ -11,9 +11,9 @@ const BaseDiv = styled.div`
   height: 20px;
   padding: 0px 2px 0px 2px;
   
-  align-text: center;
   font-size: 12px;
   line-height: 20px;
+  // text-align: center;
 `
 
 const Tag = (props) => {
@@ -22,7 +22,7 @@ const Tag = (props) => {
 
   return (
     <BaseDiv color={data.color}>
-      <a>{data.name.toUpperCase()}</a>
+      {data.name.toUpperCase()}
     </BaseDiv>
   )
 }

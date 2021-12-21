@@ -39,6 +39,7 @@ const UserInfo = styled.div`
 const SearchBar = styled.input`
   width: 100%;
   height: 100%;
+  border-radius: var(--standard-br);
 
   padding-left: 5px;
 `
@@ -70,8 +71,7 @@ const Header = (props) => {
       {
         (props.projectLoaded === null) ? null :
           <div style={{float: 'left', height: '70%', width: '30%', position: 'relative'}}>
-            <SearchBar
-              className='rounded-2xl' 
+            <SearchBar 
               value={searchQuery.trim()}
               onChange={(e)=>{setSearchQuery(e.target.value)}}
               placeholder="Search..."

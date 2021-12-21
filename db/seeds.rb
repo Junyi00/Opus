@@ -45,6 +45,7 @@ tasks = Task.create([
         description: "MODULE 1",
         starred: false,
         pos: 0,
+        completed: false,
         lane: Lane.find_or_create_by(name: "New")
     },
     {
@@ -52,6 +53,7 @@ tasks = Task.create([
         description: "MODULE 1",
         starred: true,
         pos: 0,
+        completed: false,
         lane: Lane.find_or_create_by(name: "In Progress")
     },
     {
@@ -59,6 +61,7 @@ tasks = Task.create([
         description: "MODULE 1",
         starred: false,
         pos: 1,
+        completed: false,
         lane: Lane.find_or_create_by(name: "In Progress")
     },
     {
@@ -66,6 +69,7 @@ tasks = Task.create([
         description: "MODULE 1",
         starred: true,
         pos: 0,
+        completed: false,
         lane: Lane.find_or_create_by(name: "Completed")
     }
 ])

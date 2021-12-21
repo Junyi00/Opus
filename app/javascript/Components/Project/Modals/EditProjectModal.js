@@ -84,8 +84,8 @@ const EditProjectModal = (props) => {
 			<div className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl">
 				<Dialog.Title>Project Title</Dialog.Title>
 				<input 
-					className="rounded-2xl"
-					style={{textAlign: 'center', border: '1px solid gray'}}
+					className='text_input'
+					style={{textAlign: 'center'}}
 					value={projNameValue.trim()} 
 					onChange={(e)=>{setProjNameValue(e.target.value)}} 
 					type='text'

@@ -7,11 +7,12 @@ import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
 
 const BaseDiv = styled.div`
-  border: 1px solid var(--light-gray);
-  ${({ starred }) => starred && `
-    border-color: #dbbf1f;
-  `}
-  border-radius: 5px 5px 0px 0px;
+  // border: 1px solid black;
+  // ${({ starred }) => starred && `
+  //   border-color: #dbbf1f;
+  // `}
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
 
   flex: 1 0 0;
   width: 95%;
@@ -25,15 +26,19 @@ const BaseDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  * {
+    font-family: 
+  }
 `
 
-const TaskTitle = styled.button`
+const TaskHeader = styled.div`
   width: 100%;
   height: fit-content;
-  background-color: var(--light-gray);
-  ${({ starred }) => starred && `
-    background-color: #dbbf1f;
-  `}
+  // background-color: var(--light-gray);
+  // ${({ starred }) => starred && `
+  //   background-color: #dbbf1f;
+  // `}
   flex: 0 0 0;
   
   padding: 2px;
@@ -41,10 +46,38 @@ const TaskTitle = styled.button`
   margin-top: 0px;
 
   border: none;
+  border-bottom: 1px solid var(--light-gray);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 
+  position: relative;
+`
+
+const TaskTitleBtn = styled.div`
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  border: none
+
   text-align: left;
+`
+
+const CompleteBtn = styled.button`
+  background-color: transparent;
+  border: 2px solid var(--light-gray);
+  border-radius: 10px;
+
+  ${({ starred }) => starred && `
+    border-color: #e6c923;
+  `}
+
+  position: absolute;
+  width: 15px; 
+  height: 15px;
+  right: 5px;
+  top: 50%;
+
+  transform: translate(0%, -50%);
 `
 
 const TaskContent = styled.div`
@@ -90,7 +123,10 @@ const Task = (props) => {
   return (
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred}>
-        <TaskTitle starred={taskStarred} onDoubleClick={()=>setShowModal(true)}>{taskName}</TaskTitle>
+        <TaskHeader>
+          <TaskTitleBtn onDoubleClick={()=>setShowModal(true)}>{taskName}</TaskTitleBtn>
+          <CompleteBtn starred={taskStarred}></CompleteBtn>
+        </TaskHeader>
         <TaskContent>
           <TagsDiv>
             {

@@ -227,6 +227,7 @@ const EditTaskModal = (props) => {
         <GridContainer>
           <LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
           <input 
+						className='text_input'
 						value={taskTitleValue.trim()} 
 						onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
 						type='text'
@@ -241,6 +242,7 @@ const EditTaskModal = (props) => {
 
           <LabelDiv style={{gridArea:'DescLbl'}}>Description</LabelDiv>
           <textarea 
+						className='text_input'
 						value={taskDescValue} 
 						onChange={(e)=>{setTaskDescValue(e.target.value)}} 
 						type='text' 
@@ -257,6 +259,7 @@ const EditTaskModal = (props) => {
           <div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap:'5px'}}>
 						<a>Add Tag</a>
 						<input 
+							className='text_input'
 							value={newTagValue.trim()} 
 							onChange={(e)=>{setNewTagValue(e.target.value)}} 
 							type='text' 

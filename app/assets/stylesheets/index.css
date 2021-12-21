@@ -12,9 +12,12 @@
   --highlight-color: #035efc;
   --dark-red: #9e1c25;
   --light-gray: #dedede;
+  --bg-gray: #f1f3f5;
 
   --header-height: 60px;
   --sidebar-width: 100px;
+
+  --standard-br: 10px; /* Standard border radius*/
 }
 
 /* Force html to fill page */
@@ -22,17 +25,24 @@ html, body, #root, .App {
   height: 100%;
 }
 
-* > button:focus {
+* > button:focus, * > input, * > textarea {
   outline: none !important; /* Override tailwind css */
 }
 
-* > textarea {
+* > textarea, * {
   border: 1px solid gray; /* Override tailwind css */
 }
 
 * > input {
   border: 1px solid gray; /* Override tailwind css */
 } 
+
+.text_input {
+  border: 1px solid gray;
+  border-radius: var(--standard-br);
+
+  padding-left: 5px;
+}
 
 
 /* DropZone styles */

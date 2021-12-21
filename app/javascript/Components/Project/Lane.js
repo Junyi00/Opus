@@ -8,9 +8,9 @@ import Task from "./Task";
 import EditLaneModal from "./Modals/EditLaneModal";
 
 const BaseDiv = styled.div`
-  // border-radius: 10px;
-  // background-color: #e4e9f2;
-  border: 1px solid lightgray;
+  border-radius: var(--standard-br);
+  background-color: var(--bg-gray);
+  // border: 1px solid var(--light-gray);
   flex: 1 0 0;
   min-width: 250px;
   margin: 5px;
@@ -119,20 +119,22 @@ const Lane = (props) => {
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 {
-                  data.children.map((task, index) => {
-                    const currentPath = `${path}-${index}`;
-                    return (
-                      <React.Fragment key={task.id}>
-                        <DropZone
-                          data={{
-                            path: currentPath,
-                            childrenCount: data.children.length,
-                          }}
-                          onDrop={handleDrop}
-                        />
-                        {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
-                      </React.Fragment>
-                    )
+                  data.children
+                    .filter((task, index) => !task.completed)
+                    .map((task, index) => {
+                      const currentPath = `${path}-${index}`;
+                      return (
+                        <React.Fragment key={task.id}>
+                          <DropZone
+                            data={{
+                              path: currentPath,
+                              childrenCount: data.children.length,
+                            }}
+                            onDrop={handleDrop}
+                          />
+                          {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes}/>}
+                        </React.Fragment>
+                      )
                   })
                 }
                 <DropZone
