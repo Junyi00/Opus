@@ -56,15 +56,24 @@ const NewLaneButton = styled.button`
     height: 100%;
     transition: 150ms height;
   }
-  
-  ${({ emptyDiv }) => emptyDiv && `
-    width: 40px;
-    height: 40px;
+`
 
-    &:hover {
-      border-radius: 30px;
-    }
-  `}
+const EmptyNewLaneBtn = styled.button`
+  background-color: transparent;
+  border: 1px solid var(--highlight-color);
+  border-radius: 10px;
+
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+
+  font-size: 20px;
+  color: var(--highlight-color);
+
+  // &:hover {
+  //   height: 100%;
+  //   transition: 150ms height;
+  // }
 `
 
 const EmptyBaseDiv = styled.div`
@@ -315,9 +324,7 @@ const Project = (props) => {
     else {
       return (
         <EmptyBaseDiv>
-          <NewLaneButton emptyDiv={true} onClick={addLaneOnClick}>
-            <Circle>+</Circle>
-          </NewLaneButton>
+          <EmptyNewLaneBtn onClick={addLaneOnClick}>+</EmptyNewLaneBtn>
           <a style={{color: 'var(--highlight-color)'}}>Add a Lane!</a>
         </EmptyBaseDiv>
       )

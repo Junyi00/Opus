@@ -41,11 +41,16 @@ const GridContainer = styled.div`
   display: grid;
 
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 3fr 1fr 0fr;
   grid-template-areas:
     "TaskLbl TaskText TaskText   Star  "
     "DescLbl DescText DescText DescText"
-    "   .       .      DelBtn   SaveBtn  ";
+    "   .       .      DelBtn   SaveBtn"
+		" Footer  Footer   Footer   Footer ";
+
+		${({ showWarning }) => showWarning && `
+		grid-template-rows: 1fr 3fr 1fr 3fr;
+  `}
 
   gap: 5px;
 `
@@ -225,7 +230,7 @@ const EditTaskModal = (props) => {
 			<Dialog.Overlay className="inset-0 z-5"/>
 
 			<BaseDiv className='bg-white p-5 border-gray-50 rounded-2xl'>
-        <GridContainer>
+        <GridContainer showWarning={showWarning}>
           <LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
           <input 
 						className='text_input'
@@ -252,6 +257,14 @@ const EditTaskModal = (props) => {
 
           <SaveBtn onClick={submitAction} style={{gridArea:'SaveBtn'}}>Save</SaveBtn>
           <DeleteBtn onClick={deleteAction} style={{gridArea:'DelBtn'}}>Delete</DeleteBtn>
+					{
+						!showWarning ? null :
+							<div style={{gridArea:'Footer', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+								<hr style={{height: '1px', width: '100%', margin: '5px'}}></hr>
+								<a>Are you sure you want to delete this task?</a><br />
+								<a>Click the button again to confirm</a>
+							</div>
+					}
         </GridContainer>
 
         <div style={{borderLeft:'1px solid var(--light-gray)', height:'auto', margin:'0px 10px'}}></div>
@@ -287,14 +300,6 @@ const EditTaskModal = (props) => {
 					</div>
         </TagDiv>
       </BaseDiv>
-			{
-				!showWarning ? null :
-					<div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-						<hr style={{height: '1px', width: '100%', margin: '5px'}}></hr>
-						<a>Are you sure you want to delete this task?</a><br />
-						<a>Click the button again to confirm</a>
-					</div>
-			}
 		</Dialog>
   );
 
