@@ -84,6 +84,23 @@ const TaskContent = styled.div`
   flex: 1 0 0;
   width: 100%;
   padding: 5px;
+
+  font-size: 15px;
+  line-height: 15px;
+  white-space: pre-wrap;
+  overflow-y: auto;
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(136, 136, 136);
+  }
 `
 
 const TagsDiv = styled.div`

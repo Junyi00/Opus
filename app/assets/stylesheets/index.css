@@ -79,3 +79,27 @@ html, body, #root, .App {
   z-index: 100; /* ensure popups are infront */
   background-color: rgba(0,0,0,0.3) !important;
 }
+
+/* Scrollbar Design */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: rgb(136, 136, 136);
+  opacity: 50%;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(117, 117, 117);
+}
