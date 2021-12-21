@@ -9,8 +9,10 @@ const NotFoundPage = () => {
       <img src={OpusLogo} width={200}></img>
       <h1>404 Page Not Found</h1>
 
-      <Link to="/">Click here</Link>
-      <a>to return to the home page!</a>
+      <Link style={{marginTop: '10px', textAlign:'center', color:'var(--highlight-color)'}} to="/">
+        Click here <br /> 
+        to return to the home page!
+      </Link>
     </div>
   )
 }

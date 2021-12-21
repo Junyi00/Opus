@@ -145,7 +145,7 @@ const EditTaskModal = (props) => {
 				description: taskDescValue.trim(),
 				starred: taskStarred
 			},
-			tagsToAdd: tags.filter((tag, index)=> !('tagId' in tag)),
+			tagsToAdd: tags.filter((tag, index)=> !('id' in tag)),
 			tagsToDelete: [...tagsToDelete]
 		});
 		setTagsToDelete([])
@@ -201,7 +201,8 @@ const EditTaskModal = (props) => {
 			...tags.slice(item.index + 1)
 		])
 		
-		if ('tagId' in item) {
+		if ('tagId' in item) { 
+			// DraggableTag has a tag id from the db
 			setTagsToDelete([
 				...tagsToDelete,
 				item

@@ -17,7 +17,7 @@ const Base = styled.div`
 
   background-color: #fcfcfc;
   // border-right: 1px solid var(--light-gray);
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(100, 100, 111, 0.1) 7px 0px 29px 0px;
 
   padding-top: 10px;
   padding-bottom: 10px;

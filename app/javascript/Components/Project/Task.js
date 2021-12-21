@@ -4,7 +4,6 @@ import { ItemTypes } from "./ItemTypes";
 import styled from "styled-components";
 
 import Tag from "./Tag";
-import axios from "axios";
 import EditTaskModal from "./Modals/EditTaskModal";
 
 const BaseDiv = styled.div`
@@ -12,7 +11,7 @@ const BaseDiv = styled.div`
   ${({ starred }) => starred && `
     border-color: #dbbf1f;
   `}
-  border-radius: 5px;
+  border-radius: 5px 5px 0px 0px;
 
   flex: 1 0 0;
   width: 95%;
@@ -57,7 +56,8 @@ const TaskContent = styled.div`
 const TagsDiv = styled.div`
   display: flex;
   flex-direction: row;
-  flex-flow: wrap
+  flex-flow: wrap;
+  column-gap: 2px;
 `
 
 const Task = (props) => {
@@ -90,8 +90,6 @@ const Task = (props) => {
   return (
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred}>
-        {/* <Square starred={taskStarred}></Square> */}
-        {/* <a>{taskName}</a><br /> */} 
         <TaskTitle starred={taskStarred} onDoubleClick={()=>setShowModal(true)}>{taskName}</TaskTitle>
         <TaskContent>
           <TagsDiv>
@@ -104,7 +102,7 @@ const Task = (props) => {
           <a style={{fontSize: '12px'}}>{taskDesc}</a>
         </TaskContent>
       </BaseDiv>
-      <EditTaskModal setModalRes={props.setTaskModalRes} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
+      <EditTaskModal setModalRes={setTaskModalRes} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
     </React.Fragment>
   )
 }

@@ -107,7 +107,7 @@ const Lane = (props) => {
     }
     else {
       // title filter
-      setChildrenToDisplay(data.children.filter((task, index) => task.name.includes(props.searchQuery)))
+      setChildrenToDisplay(data.children.filter((task, index) => task.name.toLowerCase().includes(props.searchQuery.toLowerCase())))
     }
   }, [props.searchQuery])
 
@@ -152,6 +152,7 @@ const Lane = (props) => {
         : <BaseDiv>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <div style={{height:'40px'}}></div>
               {
                 childrenToDisplay.map((task, index) => {
                   const currentPath = `${path}-${index}`;
