@@ -78,6 +78,10 @@ const CompleteBtn = styled.button`
   top: 50%;
 
   transform: translate(0%, -50%);
+
+  &:hover {
+    background-color: #e6c923;
+  }
 `
 
 const TaskContent = styled.div`

@@ -81,7 +81,7 @@ const AddProjectBtn = styled.button`
     border: 1px solid var(--highlight-color);
     border-radius: 15px;
 
-
+    transition: 150ms all;
   }
 `
 

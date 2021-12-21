@@ -37,12 +37,12 @@ const EditProjectModal = (props) => {
 	}, [props.selectedIndex])
 
 	const submit = () => {
-			// `onClose` is added by 'PopupManager' to props
-			if (projNameValue !== '' && projNameValue !== projName)
+			const trimmedProjName = projNameValue.trim()
+			if (trimmedProjName !== '' && trimmedProjName !== projName)
 			setModalRes({
 				projId: props.projects[props.selectedIndex].id,
 				toDelete: false, 
-				newName: projNameValue
+				newName: trimmedProjName
 			});
 			requestClose()
 	}
@@ -86,7 +86,7 @@ const EditProjectModal = (props) => {
 				<input 
 					className='text_input'
 					style={{textAlign: 'center'}}
-					value={projNameValue.trim()} 
+					value={projNameValue} 
 					onChange={(e)=>{setProjNameValue(e.target.value)}} 
 					type='text'
 					placeholder={projName}

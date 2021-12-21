@@ -34,12 +34,12 @@ const EditLaneModal = (props) => {
 	const laneId = props.laneId
 
 	const submit = () => {
-			// `onClose` is added by 'PopupManager' to props
-			if (laneNameValue !== '' && laneNameValue !== laneName)
+			const trimmedLaneName = laneNameValue.trim()
+			if (trimmedLaneName !== '' && trimmedLaneName !== laneName)
 			setModalRes({
 				laneId: laneId,
 				toDelete: false, 
-				newName: laneNameValue
+				newName: trimmedLaneName
 			});
 			requestClose()
 	}
@@ -84,7 +84,7 @@ const EditLaneModal = (props) => {
 				<input 
 					className='text_input'
 					style={{textAlign: 'center'}}
-					value={laneNameValue.trim()} 
+					value={laneNameValue} 
 					onChange={(e)=>{setLaneNameValue(e.target.value)}} 
 					type='text'
 					placeholder={laneName}

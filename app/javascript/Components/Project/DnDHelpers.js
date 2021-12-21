@@ -32,13 +32,11 @@ export const insert = (arr, index, newItem) => [
 ];
 
 export const reorderChildren = (children, splitDropZonePath, splitItemPath) => {
-  console.log('reordering', children, splitItemPath, splitDropZonePath)
   if (splitDropZonePath.length === 1) {
     const dropZoneIndex = Number(splitDropZonePath[0]);
     const itemIndex = Number(splitItemPath[0]);
     const res =  reorder(children, itemIndex, dropZoneIndex);
 
-    console.log(itemIndex, dropZoneIndex)
     return res
   }
 

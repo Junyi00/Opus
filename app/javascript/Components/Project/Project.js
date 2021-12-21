@@ -37,22 +37,24 @@ const BaseDiv = styled.div`
 `
 
 const NewLaneButton = styled.button`
-  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 20px;
   width: 20px;
+  transform: translate(-50%, -50%);
+  line-height: 20px;
   
   background-color: transparent;
-  border: none;
+  border: 1px solid var(--highlight-color);
+  border-radius: 10px;
 
   font-size: 20px;
   color: var(--highlight-color);
 
   &:hover {
-    border: 1px solid var(--highlight-color);
-    border-radius: 10px;
-  }
-
-  &:hover > div {
-    border: none;
+    height: 100%;
+    transition: 150ms height;
   }
   
   ${({ emptyDiv }) => emptyDiv && `
@@ -63,11 +65,6 @@ const NewLaneButton = styled.button`
       border-radius: 30px;
     }
   `}
-`
-
-const Circle = styled.div`
-  border: 1px solid var(--highlight-color);
-  border-radius: 20px;
 `
 
 const EmptyBaseDiv = styled.div`
@@ -220,7 +217,6 @@ const Project = (props) => {
         deleteTask(taskModalRes.taskId)
       }
       else {
-        console.log(taskModalRes)
         updateTask(taskModalRes.taskId, taskModalRes.data)
 
         taskModalRes.tagsToAdd.map((tag, index) => {
@@ -228,7 +224,6 @@ const Project = (props) => {
         })
 
         taskModalRes.tagsToDelete.map((tag, index) => {
-          console.log(tag)
           deleteTag(tag.tagId)
         })
       } 
@@ -258,7 +253,6 @@ const Project = (props) => {
   }
 
   const completeTaskOnClick = (task_id) => {
-    console.log(task_id)
     updateTask(task_id, {
       completed: true
     }).then(resp => {
@@ -311,9 +305,10 @@ const Project = (props) => {
             isLast
             className="horizontalDrag"
           />
-          <NewLaneButton onClick={addLaneOnClick}>
-            <Circle>+</Circle>
-          </NewLaneButton>
+          <div style={{height: '100%', width:'20px', position:'relative'}}>
+            <NewLaneButton onClick={addLaneOnClick}>+</NewLaneButton>
+          </div>
+          
         </BaseDiv>
       )
     }

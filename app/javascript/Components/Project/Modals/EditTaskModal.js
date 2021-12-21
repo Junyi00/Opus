@@ -110,7 +110,7 @@ const ColorBoxWrapper = styled.div`
 	// flex: 1 0 0;
 
 	& input:checked + label {
-		border: 1px solid gray;
+		border: 2px solid gray;
 	}
 `
 
@@ -141,13 +141,14 @@ const EditTaskModal = (props) => {
 			taskId: taskId, 
 			toDelete: false, 
 			data: {
-				name: taskTitleValue,
+				name: taskTitleValue.trim(),
 				description: taskDescValue.trim(),
 				starred: taskStarred
 			},
 			tagsToAdd: tags.filter((tag, index)=> !('id' in tag)),
 			tagsToDelete: [...tagsToDelete]
 		});
+		
 		setTagsToDelete([])
 		requestClose()
 	}
@@ -228,7 +229,7 @@ const EditTaskModal = (props) => {
           <LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
           <input 
 						className='text_input'
-						value={taskTitleValue.trim()} 
+						value={taskTitleValue} 
 						onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
 						type='text'
 						style={{gridArea:'TaskText'}} 
