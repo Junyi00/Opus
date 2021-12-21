@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components"
 
 import EditProjectModal from "./Project/Modals/EditProjectModal";
+import HelpModal from "./HelpModal"
 
 const Base = styled.div`
   display: flex;
@@ -87,8 +88,9 @@ const AddProjectBtn = styled.button`
 
 const SideBar = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [showModal, setShowModal] = useState(false)
+  const [showProjModal, setShowProjModal] = useState(false)
   const [modalRes, setModalRes] = useState({})
+  const [showHelpModal, setShowHelpModal] = useState(false)
 
   const isLoading = props.isLoading
   const projects = props.projects
@@ -125,7 +127,7 @@ const SideBar = (props) => {
         <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
           <ProjectButton 
             onClick={createButtonOnClick(index)} 
-            onDoubleClick={() => setShowModal(true)}
+            onDoubleClick={() => setShowProjModal(true)}
           >
             {project.name}
           </ProjectButton>
@@ -145,8 +147,10 @@ const SideBar = (props) => {
               <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
             </ProjectsList>
         }
+        <button onClick={()=> setShowHelpModal(true)} style={{backgroundColor:'transparent', border:'none', marginTop:'auto'}}>Guide</button>
       </Base>
-      <EditProjectModal showModal={showModal} setShowModal={setShowModal} projects={projects} selectedIndex={selectedIndex} setModalRes={setModalRes}/>
+      <EditProjectModal showModal={showProjModal} setShowModal={setShowProjModal} projects={projects} selectedIndex={selectedIndex} setModalRes={setModalRes}/>
+      <HelpModal showModal={showHelpModal} setShowModal={setShowHelpModal}></HelpModal>
     </React.Fragment>
   )
 }
