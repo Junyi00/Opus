@@ -160,7 +160,6 @@ const Project = (props) => {
   );
 
   const forceUpdate = () => {
-    console.log('hey')
     setDummyValue(dummyValue + 1)
   }
   
