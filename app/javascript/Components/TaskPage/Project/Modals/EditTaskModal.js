@@ -232,6 +232,7 @@ const EditTaskModal = (props) => {
 						<input 
 							className='text_input'
 							value={taskTitleValue} 
+							onKeyUp={(e) => {e.key == "Enter" ? submit() : null}}
 							onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
 							type='text'
 							style={{gridArea:'TaskText'}} 
@@ -271,7 +272,7 @@ const EditTaskModal = (props) => {
 							<a>Add Tag</a>
 							<input 
 								className='text_input'
-								value={newTagValue.trim()} 
+								value={newTagValue.trim()} onKeyUp={(e) => {e.key == "Enter" ? addTagOnClick() : null}}
 								onChange={(e)=>{setNewTagValue(e.target.value)}} 
 								type='text' 
 							/>
@@ -282,7 +283,7 @@ const EditTaskModal = (props) => {
 								tagColors.map((tagColor, index) => (
 									<ColorBoxWrapper key={index}>
 										<InputColorBox id={index} type='radio' name='colorboxes' color={tagColor} defaultChecked={index===0}/>
-										<ColorBox for={index} color={tagColor}></ColorBox>
+										<ColorBox htmlFor={index} color={tagColor}></ColorBox>
 									</ColorBoxWrapper>
 								))
 							}

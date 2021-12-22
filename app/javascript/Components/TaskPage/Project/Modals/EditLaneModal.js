@@ -80,6 +80,7 @@ const EditLaneModal = (props) => {
 						className='text_input'
 						style={{textAlign: 'center'}}
 						value={laneNameValue} 
+						onKeyUp={(e) => {e.key == "Enter" ? submit() : null}}
 						onChange={(e)=>{setLaneNameValue(e.target.value)}} 
 						type='text'
 						placeholder={laneName}
