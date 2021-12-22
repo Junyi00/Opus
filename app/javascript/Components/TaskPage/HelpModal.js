@@ -1,7 +1,6 @@
 import { Dialog } from '@headlessui/react'
 import React from 'react'
 import styled from 'styled-components'
-import clsx from 'clsx'
 
 import Page1 from "images/guides/Page1.png"
 import Page2 from "images/guides/Page2.png"
@@ -70,31 +69,26 @@ const HelpModal = (props) => {
       open={showModal}
       onClose={() => setShowModal(false)}
       as="div"
-      className={clsx(
-        "fixed inset-0 z-10 flex items-center justify-center overflow-y-auto",
-        {
-          "bg-gray-900 bg-opacity-50": showModal === true,
-        },
-      )}
+      className="fixed inset-0 z-10 overflow-y-auto"
     >
-      <Dialog.Overlay className="inset-0 z-5"/>
-      <div className='rounded-2xl p-5' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white'}}>
-        <SlidesDiv>
-          <PageDiv id='page1'>
-            <b>Projects - Lanes - Tasks</b> 
-            <img src={Page1}/>
-          </PageDiv>
-          <PageDiv id='page2'>
-            <b>Drag and Drop!</b> 
-            <img src={Page2} />
-          </PageDiv>
-          {/* <div id='page3'>
-            3
-          </div> */}
-        </SlidesDiv>
-        <div style={{display:'flex', width:'fit-content', alignItems:'center', columnGap:'5px'}}>
-          <Dot href="#page1"></Dot>
-          <Dot href="#page2"></Dot>
+      <div className="flex items-center justify-center min-h-screen">
+        <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
+        
+        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white'}}>
+          <SlidesDiv>
+            <PageDiv id='page1'>
+              <b>Projects - Lanes - Tasks</b> 
+              <img src={Page1}/>
+            </PageDiv>
+            <PageDiv id='page2'>
+              <b>Drag and Drop!</b> 
+              <img src={Page2} />
+            </PageDiv>
+          </SlidesDiv>
+          <div style={{display:'flex', width:'fit-content', alignItems:'center', columnGap:'5px'}}>
+            <Dot href="#page1"></Dot>
+            <Dot href="#page2"></Dot>
+          </div>
         </div>
       </div>
     </Dialog>

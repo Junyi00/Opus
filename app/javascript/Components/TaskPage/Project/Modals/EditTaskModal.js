@@ -1,5 +1,4 @@
 import { Dialog } from '@headlessui/react';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -221,85 +220,84 @@ const EditTaskModal = (props) => {
 			open={showModal}
 			onClose={requestClose}
 			as="div"
-			className={clsx(
-				"fixed inset-0 z-10 flex items-center justify-center overflow-y-auto",
-				{
-					"bg-gray-900 bg-opacity-50": showModal === true,
-				},
-		)}>
-			<Dialog.Overlay className="inset-0 z-5"/>
+			className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+		>
+			
+			<div className="flex items-center justify-center min-h-screen">
+        <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
 
-			<BaseDiv className='bg-white p-5 border-gray-50 rounded-2xl'>
-        <GridContainer showWarning={showWarning}>
-          <LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
-          <input 
-						className='text_input'
-						value={taskTitleValue} 
-						onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
-						type='text'
-						style={{gridArea:'TaskText'}} 
-					/>
-
-					<div style={{gridArea:'Star', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-						<StarBtn onClick={starBtnOnClick}>
-							<img src={(taskStarred ? FlagOn : FlagOff)} style={{width:'15px'}}></img>
-						</StarBtn>
-					</div>
-
-          <LabelDiv style={{gridArea:'DescLbl'}}>Description</LabelDiv>
-          <textarea 
-						className='text_input'
-						value={taskDescValue} 
-						onChange={(e)=>{setTaskDescValue(e.target.value)}} 
-						type='text' 
-						style={{gridArea:'DescText', resize:'none'}} 
-					/>
-
-          <SaveBtn onClick={submitAction} style={{gridArea:'SaveBtn'}}>Save</SaveBtn>
-          <DeleteBtn onClick={deleteAction} style={{gridArea:'DelBtn'}}>Delete</DeleteBtn>
-					{
-						!showWarning ? null :
-							<div style={{gridArea:'Footer', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-								<hr style={{height: '1px', width: '100%', margin: '5px'}}></hr>
-								<a>Are you sure you want to delete this task?</a><br />
-								<a>Click the button again to confirm</a>
-							</div>
-					}
-        </GridContainer>
-
-        <div style={{borderLeft:'1px solid var(--light-gray)', height:'auto', margin:'0px 10px'}}></div>
-
-        <TagDiv>
-          <div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap:'5px'}}>
-						<a>Add Tag</a>
+				<BaseDiv className='bg-white p-5 border-gray-50 rounded-2xl z-10'>
+					<GridContainer showWarning={showWarning}>
+						<LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
 						<input 
 							className='text_input'
-							value={newTagValue.trim()} 
-							onChange={(e)=>{setNewTagValue(e.target.value)}} 
-							type='text' 
+							value={taskTitleValue} 
+							onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
+							type='text'
+							style={{gridArea:'TaskText'}} 
 						/>
-						<button onClick={addTagOnClick}>Add</button>
-					</div>
-					<div onChange={colorBoxesOnChange} style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
+
+						<div style={{gridArea:'Star', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+							<StarBtn onClick={starBtnOnClick}>
+								<img src={(taskStarred ? FlagOn : FlagOff)} style={{width:'15px'}}></img>
+							</StarBtn>
+						</div>
+
+						<LabelDiv style={{gridArea:'DescLbl'}}>Description</LabelDiv>
+						<textarea 
+							className='text_input'
+							value={taskDescValue} 
+							onChange={(e)=>{setTaskDescValue(e.target.value)}} 
+							type='text' 
+							style={{gridArea:'DescText', resize:'none'}} 
+						/>
+
+						<SaveBtn onClick={submitAction} style={{gridArea:'SaveBtn'}}>Save</SaveBtn>
+						<DeleteBtn onClick={deleteAction} style={{gridArea:'DelBtn'}}>Delete</DeleteBtn>
 						{
-							tagColors.map((tagColor, index) => (
-								<ColorBoxWrapper key={index}>
-									<InputColorBox id={index} type='radio' name='colorboxes' color={tagColor} defaultChecked={index===0}/>
-									<ColorBox for={index} color={tagColor}></ColorBox>
-								</ColorBoxWrapper>
-							))
+							!showWarning ? null :
+								<div style={{gridArea:'Footer', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+									<hr style={{height: '1px', width: '100%', margin: '5px'}}></hr>
+									<a>Are you sure you want to delete this task?</a><br />
+									<a>Click the button again to confirm</a>
+								</div>
 						}
-					</div>
-					<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
-						<AllTagsDiv className="rounded-2xl">
+					</GridContainer>
+
+					<div style={{borderLeft:'1px solid var(--light-gray)', height:'auto', margin:'0px 10px'}}></div>
+
+					<TagDiv>
+						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap:'5px'}}>
+							<a>Add Tag</a>
+							<input 
+								className='text_input'
+								value={newTagValue.trim()} 
+								onChange={(e)=>{setNewTagValue(e.target.value)}} 
+								type='text' 
+							/>
+							<button onClick={addTagOnClick}>Add</button>
+						</div>
+						<div onChange={colorBoxesOnChange} style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
 							{
-								tags.map((tag, index) => <DraggableTag key={index} index={index} data={tag} />)
+								tagColors.map((tagColor, index) => (
+									<ColorBoxWrapper key={index}>
+										<InputColorBox id={index} type='radio' name='colorboxes' color={tagColor} defaultChecked={index===0}/>
+										<ColorBox for={index} color={tagColor}></ColorBox>
+									</ColorBoxWrapper>
+								))
 							}
-						</AllTagsDiv>
-						<TagThrashZone onDrop={removeTagOnDrop} />
-					</div>
-        </TagDiv>
-      </BaseDiv>
+						</div>
+						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
+							<AllTagsDiv className="rounded-2xl">
+								{
+									tags.map((tag, index) => <DraggableTag key={index} index={index} data={tag} />)
+								}
+							</AllTagsDiv>
+							<TagThrashZone onDrop={removeTagOnDrop} />
+						</div>
+					</TagDiv>
+				</BaseDiv>
+			</div>
 		</Dialog>
   );
 
