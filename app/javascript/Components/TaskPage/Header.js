@@ -56,8 +56,6 @@ const SearchCancelBtn = styled.button`
   transform: translate(0%, -50%);
 
   color: var(--dark-red);
-  // border: 1px solid var(--dark-red);
-  // border-radius: 100px;
   
   font-family: cursive; // Nice simple X
 `

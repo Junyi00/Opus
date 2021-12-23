@@ -20,15 +20,10 @@ const Base = styled.div`
   // border-right: 1px solid var(--light-gray);
   box-shadow: rgba(100, 100, 111, 0.1) 7px 0px 29px 0px;
 
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 10px;
 `
 
 const TitleText = styled.b`
-  // background-color: #0ae0f0;
-  // border: 1px solid #0ae0f0;
   border-radius: 10px;
 
   color: var(--highlight-color);
@@ -65,9 +60,13 @@ const ProjectButton = styled.button`
   border: none;
 
   font-size: 15px;
+
+  &:hover {
+    color: var(--highlight-color);
+  }
 `
 
-const AddProjectBtn = styled.button`
+const NewProjectBtn = styled.button`
   background-color: transparent;
   border: none;
   margin-top: 5px;
@@ -86,6 +85,24 @@ const AddProjectBtn = styled.button`
   }
 `
 
+const GuideBtn = styled.button`
+  background-color: transparent;
+  border-color: gray;
+  border-width: 1px 0px 1px 0px;
+  padding: 5px 0px 5px 0px;
+
+  &:hover {
+    padding: 0px;
+    margin-bottom: 5px;
+    border-color: var(--highlight-color);
+    color: var(--highlight-color);
+
+    transition: 100ms all;
+  }
+
+  margin-top: auto; // align button to the bottom
+`
+
 const SideBar = (props) => {
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [showProjModal, setShowProjModal] = useState(false)
@@ -99,6 +116,7 @@ const SideBar = (props) => {
   const editProjName = props.editProjName
   const delProj = props.delProj
 
+  // Listen for submit action from EditProjectModal
   useEffect(()=> {
     if (Object.keys(modalRes).length > 0) {
       if (modalRes.toDelete) {
@@ -121,7 +139,7 @@ const SideBar = (props) => {
     }
   }
 
-  const createProjectsElements = (projects, projOnClick, selectedIndex) => {
+  const createProjectsElements = (projects, selectedIndex) => {
     return projects.map((project, index) => {
       return (
         <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
@@ -143,11 +161,11 @@ const SideBar = (props) => {
           isLoading
             ? <a>Loading...</a>
             : <ProjectsList>
-              {createProjectsElements(projects, projOnClick, selectedIndex)}
-              <AddProjectBtn onClick={addProjOnClick}>+</AddProjectBtn>
+              {createProjectsElements(projects, selectedIndex)}
+              <NewProjectBtn onClick={addProjOnClick}>+</NewProjectBtn>
             </ProjectsList>
         }
-        <button onClick={()=> setShowHelpModal(true)} style={{backgroundColor:'transparent', border:'none', marginTop:'auto'}}>Guide</button>
+        <GuideBtn onClick={()=> setShowHelpModal(true)}>Guide</GuideBtn>
       </Base>
       <EditProjectModal showModal={showProjModal} setShowModal={setShowProjModal} projects={projects} selectedIndex={selectedIndex} setModalRes={setModalRes}/>
       <HelpModal showModal={showHelpModal} setShowModal={setShowHelpModal}></HelpModal>

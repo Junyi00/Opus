@@ -1,8 +1,8 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
-import { EditTag } from "./DraggableTag";
 
+import { EditTag } from "./DraggableTag";
 import ThrashIcon from "images/Thrash_Icon.png"
 
 const ThrashZone = styled.div`

@@ -1,6 +1,6 @@
 // import shortid from "shortid";
 import { ItemTypes } from "./ItemTypes";
-import { requestNewLane, moveTaskToLane } from "./DatabaseOp"
+import { requestNewLane, moveTaskToLane } from "../DatabaseOp"
 
 // a little function to help us with reordering the result
 export const reorder = (list, startIndex, endIndex) => {

@@ -3,8 +3,8 @@ import styled from "styled-components";
 import axios from "axios";
 
 import Lane from "./Lane";
-import DropZone from "./DropZone"
-import { ItemTypes } from "./ItemTypes";
+import DropZone from "./DnD/DropZone"
+import { ItemTypes } from "./DnD/ItemTypes";
 import { 
   updateLanesPos, 
   updateTasksPos,
@@ -15,14 +15,15 @@ import {
   requestNewTag,
   deleteLane,
   deleteTask,
-  deleteTag } from "./DatabaseOp";
+  deleteTag 
+} from "./DatabaseOp";
 import {
   handleMoveWithinParent,
   handleMoveToDifferentParent,
   handleMoveToNewParent,
   favourStarredTasks,
   insert
-} from "./DnDHelpers";
+} from "./DnD/DnDHelpers";
 
 const BaseDiv = styled.div`
   display: flex;

@@ -125,6 +125,7 @@ const EditTaskModal = (props) => {
 	const setModalRes = props.setModalRes
 	const taskId = props.taskData.id
 
+	// Update tags with proper database tag details after new tags are created
 	useEffect(()=>{
 		setTags(props.tags)
 	}, [props.tags])

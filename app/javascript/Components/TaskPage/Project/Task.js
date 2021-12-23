@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useDrag } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
+import { ItemTypes } from "./DnD/ItemTypes";
 import styled from "styled-components";
 
 import Tag from "./Tag";

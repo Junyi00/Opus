@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDrag} from 'react-dnd';
 
-import { ItemTypes } from "./ItemTypes";
-import DropZone from "./DropZone";
+import { ItemTypes } from "./DnD/ItemTypes";
+import DropZone from "./DnD/DropZone";
 import Task from "./Task";
 import EditLaneModal from "./Modals/EditLaneModal";
 

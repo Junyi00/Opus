@@ -25,6 +25,7 @@ const EditProjectModal = (props) => {
 	const setShowModal = props.setShowModal
 	const setModalRes = props.setModalRes
 
+	// Update Modal when a new project is selected
 	useEffect(()=> {
 		projName = props.selectedIndex >= 0 ? props.projects[props.selectedIndex].name : '~Unknown~'
 	}, [props.selectedIndex])
