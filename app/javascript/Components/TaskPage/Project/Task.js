@@ -147,7 +147,7 @@ const Task = (props) => {
       <BaseDiv ref={ref} starred={taskStarred}>
         <TaskHeader>
           <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}>{taskName}</TaskTitleBtn>
-          <CompleteBtn onDoubleClick={() => completeTaskOnClick(props.data.id)} starred={taskStarred}></CompleteBtn>
+          <CompleteBtn onClick={() => completeTaskOnClick(props.data.id)} starred={taskStarred}></CompleteBtn>
         </TaskHeader>
         <TaskContent>
           <TagsDiv>
