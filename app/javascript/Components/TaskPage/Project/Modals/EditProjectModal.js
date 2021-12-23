@@ -2,24 +2,18 @@ import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const SaveBtn = styled.button`
-    background-color: transparent;
-    border: 1px solid var(--highlight-color);
-    border-radius: 5px;
-    color: var(--highlight-color);
+const ModalBtn = styled.button`
+	background-color: transparent;
+	border: 1px solid ${props => props.color || "black"};;
+	border-radius: 5px;
+	color: ${props => props.color || "black"};
 
-    padding: 2px;
-    margin-top: 5px;
-`
+	padding: 2px 5px 2px 5px;
 
-const DeleteBtn = styled.button`
-    background-color: transparent;
-    border: 1px solid var(--dark-red);
-    border-radius: 5px;
-    color: var(--dark-red);
-
-    padding: 2px;
-    margin-top: 5px;
+	&:hover {
+		background-color: ${props => props.color || "black"};
+		color: white;
+	}
 `
 
 const EditProjectModal = (props) => {
@@ -35,7 +29,7 @@ const EditProjectModal = (props) => {
 		projName = props.selectedIndex >= 0 ? props.projects[props.selectedIndex].name : '~Unknown~'
 	}, [props.selectedIndex])
 
-	const submit = () => {
+	const submitAction = () => {
 			const trimmedProjName = projNameValue.trim()
 			if (trimmedProjName !== '' && trimmedProjName !== projName)
 			setModalRes({
@@ -46,15 +40,7 @@ const EditProjectModal = (props) => {
 			requestClose()
 	}
 
-	const requestClose = () => {
-		// Reset
-		setShowWarning(false)
-		setProjNameValue("")
-
-		setShowModal(false)
-	}
-
-	const deleteProject = () => {
+	const deleteAction = () => {
 		if (!showWarning) {
 			setShowWarning(true)
 		}
@@ -65,6 +51,14 @@ const EditProjectModal = (props) => {
 			});
 			requestClose()
 		}	
+	}
+
+	const requestClose = () => {
+		// Reset
+		setShowWarning(false)
+		setProjNameValue("")
+
+		setShowModal(false)
 	}
 
 	return (
@@ -91,8 +85,8 @@ const EditProjectModal = (props) => {
 						autoFocus
 					/>
 					<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
-						<SaveBtn type='text' onClick={submit}>Save</SaveBtn>
-						<DeleteBtn type='text' onClick={deleteProject}>Delete</DeleteBtn>
+						<ModalBtn type='text' color='var(--highlight-color)' onClick={submitAction}>Save</ModalBtn>
+						<ModalBtn type='text' color='var(--dark-red)' onClick={deleteAction}>Delete</ModalBtn>
 					</div>
 					{
 						!showWarning ? null :

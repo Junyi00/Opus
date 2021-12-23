@@ -2,24 +2,18 @@ import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const SaveBtn = styled.button`
-    background-color: transparent;
-    border: 1px solid var(--highlight-color);
-    border-radius: 5px;
-    color: var(--highlight-color);
+const ModalBtn = styled.button`
+	background-color: transparent;
+	border: 1px solid ${props => props.color || "black"};;
+	border-radius: 5px;
+	color: ${props => props.color || "black"};
 
-    padding: 2px;
-    margin-top: 5px;
-`
+	padding: 2px 5px 2px 5px;
 
-const DeleteBtn = styled.button`
-    background-color: transparent;
-    border: 1px solid var(--dark-red);
-    border-radius: 5px;
-    color: var(--dark-red);
-
-    padding: 2px;
-    margin-top: 5px;
+	&:hover {
+		background-color: ${props => props.color || "black"};
+		color: white;
+	}
 `
 
 const EditLaneModal = (props) => {
@@ -32,7 +26,7 @@ const EditLaneModal = (props) => {
 	const laneName = props.laneName
 	const laneId = props.laneId
 
-	const submit = () => {
+	const submitAction = () => {
 			const trimmedLaneName = laneNameValue.trim()
 			if (trimmedLaneName !== '' && trimmedLaneName !== laneName)
 			setModalRes({
@@ -43,15 +37,7 @@ const EditLaneModal = (props) => {
 			requestClose()
 	}
 
-	const requestClose = () => {
-		// Reset
-		setShowWarning(false)
-		setLaneNameValue("")
-
-		setShowModal(false)
-	}
-
-	const deleteLane = () => {
+	const deleteAction = () => {
 		if (!showWarning) {
 			setShowWarning(true)
 		}
@@ -62,6 +48,14 @@ const EditLaneModal = (props) => {
 			});
 			requestClose()
 		}	
+	}
+
+	const requestClose = () => {
+		// Reset
+		setShowWarning(false)
+		setLaneNameValue("")
+
+		setShowModal(false)
 	}
 
 	return (
@@ -87,8 +81,8 @@ const EditLaneModal = (props) => {
 						autoFocus
 					/>
 					<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
-						<SaveBtn type='text' onClick={submit}>Save</SaveBtn>
-						<DeleteBtn type='text' onClick={deleteLane}>Delete</DeleteBtn>
+						<ModalBtn type='text' color='var(--highlight-color)' onClick={submitAction}>Save</ModalBtn>
+						<ModalBtn type='text' color='var(--dark-red)' onClick={deleteAction}>Delete</ModalBtn>
 					</div>
 					{
 						!showWarning ? null :

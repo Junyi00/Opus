@@ -7,30 +7,6 @@ import TagThrashZone from './TagThrashZone';
 import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
 
-const SaveBtn = styled.button`
-  background-color: transparent;
-  border: 1px solid var(--highlight-color);
-  border-radius: 5px;
-  color: var(--highlight-color);
-
-  padding: 2px;
-  margin-top: 5px;
-
-  gridArea: SaveBtn;
-`
-
-const DeleteBtn = styled.button`
-  background-color: transparent;
-  border: 1px solid var(--dark-red);
-  border-radius: 5px;
-  color: var(--dark-red);
-
-  padding: 2px;
-  margin-top: 5px;
-
-  gridArea: DelBtn;
-`
-
 const BaseDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -62,6 +38,20 @@ const LabelDiv = styled.div`
   justify-content: end;
 `
 
+const ModalBtn = styled.button`
+	background-color: transparent;
+	border: 1px solid ${props => props.color || "black"};;
+	border-radius: 5px;
+	color: ${props => props.color || "black"};
+
+	padding: 2px 5px 2px 5px;
+
+	&:hover {
+		background-color: ${props => props.color || "black"};
+		color: white;
+	}
+`
+
 const StarBtn = styled.div`
 	background-color: transparent;
 	border: none;
@@ -73,7 +63,7 @@ const TagDiv = styled.div`
 	row-gap: 10px;
 `
 
-const AllTagsDiv = styled.div`
+const DisplayTagsDiv = styled.div`
 	border: 1px solid var(--light-gray);
 
 	width: auto;
@@ -111,7 +101,6 @@ const InputColorBox = styled.input`
 
 const ColorBoxWrapper = styled.div`
 	width: fit-content;
-	// flex: 1 0 0;
 
 	& input:checked + label {
 		border: 2px solid gray;
@@ -157,10 +146,6 @@ const EditTaskModal = (props) => {
 		requestClose()
 	}
 
-	const requestClose = () => {
-		setShowModal(false)
-	}
-
 	const deleteAction = () => {
 		if (!showWarning) {
 			setShowWarning(true)
@@ -172,6 +157,10 @@ const EditTaskModal = (props) => {
 			});
 			requestClose()
 		}	
+	}
+
+	const requestClose = () => {
+		setShowModal(false)
 	}
 
 	const starBtnOnClick = () => {
@@ -253,8 +242,8 @@ const EditTaskModal = (props) => {
 							style={{gridArea:'DescText', resize:'none'}} 
 						/>
 
-						<SaveBtn onClick={submitAction} style={{gridArea:'SaveBtn'}}>Save</SaveBtn>
-						<DeleteBtn onClick={deleteAction} style={{gridArea:'DelBtn'}}>Delete</DeleteBtn>
+						<ModalBtn onClick={submitAction} color='var(--highlight-color)' style={{gridArea:'SaveBtn'}}>Save</ModalBtn>
+						<ModalBtn onClick={deleteAction} color='var(--dark-red)' style={{gridArea:'DelBtn'}}>Delete</ModalBtn>
 						{
 							!showWarning ? null :
 								<div style={{gridArea:'Footer', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -276,7 +265,7 @@ const EditTaskModal = (props) => {
 								onChange={(e)=>{setNewTagValue(e.target.value)}} 
 								type='text' 
 							/>
-							<button onClick={addTagOnClick}>Add</button>
+							<ModalBtn onClick={addTagOnClick}>Add</ModalBtn>
 						</div>
 						<div onChange={colorBoxesOnChange} style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
 							{
@@ -289,11 +278,11 @@ const EditTaskModal = (props) => {
 							}
 						</div>
 						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
-							<AllTagsDiv className="rounded-2xl">
+							<DisplayTagsDiv className="rounded-2xl">
 								{
 									tags.map((tag, index) => <DraggableTag key={index} index={index} data={tag} />)
 								}
-							</AllTagsDiv>
+							</DisplayTagsDiv>
 							<TagThrashZone onDrop={removeTagOnDrop} />
 						</div>
 					</TagDiv>
