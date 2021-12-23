@@ -8,6 +8,7 @@ const HeaderBase = styled.header`
   // border-bottom: 1px solid var(--light-gray);
   box-shadow: rgba(100, 100, 111, 0.1) var(--sidebar-width) 7px 29px 0px;
   // padding: 5px;
+  opacity: 95%;
 
   flex: 0 1 auto;
   overflow: hidden;
