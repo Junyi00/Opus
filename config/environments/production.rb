@@ -117,4 +117,8 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  config.session_store :cookie_store, key: '_interslice_session'
+  config.middleware.use ActionDispatch::Cookies
+  config.middleware.use config.session_store, config.session_options
 end
