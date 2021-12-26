@@ -12,10 +12,10 @@ import {
   updateTask,
   requestNewLane, 
   requestNewTask, 
-  requestNewTag,
+  requestNewTags,
   deleteLane,
   deleteTask,
-  deleteTag 
+  deleteTags 
 } from "./DatabaseOp";
 import {
   handleMoveWithinParent,
@@ -212,16 +212,12 @@ const Project = (props) => {
           )[0]
           laneToEdit.name = laneModalRes.newName
 
-          // setProjectLayout([
-          //   ...projectLayout.filter((lane, index) => lane.pos < laneToEdit.pos),
-          //   laneToEdit,
-          //   ...projectLayout.filter((lane, index) => lane.pos > laneToEdit.pos)
-          // ]) // TODO: optimise this
+          // ensure database changes are committed
+          setProjectDataChanged(true) 
         })
       }
 
       setLaneModalRes({})
-      setProjectDataChanged(true)
     }
   }, [laneModalRes])
 
@@ -233,20 +229,16 @@ const Project = (props) => {
       }
       else {
         updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
-          // TODO: optimise this
-        })
-
-        taskModalRes.tagsToAdd.map((tag, index) => {
-          requestNewTag(tag.taskId, tag.name, tag.color)
-        })
-
-        taskModalRes.tagsToDelete.map((tag, index) => {
-          deleteTag(tag.tagId)
+          requestNewTags(taskModalRes.tagsToAdd).then(resp => {
+            deleteTags(taskModalRes.tagsToDelete.map((tag, index) => tag.tagId)).then(resp => {
+              // ensure database changes are committed
+              setProjectDataChanged(true)
+            })
+          })
         })
       } 
 
       setLaneModalRes({})
-      setProjectDataChanged(true)
     }
   }, [taskModalRes])
 

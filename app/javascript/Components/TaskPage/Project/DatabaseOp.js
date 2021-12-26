@@ -50,20 +50,15 @@ export const requestNewTask = (lane_id) => {
   ).then(resp => resp)
 }
 
-export const requestNewTag = (task_id, tagName, color) => {
-  console.log({
-    name: tagName,
-    color: color,
-    task_id: task_id
-  })
-  return axios.post(
-    '/api/v1/tags',
+export const requestNewTags = (tags) => {
+  return axios.all(tags.map((tag, index)=>axios.post(
+    'api/v1/tags',
     {
-      name: tagName,
-      color: color,
-      task_id: task_id
+      name: tag.name,
+      color: tag.color,
+      task_id: tag.taskId
     }
-  ).then(resp => resp)
+  ))).then(resp => resp)
 }
 
 export const updateLaneName = (lane_id, name) => {
@@ -91,10 +86,10 @@ export const deleteTask = (task_id) => {
   ).then(resp => resp)
 }
 
-export const deleteTag = (tag_id) => {
-  return axios.delete(
+export const deleteTags = (tag_ids) => {
+  return axios.all(tag_ids.map((tag_id, index) => axios.delete(
     '/api/v1/tags/' + tag_id
-  ).then(resp => resp)
+  ))).then(resp => resp)
 }
 
 export const updateLanesPos = (projectLayout) => {
