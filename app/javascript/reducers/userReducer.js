@@ -8,7 +8,6 @@ export default (
 ) => {
   switch (action.type) {
     case 'LOGIN_USER':
-      console.log(action)
       return {
         isLoggedIn: true,
         id: action.user.id,

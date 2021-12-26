@@ -25,7 +25,7 @@ export const loginUser = (data, handleSuccess) => (dispatch) => {
   axios.post(
     '/api/v1/login',
     { user: data },
-    // { withCredentials: true }
+    { withCredentials: true }
   )
   .then((resp) => {
     if (resp.data.status === 401) {
@@ -45,7 +45,7 @@ export const logoutUser = (data) => (dispatch) => {
   axios.delete(
     '/api/v1/logout', 
     data,
-    // { withCredentials: true }
+    { withCredentials: true }
   )
   .then((resp) => {
     dispatch({ type: 'LOGOUT_USER' });
@@ -60,14 +60,13 @@ export const fetchLoginStatus = () => (dispatch) => {
   return axios
     .get(
       '/api/v1/logged_in', 
-      // { withCredentials: true }
+      { withCredentials: true }
     )
     .then((resp) => {
-      console.log(resp)
       if (resp.data.logged_in) {
         dispatch({
           type: 'LOGIN_USER',
-          user: resp.data,
+          user: resp.data.user,
         });
         dispatch({ type: 'CLEAR_ERROR' });
       }
