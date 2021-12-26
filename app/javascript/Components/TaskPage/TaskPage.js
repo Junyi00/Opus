@@ -17,19 +17,13 @@ const ContentDiv = styled.div`
   bottom: 0px;
 `
 
-const projectButtonOnClick = (projects, f) => {
-  return (index) => {
-    return () => {
-      f(projects[index])
-    }
-  }
-}
-
 const TaskPage = () => {
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [projectToLoad, setProjectToLoad] = useState(null)
   const [projInfoUpdated, setProjInfoUpdated] = useState(true)
+
+  const [projectToLoad, setProjectToLoad] = useState(null)
+  const [projectDataChanged, setProjectDataChanged] = useState(true) // for manual rerender in Project
 
   const [searchQuery, setSearchQuery] = useState('')
 
@@ -51,6 +45,14 @@ const TaskPage = () => {
     }
     
   }, [projInfoUpdated, userState])
+
+  const projectButtonOnClick = (projects, f) => {
+    return (index) => { // generate individual onclick for each project
+      return () => {
+        f(projects[index])
+      }
+    }
+  }
 
   const addProjOnClick = () => {
     requestNewProject(userState.id).then((resp) => {
@@ -89,7 +91,7 @@ const TaskPage = () => {
       <SideBar 
         isLoading={isLoading} 
         projects={projects} 
-        onClick={projectButtonOnClick(projects, setProjectToLoad)} 
+        onClick={projectButtonOnClick(projects, (data) => {setProjectToLoad(data); setProjectDataChanged(true)})} 
         addProjOnClick={addProjOnClick} 
         editProjName={editProjName} delProj={delProj} 
       />
@@ -97,7 +99,12 @@ const TaskPage = () => {
         {
           !projectToLoad
             ? <div style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>Select a Project!</div>
-            : <Project projectInfo={projectToLoad} searchQuery={searchQuery}/>
+            : <Project 
+                projectInfo={projectToLoad} 
+                searchQuery={searchQuery}
+                projectDataChanged={projectDataChanged}
+                setProjectDataChanged={setProjectDataChanged}
+              />
         }
       </ContentDiv>
     </React.Fragment>

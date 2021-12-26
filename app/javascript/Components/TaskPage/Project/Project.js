@@ -93,7 +93,6 @@ const EmptyBaseDiv = styled.div`
 
 const Project = (props) => {
   const [projectLayout, setProjectLayout] = useState(null)
-  const [dataChanged, setDataChanged] = useState(true)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
 
@@ -101,6 +100,8 @@ const Project = (props) => {
   const [taskModalRes, setTaskModalRes] = useState({})
 
   const projectInfo = props.projectInfo
+  const projectDataChanged = props.projectDataChanged
+  const setProjectDataChanged = props.setProjectDataChanged
 
   const handleDrop = useCallback(
     (dropZone, item) => {
@@ -163,17 +164,17 @@ const Project = (props) => {
   useEffect(() => {
     axios.get('/api/v1/projects/' + projectInfo.id)
     .then( resp => {
-      if (dataChanged) {
+      if (projectDataChanged) {
         setProjectLayout(resp.data.children)
-        setDataChanged(false)
+        setProjectDataChanged(false)
       }
     })
     .catch( data => {
       debugger
     })
-  }, [projectInfo, dataChanged])
+  }, [projectInfo, projectDataChanged])
 
-  // Update Database on Layout Changes
+  // Update Database on Layout Changes (update task / lane positions)
   useEffect(() => {
     if (toUpdateLaneLayout) {
       updateLanesPos(projectLayout)
@@ -220,7 +221,7 @@ const Project = (props) => {
       }
 
       setLaneModalRes({})
-      setDataChanged(true)
+      setProjectDataChanged(true)
     }
   }, [laneModalRes])
 
@@ -245,7 +246,7 @@ const Project = (props) => {
       } 
 
       setLaneModalRes({})
-      setDataChanged(true)
+      setProjectDataChanged(true)
     }
   }, [taskModalRes])
 
@@ -253,7 +254,7 @@ const Project = (props) => {
     requestNewLane(projectInfo.id).then(resp => {
       const newLane = resp.data
       setProjectLayout(insert(projectLayout, projectLayout.length, newLane))
-      setToUpdateLaneLayout(true)
+      setToUpdateLaneLayout(true) // position of lanes needs to be updated
     })
   }
 
@@ -264,7 +265,7 @@ const Project = (props) => {
       const lane = projectLayout.filter((lane, index) => lane.id == lane_id)[0]
       lane.children = insert(lane.children, lane.children.length, newTask)
 
-      setToUpdateTaskLayout(true)
+      setToUpdateTaskLayout(true) // position of tasks needs to be updated
     })
   }
 
@@ -272,7 +273,7 @@ const Project = (props) => {
     updateTask(task_id, {
       completed: true
     }).then(resp => {
-      setDataChanged(true)
+      setProjectDataChanged(true)
     })
   }
 
