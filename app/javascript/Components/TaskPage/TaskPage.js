@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
+import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 import Header from './Header'
 import SideBar from './SideBar'
@@ -30,6 +32,8 @@ const TaskPage = () => {
   const [projInfoUpdated, setProjInfoUpdated] = useState(true)
 
   const [searchQuery, setSearchQuery] = useState('')
+
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
 
   // Load Data
   useEffect( () => {
@@ -77,6 +81,7 @@ const TaskPage = () => {
 
   return (
     <React.Fragment>
+      { !isLoggedIn && (<Navigate to="/home" replace={true} />)}
       <Header 
         projectLoaded={projectToLoad} 
         searchQuery={searchQuery}

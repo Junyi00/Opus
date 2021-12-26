@@ -6,6 +6,7 @@ import TaskPage from './Components/TaskPage/TaskPage'
 import NotFoundPage from './NotFoundPage'
 import Signup from './Components/UserAuth/Signup';
 import Login from './Components/UserAuth/Login';
+import Temp from './Components/UserAuth/Temp';
 import { fetchLoginStatus } from './actions/userActions';
 
 class App extends React.Component {
@@ -25,6 +26,7 @@ class App extends React.Component {
           <Route path="/" element={<TaskPage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Temp />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

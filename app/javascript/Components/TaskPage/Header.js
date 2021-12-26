@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 import OpusLogo from 'images/Opus_Logo.png'
 
@@ -26,7 +27,7 @@ const HeaderBase = styled.header`
 `
 
 const Logo = styled.img`
-  width: 10%;
+  height: 100%; // take full height of container div
   padding: 5px;
 `
 
@@ -64,9 +65,15 @@ const Header = (props) => {
   const searchQuery = props.searchQuery
   const setSearchQuery = props.setSearchQuery
 
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+  const username = useSelector((state) => state.user.username)
+
   return (
     <HeaderBase>
-      <Logo src={OpusLogo}></Logo>
+      <div style={{height:'100%'}}>
+        <Logo src={OpusLogo}></Logo>
+      </div>
+      
       {
         (props.projectLoaded === null) ? null :
           <div style={{float: 'left', height: '70%', width: '30%', position: 'relative'}}>
@@ -79,10 +86,12 @@ const Header = (props) => {
           </div>
           
       }
-      <UserInfo>
-        <a style={{fontSize: '10px'}}>Logged in:</a><br />
-        <b style={{color: 'var(--highlight-color)'}}>System</b>
-      </UserInfo>
+      { isLoggedIn && 
+        <UserInfo>
+          <a style={{fontSize: '10px'}}>Logged in:</a><br />
+          <b style={{color: 'var(--highlight-color)'}}>{username}</b>
+        </UserInfo>
+      }
     </HeaderBase>
   )
 }

@@ -48,9 +48,9 @@ class Login extends Component {
     const { username, password } = this.state;
     return (
       <>
-        { this.props.user.isLoggedIn && (<Navigate to="/" replace={true} />)}
+        {/* { this.props.user.isLoggedIn && (<Navigate to="/" replace={true} />)} */}
         <Form inline='true' onSubmit={this.handleSubmit}>
-          <FormControl
+          <FormControl  
             type="text"
             placeholder="username"
             className="mr-sm-2"

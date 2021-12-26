@@ -17,6 +17,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def is_logged_in?
+    logger.info(' [session] :  ' + session.inspect)
     @current_user = User.find(session[:user_id]) if session[:user_id]
     if @current_user
       render json: {

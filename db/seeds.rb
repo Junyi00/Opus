@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-users = User.create([
+users = User.create!([
     {
         username: "develop",
         password_digest: BCrypt::Password.create("develop"),
@@ -14,14 +14,14 @@ users = User.create([
     }
 ])
 
-projects = Project.create([
+projects = Project.create!([
     {
         name: "Study",
         user: users.first
     }
 ])
 
-lanes = Lane.create([
+lanes = Lane.create!([
     {
         name: "New",
         project: projects.first,
@@ -39,7 +39,7 @@ lanes = Lane.create([
     }
 ])
 
-tasks = Task.create([
+tasks = Task.create!([
     {
         name: "Draw Mindmap",
         description: "MODULE 1",
@@ -74,7 +74,7 @@ tasks = Task.create([
     }
 ])
 
-tags = Tag.create([
+tags = Tag.create!([
     {
         name: "Exam",
         color: "#a9d18e",

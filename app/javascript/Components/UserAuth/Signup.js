@@ -32,7 +32,6 @@ class Signup extends Component {
       password,
       password_confirmation: passwordConfirmation,
     };
-    console.log(user)
     this.props.addUser(user, this.handleSuccess);
   };
 

@@ -16,34 +16,35 @@ export const addUser = (data, handleSuccess) => (dispatch) => {
     handleSuccess();
   })
   .catch((resp) => {
-    dispatch({ type: 'ADD_ERROR', error: resp.message })
+    dispatch({ type: 'ADD_ERROR', error: resp.message, request_type: 'addUser' })
   })
 }
 
 export const loginUser = (data, handleSuccess) => (dispatch) => {
+  console.log("Logging in...")
   axios.post(
     '/api/v1/login',
     { user: data },
     // { withCredentials: true }
   )
   .then((resp) => {
-    console.log(resp)
     if (resp.data.status === 401) {
       throw new Error(resp.data.error)
     }
+    console.log('Success!')
     dispatch({type: 'LOGIN_USER', user: resp.data.user});
     dispatch({ type: 'CLEAR_ERROR' });
     handleSuccess();
   })
   .catch((resp) =>
-    dispatch({ type: 'ADD_ERROR', error: resp.message })
+    dispatch({ type: 'ADD_ERROR', error: resp.message, request_type: 'loginUser' })
   )
 }
 
 export const logoutUser = (data) => (dispatch) => {
   axios.delete(
     '/api/v1/logout', 
-    data
+    data,
     // { withCredentials: true }
   )
   .then((resp) => {
@@ -51,7 +52,7 @@ export const logoutUser = (data) => (dispatch) => {
     dispatch({ type: 'CLEAR_ERROR' });
   })
   .catch((error) =>
-    dispatch({ type: 'ADD_ERROR', error: 'Something went wrong. Try again.' })
+    dispatch({ type: 'ADD_ERROR', error: 'Something went wrong. Try again.', request_type: 'logoutUser' })
   )
 }
 
@@ -62,7 +63,7 @@ export const fetchLoginStatus = () => (dispatch) => {
       // { withCredentials: true }
     )
     .then((resp) => {
-      // console.log(resp)
+      console.log(resp)
       if (resp.data.logged_in) {
         dispatch({
           type: 'LOGIN_USER',
@@ -72,6 +73,6 @@ export const fetchLoginStatus = () => (dispatch) => {
       }
     })
     .catch((error) =>
-      dispatch({ type: 'ADD_ERROR', error: 'Something went wrong. Try again.' })
+      dispatch({ type: 'ADD_ERROR', error: 'Something went wrong. Try again.', request_type: 'fetchLoginStatus' })
     )
 }
