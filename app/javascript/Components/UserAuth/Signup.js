@@ -79,7 +79,7 @@ const Signup = (props) => {
         <FormLabel gridArea='UserLbl'>User</FormLabel>
         <input 
           style={{gridArea:'UserField'}} 
-          value={userValue}
+          value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
           placeholder="GiveMyHeart"
         />
