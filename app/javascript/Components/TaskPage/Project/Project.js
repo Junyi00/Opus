@@ -93,7 +93,7 @@ const EmptyBaseDiv = styled.div`
 
 const Project = (props) => {
   const [projectLayout, setProjectLayout] = useState(null)
-  const [dummyValue, setDummyValue] = useState(0)
+  const [dataChanged, setDataChanged] = useState(true)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
 
@@ -160,19 +160,18 @@ const Project = (props) => {
     [projectLayout]
   );
 
-  const forceUpdate = () => {
-    setDummyValue(dummyValue + 1)
-  }
-  
   useEffect(() => {
     axios.get('/api/v1/projects/' + projectInfo.id)
     .then( resp => {
-      setProjectLayout(resp.data.children)
+      if (dataChanged) {
+        setProjectLayout(resp.data.children)
+        setDataChanged(false)
+      }
     })
     .catch( data => {
       debugger
     })
-  }, [projectInfo, dummyValue])
+  }, [projectInfo, dataChanged])
 
   // Update Database on Layout Changes
   useEffect(() => {
@@ -206,24 +205,22 @@ const Project = (props) => {
         })
       }
       else {
-        updateLaneName(laneModalRes.laneId, laneModalRes.newName).then(
-          resp => {
-            const laneToEdit = projectLayout.filter((lane, index) => 
-              lane.id == laneModalRes.laneId
-            )[0]
-            laneToEdit.name = laneModalRes.newName
+        updateLaneName(laneModalRes.laneId, laneModalRes.newName).then(resp => {
+          const laneToEdit = projectLayout.filter((lane, index) => 
+            lane.id == laneModalRes.laneId
+          )[0]
+          laneToEdit.name = laneModalRes.newName
 
-            setProjectLayout([
-              ...projectLayout.filter((lane, index) => lane.pos < laneToEdit.pos),
-              laneToEdit,
-              ...projectLayout.filter((lane, index) => lane.pos > laneToEdit.pos)
-            ]) // could optimise
-          }
-        )
+          // setProjectLayout([
+          //   ...projectLayout.filter((lane, index) => lane.pos < laneToEdit.pos),
+          //   laneToEdit,
+          //   ...projectLayout.filter((lane, index) => lane.pos > laneToEdit.pos)
+          // ]) // TODO: optimise this
+        })
       }
 
       setLaneModalRes({})
-      // forceUpdate()
+      setDataChanged(true)
     }
   }, [laneModalRes])
 
@@ -234,7 +231,9 @@ const Project = (props) => {
         deleteTask(taskModalRes.taskId)
       }
       else {
-        updateTask(taskModalRes.taskId, taskModalRes.data)
+        updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
+          // TODO: optimise this
+        })
 
         taskModalRes.tagsToAdd.map((tag, index) => {
           requestNewTag(tag.taskId, tag.name, tag.color)
@@ -246,7 +245,7 @@ const Project = (props) => {
       } 
 
       setLaneModalRes({})
-      forceUpdate()
+      setDataChanged(true)
     }
   }, [taskModalRes])
 
@@ -273,7 +272,7 @@ const Project = (props) => {
     updateTask(task_id, {
       completed: true
     }).then(resp => {
-      forceUpdate()
+      setDataChanged(true)
     })
   }
 
