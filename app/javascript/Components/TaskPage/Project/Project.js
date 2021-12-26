@@ -208,15 +208,22 @@ const Project = (props) => {
       else {
         updateLaneName(laneModalRes.laneId, laneModalRes.newName).then(
           resp => {
-            projectLayout.filter((lane, index) => 
+            const laneToEdit = projectLayout.filter((lane, index) => 
               lane.id == laneModalRes.laneId
-            )[0].name = laneModalRes.newName
+            )[0]
+            laneToEdit.name = laneModalRes.newName
+
+            setProjectLayout([
+              ...projectLayout.filter((lane, index) => lane.pos < laneToEdit.pos),
+              laneToEdit,
+              ...projectLayout.filter((lane, index) => lane.pos > laneToEdit.pos)
+            ]) // could optimise
           }
         )
       }
 
       setLaneModalRes({})
-      forceUpdate()
+      // forceUpdate()
     }
   }, [laneModalRes])
 
