@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { addUser, loginUser, logoutUser } from '../../actions/authActions';
 import Signup from "./Signup";
 import Login from "./Login";
+import OpusIcon from 'images/Opus_Icon.png'
 
 const BaseDiv = styled.div`
   position: absolute;
@@ -32,9 +33,11 @@ const ContentDiv = styled.div`
   align-items: center;
   
   box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
-  background-color: transparent;
+  background-color: white;
   border: 1px solid var(--light-gray); 
   border-radius: 10px;
+  
+  opacity: 90%;
 `
 
 const TabListStyle = {
@@ -75,36 +78,37 @@ class UserAuth extends Component {
           searchQuery=''
         />
         <BaseDiv>
+          <img style={{position:'absolute', opacity:'10%', width:'150%', zIndex:'-1'}} src={OpusIcon} />
           <ContentDiv>
-              <Tab.Group>
-                <Tab.List style={TabListStyle}>
-                  <Tab
-                    style={TabBtnStyle}
-                    className={({ selected }) =>
-                      selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
-                    }
-                  >Login</Tab>
-                  <Tab
-                    style={TabBtnStyle}
-                    className={({ selected }) =>
-                      selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
-                    }
-                  >Sign Up</Tab>
-                </Tab.List>
-                <Tab.Panel style={{padding:'10px'}}>
-                  <Login
-                    loginOnClick={this.loginActionOnClick}
-                    errorState={this.props.errors}
-                  />
-                </Tab.Panel>
-                <Tab.Panel style={{padding:'10px'}}>
-                  <Signup 
-                    signupOnClick={this.signupActionOnClick} 
-                    successState={this.state.signUpSuccess}
-                    errorState={this.props.errors}
-                  />
-                </Tab.Panel>
-              </Tab.Group>
+            <Tab.Group>
+              <Tab.List style={TabListStyle}>
+                <Tab
+                  style={TabBtnStyle}
+                  className={({ selected }) =>
+                    selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
+                  }
+                >Login</Tab>
+                <Tab
+                  style={TabBtnStyle}
+                  className={({ selected }) =>
+                    selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
+                  }
+                >Sign Up</Tab>
+              </Tab.List>
+              <Tab.Panel style={{padding:'10px'}}>
+                <Login
+                  loginOnClick={this.loginActionOnClick}
+                  errorState={this.props.errors}
+                />
+              </Tab.Panel>
+              <Tab.Panel style={{padding:'10px'}}>
+                <Signup 
+                  signupOnClick={this.signupActionOnClick} 
+                  successState={this.state.signUpSuccess}
+                  errorState={this.props.errors}
+                />
+              </Tab.Panel>
+            </Tab.Group>
           </ContentDiv>
         </BaseDiv>
       </React.Fragment>

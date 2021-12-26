@@ -126,9 +126,7 @@ const Header = (props) => {
           <Menu.Items
             style={UserMenuStyle}
           >
-            <Menu.Item 
-              as='fragment'
-            >
+            <Menu.Item>
               <MenuItemBtn onClick={logoutAction}>Logout</MenuItemBtn>
             </Menu.Item>
           </Menu.Items>
