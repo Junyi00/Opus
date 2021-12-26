@@ -222,7 +222,7 @@ const EditTaskModal = (props) => {
 						<input 
 							className='text_input'
 							value={taskTitleValue} 
-							onKeyUp={(e) => {e.key == "Enter" ? submit() : null}}
+							onKeyUp={(e) => {e.key == "Enter" ? submitAction() : null}}
 							onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
 							type='text'
 							style={{gridArea:'TaskText'}} 

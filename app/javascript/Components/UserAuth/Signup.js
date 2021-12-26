@@ -1,94 +1,121 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import FormControl from 'react-bootstrap/FormControl';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
-import { connect } from 'react-redux';
-import { addUser } from '../../actions/userActions';
 
-class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-      passwordConfirmation: '',
-    };
-  }
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
+import React, { useState } from "react"
+import styled from "styled-components"
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const { username, password, passwordConfirmation } = this.state;
+const GridBaseDiv = styled.form`
+  display: grid;
+
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+  "EmailLbl   EmailField   EmailField  "
+  "UserLbl    UserField     UserField  "
+  "PassLbl    PassField     PassField  "
+  "   .     PassConfField PassConfField"
+  "   .           .         SignupBtn  ";
+
+  gap: 5px 10px;
+`
+
+const FormLabel = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+
+  grid-area: ${props => props.gridArea};
+`
+
+const ModalBtn = styled.input`
+	background-color: transparent;
+	border: 1px solid ${props => props.color || "black"};;
+	border-radius: 5px;
+	color: ${props => props.color || "black"};
+
+	padding: 2px 5px 2px 5px;
+
+	&:hover {
+		background-color: ${props => props.color || "black"};
+		color: white;
+	}
+`
+
+const MessageDiv = styled.div`
+  background-color: var(--bg-gray);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+`
+
+const Signup = (props) => {
+  const [emailValue, setEmailValue] = useState('')
+  const [userValue, setUserValue] = useState('')
+  const [passValue, setPassValue] = useState('')
+  const [passConfValue, setPassConfValue] = useState('')
+
+  const signupOnClick = props.signupOnClick
+
+  const submitAction = (e) => {
+    e.preventDefault();
     const user = {
-      username,
-      password,
-      password_confirmation: passwordConfirmation,
+      email: emailValue,
+      username: userValue,
+      password: passValue,
+      password_confirmation: passConfValue,
     };
-    this.props.addUser(user, this.handleSuccess);
-  };
-
-  handleSuccess = () => {
-    this.setState({
-      username: '',
-      password: '',
-      passwordConfirmation: '',
-    });
-    this.props.history.push('/');
-  };  
-
-  render() {
-    const { username, password, passwordConfirmation } = this.state;
-    return (
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xs lg="5">
-            <h2>Sign Up</h2>
-            <Form onSubmit={this.handleSubmit}>
-              <FormControl
-                placeholder="username"
-                type="text"
-                name="username"
-                value={username}
-                onChange={this.handleChange}
-              />
-              <br />
-              <FormControl
-                placeholder="password"
-                type="password"
-                name="password"
-                value={password}
-                onChange={this.handleChange}
-              />
-              <br />
-              <FormControl
-                placeholder="password confirmation"
-                type="password"
-                name="passwordConfirmation"
-                value={passwordConfirmation}
-                onChange={this.handleChange}
-              />
-              <br />
-              <Button variant="primary" type="submit">
-                Signup
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    );
+    signupOnClick(user);
   }
+
+  return (
+    <React.Fragment>
+      <GridBaseDiv onSubmit={submitAction}>
+        <FormLabel gridArea='EmailLbl'>Email</FormLabel>
+        <input 
+          style={{gridArea:'EmailField'}} 
+          value={emailValue}
+          onChange={(e)=>{setEmailValue(e.target.value)}}
+          placeholder="LastChristmas@santa.org"
+        />
+        <FormLabel gridArea='UserLbl'>User</FormLabel>
+        <input 
+          style={{gridArea:'UserField'}} 
+          value={userValue}
+          onChange={(e)=>{setUserValue(e.target.value)}}
+          placeholder="GiveMyHeart"
+        />
+        <FormLabel gridArea='PassLbl'>Password</FormLabel>
+        <input 
+          style={{gridArea:'PassField'}} 
+          type="password"
+          value={passValue}
+          onChange={(e)=>{setPassValue(e.target.value)}}
+          placeholder="ToSomeoneSpecial"
+        />
+        <input 
+          style={{gridArea:'PassConfField'}} 
+          type="password"
+          value={passConfValue}
+          onChange={(e)=>{setPassConfValue(e.target.value)}}
+          placeholder="Another time..."
+        />
+        <ModalBtn 
+          type='submit'
+          value='Sign Up!'
+          style={{gridArea:'SignupBtn', marginTop:'5px'}}
+          color='var(--highlight-color)'
+          onClick={submitAction}
+        />
+      </GridBaseDiv>
+      {
+        props.successState && <MessageDiv>User Created!</MessageDiv>
+      }
+      {
+        Object.keys(props.errorState).length !== 0 && props.errorState.request_type == "addUser" && <MessageDiv>
+          {props.errorState.error}
+        </MessageDiv>
+      }
+    </React.Fragment>
+  )
 }
-const mapDispatchToProps = dispatch => {
-    return {
-        addUser: (...args) => { dispatch(addUser(...args)) }
-    }
-};
-export default connect(null, mapDispatchToProps)(Signup);
+
+export default Signup

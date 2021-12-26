@@ -33,28 +33,27 @@ const TaskPage = () => {
 
   const [searchQuery, setSearchQuery] = useState('')
 
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+  const userState = useSelector((state) => state.user)
 
   // Load Data
   useEffect( () => {
     if (projInfoUpdated) {
-      axios.get('/api/v1/projects')
+      axios.get('/api/v1/projects/?user_id=' + userState.id)
       .then( resp => {
         setIsLoading(false)
         setProjects(resp.data)
       })
       .catch( data => {
-        
         debugger
       })
 
       setProjInfoUpdated(false)
     }
     
-  }, [projInfoUpdated])
+  }, [projInfoUpdated, userState])
 
   const addProjOnClick = () => {
-    requestNewProject().then((resp) => {
+    requestNewProject(userState.id).then((resp) => {
       setProjects([...projects, resp.data])
     })
   }
@@ -81,7 +80,7 @@ const TaskPage = () => {
 
   return (
     <React.Fragment>
-      { !isLoggedIn && (<Navigate to="/home" replace={true} />)}
+      { !userState.isLoggedIn && (<Navigate to="/home" replace={true} />)}
       <Header 
         projectLoaded={projectToLoad} 
         searchQuery={searchQuery}

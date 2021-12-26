@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 
 import TaskPage from './Components/TaskPage/TaskPage'
 import NotFoundPage from './NotFoundPage'
-import Signup from './Components/UserAuth/Signup';
-import Login from './Components/UserAuth/Login';
-import Temp from './Components/UserAuth/Temp';
-import { fetchLoginStatus } from './actions/userActions';
+import UserAuth from './Components/UserAuth/UserAuth';
+import { fetchLoginStatus } from './actions/authActions';
 
 class App extends React.Component {
 
@@ -24,9 +22,7 @@ class App extends React.Component {
       <Router>
         <Routes>
           <Route path="/" element={<TaskPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Temp />} />
+          <Route path="/home" element={<UserAuth />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

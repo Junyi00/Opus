@@ -79,7 +79,7 @@ const EditProjectModal = (props) => {
 						className='text_input'
 						style={{textAlign: 'center'}}
 						value={projNameValue} 
-						onKeyUp={(e) => {e.key == "Enter" ? submit() : null}}
+						onKeyUp={(e) => {e.key == "Enter" ? submitAction() : null}}
 						onChange={(e)=>{setProjNameValue(e.target.value)}} 
 						type='text'
 						placeholder={projName}

@@ -1,92 +1,97 @@
-import React, { Component } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import FormControl from 'react-bootstrap/FormControl';
-import { connect } from 'react-redux';
-import { Navigate } from 'react-router-dom';
 
-import { loginUser, logoutUser } from '../../actions/userActions';
+import React, { useState } from "react"
+import styled from "styled-components"
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      password: '',
-    };
+const GridBaseDiv = styled.form`
+  display: grid;
+
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+  "UserLbl UserField UserField"
+  "PassLbl PassField PassField"
+  "   .        .     LoginBtn ";
+
+  gap: 5px 10px;
+`
+
+const FormLabel = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+
+  grid-area: ${props => props.gridArea};
+`
+
+const ModalBtn = styled.input`
+	background-color: transparent;
+	border: 1px solid ${props => props.color || "black"};;
+	border-radius: 5px;
+	color: ${props => props.color || "black"};
+
+	padding: 2px 5px 2px 5px;
+
+	&:hover {
+		background-color: ${props => props.color || "black"};
+		color: white;
+	}
+`
+
+const MessageDiv = styled.div`
+  background-color: var(--bg-gray);
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+`
+
+const Login = (props) => {
+  const [userValue, setUserValue] = useState('')
+  const [passValue, setPassValue] = useState('')
+
+  const loginOnClick = props.loginOnClick
+
+  const submitAction = (e) => {
+    e.preventDefault();
+    loginOnClick({
+      username: userValue,
+      password: passValue,
+    })
   }
 
-  handleChange = (event) => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-  };
-
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.props.loginUser(this.state, this.handleSuccess);
-  };
-
-  handleSuccess = () => {
-    this.setState({
-      username: '',
-      password: '',
-    });
-  }
-
-  handleLogout = () => {
-    if (this.props.user.isLoggedIn) {
-      console.log('Logging out')
-      this.props.logoutUser({
-        user_id: this.props.user.user_id
-      })
-    }
-  }
-  
-  render() {
-    const { username, password } = this.state;
-    return (
-      <>
-        {/* { this.props.user.isLoggedIn && (<Navigate to="/" replace={true} />)} */}
-        <Form inline='true' onSubmit={this.handleSubmit}>
-          <FormControl  
-            type="text"
-            placeholder="username"
-            className="mr-sm-2"
-            name="username"
-            value={username}
-            onChange={this.handleChange}
-          />
-          <FormControl
-            type="password"
-            placeholder="password"
-            className="mr-sm-2"
-            name="password"
-            value={password}
-            onChange={this.handleChange}
-          />
-          <Button variant="outline-success" type="submit">
-            Login
-          </Button>
-          <Button variant="outline-success" onClick={this.handleLogout}>
-            Logout
-          </Button>
-        </Form>
-      </>
-    );
-  }
+  return (
+    <React.Fragment>
+      <GridBaseDiv onSubmit={submitAction}>
+        <FormLabel gridArea='UserLbl'>User</FormLabel>
+        <input 
+          style={{gridArea:'UserField'}}
+          value={userValue}
+          onChange={(e)=>{setUserValue(e.target.value)}}
+          placeholder="GiveMyHeart"
+        />
+        <FormLabel gridArea='PassLbl'>Password</FormLabel>
+        <input 
+          style={{gridArea:'PassField'}} 
+          type="password"
+          value={passValue}
+          onChange={(e)=>{setPassValue(e.target.value)}}
+          placeholder="ToSomeoneSpecial"
+        />
+        <ModalBtn 
+          type='submit'
+          value='Login'
+          style={{gridArea:'LoginBtn', marginTop:'5px'}}
+          color='var(--highlight-color)'
+          onClick={submitAction}
+        />
+      </GridBaseDiv>
+      {
+        Object.keys(props.errorState).length !== 0 && props.errorState.request_type == "loginUser" && <MessageDiv>
+          {props.errorState.error}
+        </MessageDiv>
+      }
+    </React.Fragment>
+  )
 }
 
-const mapStateToProps = (state) => ({
-  error: state.user.error,
-  user: state.user
-});
-
-const mapDispatchToProps = dispatch => {
-    return {
-        loginUser: (...args) => { dispatch(loginUser(...args)) },
-        logoutUser: (...args) => { dispatch(logoutUser(...args)) }
-    }
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login

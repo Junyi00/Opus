@@ -5,9 +5,9 @@ import { Tab } from '@headlessui/react'
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { addUser, loginUser, logoutUser } from '../../actions/userActions';
-import LoginTemp from "./LoginTemp";
-import SignupTemp from "./SignupTemp";
+import { addUser, loginUser, logoutUser } from '../../actions/authActions';
+import Signup from "./Signup";
+import Login from "./Login";
 
 const BaseDiv = styled.div`
   position: absolute;
@@ -49,7 +49,7 @@ const TabBtnStyle = {
   borderRadius: '10px',
 }
 
-class Temp extends Component {
+class UserAuth extends Component {
 
   constructor(props) {
     super(props)
@@ -92,13 +92,13 @@ class Temp extends Component {
                   >Sign Up</Tab>
                 </Tab.List>
                 <Tab.Panel style={{padding:'10px'}}>
-                  <LoginTemp 
+                  <Login
                     loginOnClick={this.loginActionOnClick}
                     errorState={this.props.errors}
                   />
                 </Tab.Panel>
                 <Tab.Panel style={{padding:'10px'}}>
-                  <SignupTemp 
+                  <Signup 
                     signupOnClick={this.signupActionOnClick} 
                     successState={this.state.signUpSuccess}
                     errorState={this.props.errors}
@@ -125,4 +125,4 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Temp)
+export default connect(mapStateToProps, mapDispatchToProps)(UserAuth)

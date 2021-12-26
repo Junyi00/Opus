@@ -1,7 +1,9 @@
 import React from "react";
 import styled from 'styled-components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { Menu } from '@headlessui/react'
 
+import { logoutUser } from '../../actions/authActions'
 import OpusLogo from 'images/Opus_Logo.png'
 
 const HeaderBase = styled.header`
@@ -61,12 +63,39 @@ const SearchCancelBtn = styled.button`
   font-family: cursive; // Nice simple X
 `
 
+const UserMenuStyle = {
+  position: 'fixed',
+  top: 'var(--header-height)',
+  right: '0px',
+
+  backgroundColor: 'var(--bg-gray)',
+  padding: '5px'
+}
+
+const MenuItemBtn = styled.button`
+  background-color: transparent;
+  border: none;
+
+  padding: 0px 2px 0px 2px;
+
+  &:hover {
+    color: var(--dark-red);
+  }
+`
+
 const Header = (props) => {
   const searchQuery = props.searchQuery
   const setSearchQuery = props.setSearchQuery
 
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
-  const username = useSelector((state) => state.user.username)
+  const userState = useSelector((state) => state.user)
+
+  const dispatch = useDispatch()
+
+  const logoutAction = () => {
+    dispatch(logoutUser({
+      user_id: userState.id
+    }))
+  }
 
   return (
     <HeaderBase>
@@ -86,11 +115,24 @@ const Header = (props) => {
           </div>
           
       }
-      { isLoggedIn && 
-        <UserInfo>
-          <a style={{fontSize: '10px'}}>Logged in:</a><br />
-          <b style={{color: 'var(--highlight-color)'}}>{username}</b>
-        </UserInfo>
+      { userState.isLoggedIn && 
+        <Menu>
+          <Menu.Button>
+            <UserInfo>
+              <a style={{fontSize: '10px'}}>Logged in:</a><br />
+              <b style={{color: 'var(--highlight-color)'}}>{userState.username}</b>
+            </UserInfo>
+          </Menu.Button>
+          <Menu.Items
+            style={UserMenuStyle}
+          >
+            <Menu.Item 
+              as='fragment'
+            >
+              <MenuItemBtn onClick={logoutAction}>Logout</MenuItemBtn>
+            </Menu.Item>
+          </Menu.Items>
+        </Menu>
       }
     </HeaderBase>
   )

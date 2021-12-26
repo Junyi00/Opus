@@ -2,12 +2,12 @@ import axios from "axios"
 
 // PROJECTS LEVEL OPERATIONS
 
-export const requestNewProject = () => {
+export const requestNewProject = (user_id) => {
   return axios.post(
     '/api/v1/projects',
     {
       name: 'New Project',
-      user_id: 1
+      user_id: user_id
     }
   ).then(resp => resp)
 }

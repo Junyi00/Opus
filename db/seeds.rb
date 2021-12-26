@@ -11,6 +11,11 @@ users = User.create!([
         username: "develop",
         password_digest: BCrypt::Password.create("develop"),
         email: "dev@dev.com"
+    },
+    {
+        username: "develop1",
+        password_digest: BCrypt::Password.create("develop"),
+        email: "dev1@dev.com"
     }
 ])
 
@@ -18,6 +23,10 @@ projects = Project.create!([
     {
         name: "Study",
         user: users.first
+    },
+    {
+        name: "Study",
+        user: User.find_or_create_by(username: 'develop1')
     }
 ])
 

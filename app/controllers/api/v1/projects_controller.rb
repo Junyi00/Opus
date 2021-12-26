@@ -5,6 +5,7 @@ module Api
 				
 			def index
 				projects = Project.all
+				projects = projects.filter_by_user_id(params[:user_id]) if params[:user_id].present?
 				
 				render json: projects.to_json(only: [:name, :id])
 			end
