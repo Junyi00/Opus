@@ -206,6 +206,9 @@ const Project = (props) => {
               lane.id != laneModalRes.laneId
             )
           )
+
+          // ensure database changes are committed
+          setProjectDataChanged(true) 
         })
       }
       else {
@@ -228,7 +231,10 @@ const Project = (props) => {
   useEffect(()=> {
     if (Object.keys(taskModalRes).length > 0) {
       if (taskModalRes.toDelete) {
-        deleteTask(taskModalRes.taskId)
+        deleteTask(taskModalRes.taskId).then(resp => {
+          // ensure database changes are committed
+          setProjectDataChanged(true)
+        })
       }
       else {
         updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
