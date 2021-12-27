@@ -29,6 +29,13 @@ export const deleteProject = (project_id) => {
 
 // INDIVIDUAL PROJECT OPERATIONS
 
+export const getCommonTags = () => {
+  return axios.get(
+    '/api/v1/tags/?count='
+  ).then(resp => resp)
+}
+
+
 export const requestNewLane = (project_id) => {
   return axios.post(
     '/api/v1/lanes',

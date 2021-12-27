@@ -1,13 +1,13 @@
 import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import DraggableTag from "./DraggableTag"
 import TagThrashZone from './TagThrashZone';
 import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
 import Tag from '../Tag';
+import { getCommonTags } from '../DatabaseOp';
 
 const BaseDiv = styled.div`
   display: flex;
@@ -129,9 +129,7 @@ const EditTaskModal = (props) => {
 
 	const [commonTags, setCommonTags] = useState([])
 	useEffect(() => {
-		axios.get(
-			'/api/v1/tags/?count='
-		).then(resp => {
+		getCommonTags().then(resp => {
 			setCommonTags(resp.data)
 		})
 	}, [])
@@ -199,7 +197,7 @@ const EditTaskModal = (props) => {
 			...tags.slice(item.index + 1)
 		])
 		
-		if ('tagId' in item) { 
+		if ('tagId' in item && item.tagId !== undefined) { 
 			// DraggableTag has a tag id from the db
 			setTagsToDelete([
 				...tagsToDelete,
