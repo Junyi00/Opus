@@ -27,9 +27,7 @@ const BaseDiv = styled.div`
   flex-direction: column;
   align-items: center;
 
-  * {
-    font-family: 
-  }
+  text-align: left; // overwrites text-align property of button
 `
 
 const TaskHeader = styled.div`
@@ -53,14 +51,14 @@ const TaskHeader = styled.div`
   position: relative;
 `
 
-const TaskTitleBtn = styled.div`
-  height: 100%;
-  width: 100%;
-  background-color: transparent;
-  border: none
+// const TaskTitleBtn = styled.div`
+//   height: 100%;
+//   width: 100%;
+//   background-color: transparent;
+//   border: none
 
-  text-align: left;
-`
+//   text-align: left;
+// `
 
 const CompleteBtn = styled.button`
   background-color: transparent;
@@ -144,9 +142,11 @@ const Task = (props) => {
 
   return (
     <React.Fragment>
-      <BaseDiv ref={ref} starred={taskStarred}>
+      <BaseDiv ref={ref} starred={taskStarred} onDoubleClick={()=> setShowModal(true)}>
         <TaskHeader>
-          <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}>{taskName}</TaskTitleBtn>
+          {/* <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}> */}
+            {taskName}
+          {/* </TaskTitleBtn> */}
           <CompleteBtn onClick={() => completeTaskOnClick(props.data.id)} starred={taskStarred}></CompleteBtn>
         </TaskHeader>
         <TaskContent>
