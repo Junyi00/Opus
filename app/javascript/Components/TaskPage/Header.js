@@ -105,11 +105,11 @@ const Header = (props) => {
       
       {
         (props.projectLoaded === null) ? null :
-          <div style={{float: 'left', height: '70%', width: '30%', position: 'relative'}}>
+          <div style={{float: 'left', height: '70%', width: '40%', position: 'relative'}}>
             <SearchBar 
               value={searchQuery.trim()}
               onChange={(e)=>{setSearchQuery(e.target.value)}}
-              placeholder="Search..."
+              placeholder="Search task names / #tags"
             />
             <SearchCancelBtn onClick={()=>setSearchQuery('')} style={{display: (searchQuery  == '' ? 'none' : 'block')}}>X</SearchCancelBtn>
           </div>

@@ -71,6 +71,7 @@ const Signup = (props) => {
       <GridBaseDiv onSubmit={submitAction}>
         <FormLabel gridArea='EmailLbl'>Email</FormLabel>
         <input 
+          className="text_input"
           style={{gridArea:'EmailField'}} 
           value={emailValue}
           onChange={(e)=>{setEmailValue(e.target.value)}}
@@ -78,6 +79,7 @@ const Signup = (props) => {
         />
         <FormLabel gridArea='UserLbl'>User</FormLabel>
         <input 
+          className="text_input"
           style={{gridArea:'UserField'}} 
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
@@ -85,6 +87,7 @@ const Signup = (props) => {
         />
         <FormLabel gridArea='PassLbl'>Password</FormLabel>
         <input 
+          className="text_input"
           style={{gridArea:'PassField'}} 
           type="password"
           value={passValue}
@@ -92,6 +95,7 @@ const Signup = (props) => {
           placeholder="ToSomeoneSpecial"
         />
         <input 
+          className="text_input"
           style={{gridArea:'PassConfField'}} 
           type="password"
           value={passConfValue}

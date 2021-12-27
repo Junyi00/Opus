@@ -1,11 +1,13 @@
 import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import DraggableTag from "./DraggableTag"
 import TagThrashZone from './TagThrashZone';
 import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
+import Tag from '../Tag';
 
 const BaseDiv = styled.div`
   display: flex;
@@ -125,6 +127,15 @@ const EditTaskModal = (props) => {
 	const setModalRes = props.setModalRes
 	const taskId = props.taskData.id
 
+	const [commonTags, setCommonTags] = useState([])
+	useEffect(() => {
+		axios.get(
+			'/api/v1/tags/?count='
+		).then(resp => {
+			setCommonTags(resp.data)
+		})
+	}, [])
+
 	// Update tags with proper database tag details after new tags are created
 	useEffect(()=>{
 		setTags(props.tags)
@@ -177,17 +188,9 @@ const EditTaskModal = (props) => {
 
 		if (tagName == "" ) { return }
 
-		setTags([
-			...tags,
-			{
-				name: newTagValue,
-				color: selectedColor,
-				taskId: taskId
-			}
-		])
+		addTag(newTagValue, selectedColor)
 
 		setNewTagValue('')
-		
 	}
 
 	const removeTagOnDrop = (item) => {
@@ -203,6 +206,17 @@ const EditTaskModal = (props) => {
 				item
 			])
 		}
+	}
+
+	const addTag = (name, color) => {
+		setTags([
+			...tags,
+			{
+				name: name,
+				color: color,
+				taskId: taskId
+			}
+		])
 	}
 
 	return (
@@ -262,7 +276,7 @@ const EditTaskModal = (props) => {
 							<a>Add Tag</a>
 							<input 
 								className='text_input'
-								value={newTagValue.trim()} onKeyUp={(e) => {e.key == "Enter" ? addTagOnClick() : null}}
+								value={newTagValue.trim().toLowerCase()} onKeyUp={(e) => {e.key == "Enter" ? addTagOnClick() : null}}
 								onChange={(e)=>{setNewTagValue(e.target.value)}} 
 								type='text' 
 							/>
@@ -285,6 +299,20 @@ const EditTaskModal = (props) => {
 								}
 							</DisplayTagsDiv>
 							<TagThrashZone onDrop={removeTagOnDrop} />
+						</div>
+						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
+							<a>Common Tags: </a>
+							{
+								commonTags.slice(0, 3).map((tag, index) => 
+									<button 
+										key={index}
+										style={{backgroundColor:'transparent', width:'fit-content', height:'fit-content', border:'none'}}
+										onDoubleClick={()=>{addTag(tag.name, tag.color)}}	
+									>
+										<Tag data={tag} onDoubleClick={()=>{addTag(tag.name, tag.color)}} />
+									</button>
+								)
+							}
 						</div>
 					</TagDiv>
 				</BaseDiv>

@@ -21,13 +21,13 @@ const BaseDiv = styled.div`
 `
 
 const NewTaskBtn = styled.button`
-  height: 20px;
-  width: 20px;
-  
   background-color: transparent;
   border: 1px solid var(--highlight-color);
   border-radius: 10px;
+  margin-top: 5px;
 
+  height: 20px;
+  width: 20px;
   font-size: 20px;
   line-height: 20px;
   color: var(--highlight-color);

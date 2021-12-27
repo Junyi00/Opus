@@ -64,6 +64,7 @@ const Login = (props) => {
       <GridBaseDiv onSubmit={submitAction}>
         <FormLabel gridArea='UserLbl'>User</FormLabel>
         <input 
+          className="text_input"
           style={{gridArea:'UserField'}}
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
@@ -71,6 +72,7 @@ const Login = (props) => {
         />
         <FormLabel gridArea='PassLbl'>Password</FormLabel>
         <input 
+          className="text_input"
           style={{gridArea:'PassField'}} 
           type="password"
           value={passValue}

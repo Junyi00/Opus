@@ -21,6 +21,7 @@ const BaseDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden; // prevent scrolling due to large bg img size
 `
 
 const ContentDiv = styled.div`
@@ -78,7 +79,7 @@ class UserAuth extends Component {
           searchQuery=''
         />
         <BaseDiv>
-          <img style={{position:'absolute', opacity:'10%', width:'150%', zIndex:'-1'}} src={OpusIcon} />
+          <img style={{position:'absolute', opacity:'10%', width:'80%', zIndex:'-1'}} src={OpusIcon} />
           <ContentDiv>
             <Tab.Group>
               <Tab.List style={TabListStyle}>

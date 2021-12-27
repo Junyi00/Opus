@@ -48,7 +48,8 @@ const NewLaneButton = styled.button`
   
   background-color: transparent;
   border: 1px solid var(--highlight-color);
-  border-radius: 10px;
+  border-radius: var(--standard-br);
+  margin-left: 5px;
 
   font-size: 20px;
   color: var(--highlight-color);
@@ -61,20 +62,22 @@ const NewLaneButton = styled.button`
 
 const EmptyNewLaneBtn = styled.button`
   background-color: transparent;
-  border: 1px solid var(--highlight-color);
-  border-radius: 10px;
+  border: none;
+  // border-radius: 10px;
 
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  text-align: center;
 
-  font-size: 20px;
+  // font-size: 15px;
   color: var(--highlight-color);
 
-  // &:hover {
-  //   height: 100%;
-  //   transition: 150ms height;
-  // }
+  &:hover {
+    border-radius: 15px;
+    border: 1px solid var(--highlight-color);
+    transition: 150ms all;
+  }
 `
 
 const EmptyBaseDiv = styled.div`
@@ -332,7 +335,7 @@ const Project = (props) => {
     
   }
   else {
-    return (<a>Loading...</a>)
+    return (<div style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>Loading...</div>)
   }
 
 }

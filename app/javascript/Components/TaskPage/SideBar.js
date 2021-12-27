@@ -74,6 +74,7 @@ const NewProjectBtn = styled.button`
   width: 15px;
   height: 15px;
   line-height: 15px;
+  text-align: center;
 
   color: var(--highlight-color);
 
