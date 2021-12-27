@@ -12,13 +12,13 @@ const SlidesDiv = styled.div`
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
 
-  width: 800px;
+  width: 100%;
 
   & > div {
     scroll-snap-align: start;
     flex-shrink: 0;
-    width: 800px;
-    height: 550px;
+    width: 100%;
+    height: fit-content;
     margin-right: 50px;
     background: white;
     transform-origin: center center;
@@ -28,7 +28,7 @@ const SlidesDiv = styled.div`
   }
 
   & > img {
-    width: 800px;
+    width: 100%;
   }
 
   ::-webkit-scrollbar {
@@ -74,10 +74,10 @@ const HelpModal = (props) => {
       <div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
         
-        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white'}}>
+        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white', width:'90%', position:'relative;'}}>
           <SlidesDiv>
             <PageDiv id='page1'>
-              <b>Projects - Lanes - Tasks</b> 
+              <b style={{fontSize:'3vw'}}>Projects - Lanes - Tasks</b> 
               <img src={Page1}/>
             </PageDiv>
             <PageDiv id='page2'>
