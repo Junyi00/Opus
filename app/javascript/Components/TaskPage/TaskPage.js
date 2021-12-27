@@ -15,6 +15,8 @@ const ContentDiv = styled.div`
   left: var(--sidebar-width);
   right: 0px;
   bottom: 0px;
+
+  overflow: scroll;
 `
 
 const TaskPage = () => {

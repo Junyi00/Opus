@@ -20,6 +20,20 @@ const BaseDiv = styled.div`
   align-items: center;
 `
 
+const LaneContentDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+
+  overflow: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 const NewTaskBtn = styled.button`
   background-color: transparent;
   border: 1px solid var(--highlight-color);
@@ -106,7 +120,7 @@ const Lane = (props) => {
       { props.searchQuery == ''
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <LaneContentDiv>
                 {
                   data.children
                     .filter((task, index) => !task.completed)
@@ -135,12 +149,12 @@ const Lane = (props) => {
                     isLast
                 />
                 <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
-            </div>
+            </LaneContentDiv>
           </BaseDiv>
         
         : <BaseDiv>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <div id='laneDiv' style={{width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <LaneContentDiv>
               <div style={{height:'40px'}}></div>
               {
                 childrenToDisplay.map((task, index) => {
@@ -153,7 +167,7 @@ const Lane = (props) => {
                   )
                 })
               }
-            </div>
+            </LaneContentDiv>
           </BaseDiv>
       }
       <EditLaneModal showModal={showModal} setShowModal={setShowModal} setModalRes={setLaneModalRes} laneName={data.name} laneId={data.id}/>
