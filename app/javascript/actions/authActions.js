@@ -21,7 +21,6 @@ export const addUser = (data, handleSuccess) => (dispatch) => {
 }
 
 export const loginUser = (data, handleSuccess) => (dispatch) => {
-  console.log("Logging in...")
   axios.post(
     '/api/v1/login',
     { user: data },
@@ -31,7 +30,6 @@ export const loginUser = (data, handleSuccess) => (dispatch) => {
     if (resp.data.status === 401) {
       throw new Error(resp.data.error)
     }
-    console.log('Success!')
     dispatch({type: 'LOGIN_USER', user: resp.data.user});
     dispatch({ type: 'CLEAR_ERROR' });
     handleSuccess();

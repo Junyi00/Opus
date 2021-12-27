@@ -62,7 +62,7 @@ class UserAuth extends Component {
   }
 
   loginActionOnClick = (data) => {
-    this.props.loginUser(data, ()=>{console.log('success')});
+    this.props.loginUser(data, ()=>{});
   }
   
   signupActionOnClick = (data) => {
