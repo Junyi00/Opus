@@ -5,7 +5,7 @@ module Api
 				
 			def index
 				tags = Tag.all
-				tags = tags.group(:name).order(count: :desc).count if params[:count].present?
+				tags = tags.group(:name, :color).order(count: :desc).count if params[:count].present?
 
 				render json: tags
 			end

@@ -29,7 +29,7 @@ const GridContainer = styled.div`
 		grid-template-rows: 1fr 3fr 1fr 3fr;
   `}
 
-  gap: 5px;
+  gap: 10px 5px;
 `
 
 const LabelDiv = styled.div`
@@ -130,7 +130,9 @@ const EditTaskModal = (props) => {
 	const [commonTags, setCommonTags] = useState([])
 	useEffect(() => {
 		getCommonTags().then(resp => {
-			setCommonTags(resp.data)
+			const items = Object.keys(resp.data).map((key) => [key, resp.data[key]])
+			items.sort((item1, item2) => item2[1] - item1[1])
+			setCommonTags(items)
 		})
 	}, [])
 
@@ -301,15 +303,24 @@ const EditTaskModal = (props) => {
 						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
 							<a>Common Tags: </a>
 							{
-								commonTags.slice(0, 3).map((tag, index) => 
-									<button 
-										key={index}
-										style={{backgroundColor:'transparent', width:'fit-content', height:'fit-content', border:'none'}}
-										onDoubleClick={()=>{addTag(tag.name, tag.color)}}	
-									>
-										<Tag data={tag} onDoubleClick={()=>{addTag(tag.name, tag.color)}} />
-									</button>
-								)
+								commonTags.slice(0, 3).map((item, index) => {
+									const key = eval(item[0])
+									const tag = {
+										name: key[0],
+										color: key[1],
+										id: null
+									}
+									console.log(item, tag)
+									return (
+										<button 
+											key={index}
+											style={{backgroundColor:'transparent', width:'fit-content', height:'fit-content', border:'none'}}
+											onDoubleClick={()=>{addTag(tag.name, tag.color)}}	
+										>
+											<Tag data={tag} onDoubleClick={()=>{addTag(tag.name, tag.color)}} />
+										</button>
+									)
+								})
 							}
 						</div>
 					</TagDiv>

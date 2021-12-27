@@ -31,7 +31,7 @@ export const deleteProject = (project_id) => {
 
 export const getCommonTags = () => {
   return axios.get(
-    '/api/v1/tags/?count='
+    '/api/v1/tags/?count=true'
   ).then(resp => resp)
 }
 
