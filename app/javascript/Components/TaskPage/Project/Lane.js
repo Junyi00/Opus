@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useDrag} from 'react-dnd';
+import { useDrag } from 'react-dnd';
 
 import { ItemTypes } from "./DnD/ItemTypes";
 import DropZone from "./DnD/DropZone";
@@ -18,6 +18,7 @@ const BaseDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: inherit;
 `
 
 const LaneContentDiv = styled.div`
@@ -28,7 +29,6 @@ const LaneContentDiv = styled.div`
   align-items: center;
 
   overflow: scroll;
-
   ::-webkit-scrollbar {
     display: none;
   }
@@ -120,41 +120,45 @@ const Lane = (props) => {
       { props.searchQuery == ''
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <LaneContentDiv>
-                {
-                  data.children
-                    .filter((task, index) => !task.completed)
-                    .map((task, index) => {
-                      const currentPath = `${path}-${index}`;
-                      return (
-                        <React.Fragment key={task.id}>
-                          <DropZone
-                            data={{
-                              path: currentPath,
-                              childrenCount: data.children.length,
-                            }}
-                            onDrop={handleDrop}
-                          />
-                          {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
-                        </React.Fragment>
-                      )
-                  })
-                }
-                <DropZone
-                    data={{
-                        path: `${path}-${data.children.length}`,
-                        childrenCount: data.children.length,
-                    }}
-                    onDrop={handleDrop}
-                    isLast
-                />
-                <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
+            <LaneContentDiv 
+              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
+            >
+              {
+                data.children
+                  .filter((task, index) => !task.completed)
+                  .map((task, index) => {
+                    const currentPath = `${path}-${index}`;
+                    return (
+                      <React.Fragment key={task.id}>
+                        <DropZone
+                          data={{
+                            path: currentPath,
+                            childrenCount: data.children.length,
+                          }}
+                          onDrop={handleDrop}
+                        />
+                        {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
+                      </React.Fragment>
+                    )
+                })
+              }
+              <DropZone
+                  data={{
+                      path: `${path}-${data.children.length}`,
+                      childrenCount: data.children.length,
+                  }}
+                  onDrop={handleDrop}
+                  isLast
+              />
+              <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
             </LaneContentDiv>
           </BaseDiv>
         
         : <BaseDiv>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <LaneContentDiv>
+            <LaneContentDiv
+              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
+            >
               <div style={{height:'40px'}}></div>
               {
                 childrenToDisplay.map((task, index) => {
