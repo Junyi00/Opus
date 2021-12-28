@@ -120,7 +120,9 @@ const Lane = (props) => {
       { props.searchQuery == ''
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <LaneContentDiv>
+            <LaneContentDiv
+              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
+            >
               {
                 data.children
                   .filter((task, index) => !task.completed)
@@ -154,9 +156,7 @@ const Lane = (props) => {
         
         : <BaseDiv>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <LaneContentDiv
-              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
-            >
+            <LaneContentDiv>
               <div style={{minHeight:'40px', maxHeight:'40px'}} />
               {
                 childrenToDisplay.map((task, index) => {
