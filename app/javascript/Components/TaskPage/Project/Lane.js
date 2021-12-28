@@ -120,9 +120,7 @@ const Lane = (props) => {
       { props.searchQuery == ''
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
-            <LaneContentDiv 
-              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
-            >
+            <LaneContentDiv>
               {
                 data.children
                   .filter((task, index) => !task.completed)
@@ -137,7 +135,7 @@ const Lane = (props) => {
                           }}
                           onDrop={handleDrop}
                         />
-                        {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
+                        <Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>
                       </React.Fragment>
                     )
                 })
@@ -159,14 +157,14 @@ const Lane = (props) => {
             <LaneContentDiv
               onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
             >
-              <div style={{height:'40px'}}></div>
+              <div style={{minHeight:'40px', maxHeight:'40px'}} />
               {
                 childrenToDisplay.map((task, index) => {
                   const currentPath = `${path}-${index}`;
                   return (
                     <React.Fragment key={task.id}>
-                      {<Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>}
-                      <div style={{height:'40px'}}></div>
+                      <Task key={task.id} data={task} handleDrop={handleDrop} path={currentPath} setTaskModalRes={setTaskModalRes} completeTaskOnClick={props.completeTaskOnClick}/>
+                      <div style={{minHeight:'40px', maxHeight:'40px'}} />
                     </React.Fragment>
                   )
                 })
