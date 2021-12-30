@@ -5,6 +5,19 @@ import styled from 'styled-components'
 import Page1 from "images/guides/Page1.png"
 import Page2 from "images/guides/Page2.png"
 
+const BaseDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  width: 90%;
+  maxHeight: 95vh; // prevent from exceeding the height of the screen
+
+  background-color: white;
+
+  position: relative;
+`
+
 const SlidesDiv = styled.div`
   display: flex;
     
@@ -114,7 +127,7 @@ const HelpModal = (props) => {
       <div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
         
-        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white', width:'90%', position:'relative'}}>
+        <BaseDiv className='rounded-2xl p-5 z-10'>
           <SlidesDiv>
             <PageDiv id='page0'>
               <b>Projects - Lanes - Tasks</b> 
@@ -148,7 +161,7 @@ const HelpModal = (props) => {
               )
             }
           </div>
-        </div>
+        </BaseDiv>
       </div>
     </Dialog>
   )
