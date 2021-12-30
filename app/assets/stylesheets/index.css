@@ -44,41 +44,6 @@ html, body, #root, .App {
 }
 
 
-/* DropZone styles */
-.dropZone {
-  flex: 0 0 auto;
-  height: 40px;
-  width: 100%;
-  transition: 200ms all;
-}
-
-.dropZone:nth-of-type(2n) {
-  display: none;
-}
-
-.dropZone.horizontalDrag {
-  width: 40px;
-  height: auto;
-}
-
-.dropZone:not(.horizontalDrag).isLast {
-  /* flex: 1 1 auto; */
-}
-
-.dropZone.active,
-.trashDropZone.active {
-  /* background: var(--highlight-color); */
-  border: 1px solid var(--highlight-color);
-  border-radius: 15px;
-  transition: 150ms all;
-}
-
-/* react-popup-manager*/
-.ReactModal__Overlay {
-  z-index: 100; /* ensure popups are infront */
-  background-color: rgba(0,0,0,0.3) !important;
-}
-
 /* Scrollbar Design */
 
 /* width */

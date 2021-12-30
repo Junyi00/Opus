@@ -7,18 +7,13 @@ import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
 
 const BaseDiv = styled.div`
-  // border: 1px solid black;
-  // ${({ starred }) => starred && `
-  //   border-color: #dbbf1f;
-  // `}
   border-radius: 5px;
   box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
 
   flex: 1 0 0;
   width: 95%;
-  max-width: 300px;
   min-width: 200px;
-
+  max-width: 300px;
   min-height: 100px;
   max-height: 100px;
   background-color: white;
@@ -26,8 +21,6 @@ const BaseDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  text-align: left; // overwrites text-align property of button
 `
 
 const TaskHeader = styled.a`

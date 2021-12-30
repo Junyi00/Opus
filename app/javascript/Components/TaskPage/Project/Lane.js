@@ -27,6 +27,7 @@ const LaneContentDiv = styled.div`
   display: flex; 
   flex-direction: column;
   align-items: center;
+  row-gap: 5px;
 
   overflow: scroll;
   ::-webkit-scrollbar {
@@ -38,7 +39,6 @@ const NewTaskBtn = styled.button`
   background-color: transparent;
   border: 1px solid var(--highlight-color);
   border-radius: 10px;
-  margin-top: 5px;
 
   height: 20px;
   width: 20px;
