@@ -43,6 +43,18 @@ html, body, #root, .App {
   color: var(--highlight-color); /* Following tailwind css convention */
 }
 
+/* Overriding default behaviour from react-datepicker pkg*/
+
+.react-datepicker__input-container {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--highlight-color) !important;
+}
+
 
 /* Scrollbar Design */
 

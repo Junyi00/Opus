@@ -55,6 +55,7 @@ tasks = Task.create!([
         starred: false,
         pos: 0,
         completed: false,
+        duedate: DateTime.new(2021,12,31),
         lane: Lane.find_or_create_by(name: "New")
     },
     {
@@ -63,6 +64,7 @@ tasks = Task.create!([
         starred: true,
         pos: 0,
         completed: false,
+        duedate: DateTime.new(2021,12,31),
         lane: Lane.find_or_create_by(name: "In Progress")
     },
     {
@@ -71,6 +73,7 @@ tasks = Task.create!([
         starred: false,
         pos: 1,
         completed: false,
+        duedate: DateTime.new(2022,1,5),
         lane: Lane.find_or_create_by(name: "In Progress")
     },
     {
@@ -79,6 +82,7 @@ tasks = Task.create!([
         starred: true,
         pos: 0,
         completed: false,
+        duedate: nil,
         lane: Lane.find_or_create_by(name: "Completed")
     }
 ])

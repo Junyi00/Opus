@@ -1,10 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, forwardRef } from "react";
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./DnD/ItemTypes";
 import styled from "styled-components";
+import DatePicker from "react-datepicker"
+import getMonth from "date-fns/getMonth"
+import getYear from "date-fns/getYear"
+import format from "date-fns/format"
+import "react-datepicker/dist/react-datepicker.css";
 
 import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
+import ClockIcon from "images/Clock_Icon.png"
 
 const BaseDiv = styled.div`
   border-radius: 5px;
@@ -74,6 +80,10 @@ const TaskContent = styled.div`
   white-space: pre-wrap;
   overflow-y: auto;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+
   ::-webkit-scrollbar {
     width: 5px;
   }
@@ -96,6 +106,7 @@ const TagsDiv = styled.div`
 
 const Task = (props) => {
   const [showModal, setShowModal] = useState(false)
+  const [dueDate, _setDueDate] = useState(Date.parse(props.data.duedate));
 
   const path = props.path
   const taskName = props.data.name
@@ -104,6 +115,7 @@ const Task = (props) => {
   const setTaskModalRes = props.setTaskModalRes
   const completeTaskOnClick = props.completeTaskOnClick
 
+  const DATE_FORMAT = "yyyy/MM/dd"
   const ref = useRef(null)
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -122,6 +134,40 @@ const Task = (props) => {
   const opacity = isDragging ? 0 : 1;
   drag(ref);
 
+  const setDueDate = (date) => {
+    _setDueDate(date)
+    setTaskModalRes({
+      taskId: props.data.id,
+      data: {
+        duedate: date !== null ? format(date, "yyyy/MM/dd") : null
+      },
+      tagsToAdd: [],
+      tagsToDelete: []
+    })
+  }
+
+  const DueDateInput = forwardRef(({ selected, value, onClick }, ref) => (
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%'}}>
+      <button onClick={onClick} style={{height:'12px', display:'flex', alignItems:'center', justifyContent:'stretch', columnGap:'2px'}}>
+        <img src={ClockIcon} style={{height:'12px'}}/>
+        <a style={{
+          fontSize:'12px', 
+          lineHeight:'12px',
+          color: value == new Date().toISOString().split('T')[0].replace(/-/g, '/') ? 'var(--dark-red)' : 'black' // TODO: better implementation?
+        }}>{value}</a>
+      </button>
+    </div>
+  ));
+
+  const DueDateHeader = ({date, decreaseMonth, increaseMonth}) => {
+    // debugger
+    return <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0px 5px 0px 5px'}}>
+      <button onClick={decreaseMonth}>{'<'}</button>
+      <a>{`${months[getMonth(date)]} ${getYear(date)} `}<button style={{color:'var(--dark-red)', border:'1px solid var(--dark-red)', borderRadius:'15px', padding:'0px 3px 0px 3px'}} onClick={()=> setDueDate(null)}>X</button></a>
+      <button onClick={increaseMonth}>{'>'}</button>
+    </div>
+  }
+
   return (
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred} onDoubleClick={()=> setShowModal(true)}>
@@ -139,7 +185,14 @@ const Task = (props) => {
               )
             }
           </TagsDiv>
-          <a style={{fontSize: '12px'}}>{taskDesc}</a>
+          <a style={{fontSize: '12px', flex:'1 0 0'}}>{taskDesc}</a>
+          <DatePicker
+            selected={dueDate}
+            onChange={(date) => setDueDate(date)}
+            dateFormat={DATE_FORMAT}
+            customInput={<DueDateInput />}
+            renderCustomHeader={DueDateHeader}
+          />
         </TaskContent>
       </BaseDiv>
       <EditTaskModal setModalRes={setTaskModalRes} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
@@ -148,3 +201,18 @@ const Task = (props) => {
 }
 
 export default Task
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
