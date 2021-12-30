@@ -1,5 +1,5 @@
+import React, { useState, useRef } from 'react'
 import { Dialog } from '@headlessui/react'
-import React from 'react'
 import styled from 'styled-components'
 
 import Page1 from "images/guides/Page1.png"
@@ -14,6 +14,8 @@ const SlidesDiv = styled.div`
 
   width: 100%;
 
+  position: relative;
+
   & > div {
     scroll-snap-align: start;
     flex-shrink: 0;
@@ -27,18 +29,10 @@ const SlidesDiv = styled.div`
     position: relative;
   }
 
-  & > img {
-    width: 100%;
-  }
-
   ::-webkit-scrollbar {
     height: 0px;
     width: 0px;
     display: none;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--light-gray);
   }
 `
 
@@ -49,6 +43,14 @@ const PageDiv = styled.div`
   justify-content: center;
 
   font-size: 25px;
+
+  & > b {
+    font-size: 3vw; // scale font with size of container
+  }
+
+  & > img {
+    width: 100%;
+  }
 `
 
 const Dot = styled.a`
@@ -57,37 +59,94 @@ const Dot = styled.a`
 
   background-color: gray;
   border-radius: 50px;
+
+  ${({ selected }) => selected && `
+    background-color: var(--highlight-color);
+  `}
+`
+
+const NavBtn = styled.a`
+  position: absolute;
+  width: 10%;
+  height: 100%;
+  background-color: transparent;
+
+  top: 0px;
+  ${({ isLeft }) => isLeft && ` 
+    left: 0px;
+    border-top-left-radius: 1em;
+    border-bottom-left-radius: 1em;
+  `}
+  ${({ isRight }) => isRight && ` 
+    right: 0px;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 1em;
+  `}
+
+  &:hover {
+    background-color: var(--light-gray);
+    opacity: 30%;
+  }
+
+  &:focus {
+    background-color: var(--highlight-color);
+    opacity: 30%;
+  }
 `
 
 const HelpModal = (props) => {
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const dummyInitialRef = useRef(null)
 
   const showModal = props.showModal
   const setShowModal = props.setShowModal
 
+  const TOTAL_PAGES = 2;
+
   return (
     <Dialog
       open={showModal}
-      onClose={() => setShowModal(false)}
+      onClose={() => {setSelectedIndex(0); setShowModal(false)}}
       as="div"
       className="fixed inset-0 z-10 overflow-y-auto"
+      initialFocus={dummyInitialRef}
     >
       <div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
         
-        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white', width:'90%', position:'relative;'}}>
+        <div className='rounded-2xl p-5 z-10' style={{display:'flex', flexDirection:'column', width:'fit-content', alignItems:'center', backgroundColor:'white', width:'90%', position:'relative'}}>
           <SlidesDiv>
-            <PageDiv id='page1'>
-              <b style={{fontSize:'3vw'}}>Projects - Lanes - Tasks</b> 
-              <img src={Page1}/>
+            <PageDiv id='page0'>
+              <b>Projects - Lanes - Tasks</b> 
+              <img draggable="false" src={Page1}/>
             </PageDiv>
-            <PageDiv id='page2'>
+            <PageDiv id='page1'>
               <b>Drag and Drop!</b> 
-              <img src={Page2} />
+              <img draggable="false" src={Page2} />
             </PageDiv>
           </SlidesDiv>
+          <NavBtn 
+            isLeft 
+            href={'#page' + (selectedIndex == 0 ? selectedIndex : selectedIndex - 1)}
+            onClick={()=>setSelectedIndex(selectedIndex == 0 ? selectedIndex : selectedIndex - 1)} 
+          />
+          <NavBtn 
+            isRight 
+            href={'#page' + (selectedIndex == TOTAL_PAGES - 1 ? selectedIndex : selectedIndex + 1)} 
+            onClick={()=>setSelectedIndex(selectedIndex == TOTAL_PAGES - 1 ? selectedIndex : selectedIndex + 1)} 
+          />
           <div style={{display:'flex', width:'fit-content', alignItems:'center', columnGap:'5px'}}>
-            <Dot href="#page1"></Dot>
-            <Dot href="#page2"></Dot>
+            {
+              [...Array(TOTAL_PAGES)].map((_, index) => 
+                <Dot 
+                  key={index}
+                  href={`#page${index}`} 
+                  onClick={()=>setSelectedIndex(index)} 
+                  selected={selectedIndex == index} 
+                  ref={dummyInitialRef} // dummy focus so it avoids defaulting to the navigation button
+                />              
+              )
+            }
           </div>
         </div>
       </div>
