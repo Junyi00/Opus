@@ -139,21 +139,21 @@ const Task = (props) => {
     setTaskModalRes({
       taskId: props.data.id,
       data: {
-        duedate: date !== null ? format(date, "yyyy/MM/dd") : null
+        duedate: date !== null ? format(date, DATE_FORMAT) : null
       },
       tagsToAdd: [],
       tagsToDelete: []
     })
   }
 
-  const DueDateInput = forwardRef(({ selected, value, onClick }, ref) => (
+  const DueDateInput = forwardRef(({ value, onClick }, ref) => (
     <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%'}}>
       <button onClick={onClick} style={{height:'12px', display:'flex', alignItems:'center', justifyContent:'stretch', columnGap:'2px'}}>
         <img src={ClockIcon} style={{height:'12px'}}/>
         <a style={{
           fontSize:'12px', 
           lineHeight:'12px',
-          color: value == new Date().toISOString().split('T')[0].replace(/-/g, '/') ? 'var(--dark-red)' : 'black' // TODO: better implementation?
+          color: value == format(new Date(), DATE_FORMAT) ? 'var(--dark-red)' : 'black' // TODO: better implementation?
         }}>{value}</a>
       </button>
     </div>
