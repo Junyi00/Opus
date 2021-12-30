@@ -30,17 +30,12 @@ const BaseDiv = styled.div`
   text-align: left; // overwrites text-align property of button
 `
 
-const TaskHeader = styled.div`
+const TaskHeader = styled.a`
   width: 100%;
   height: fit-content;
-  // background-color: var(--light-gray);
-  // ${({ starred }) => starred && `
-  //   background-color: #dbbf1f;
-  // `}
   flex: 0 0 0;
   
-  padding: 2px;
-  padding-left: 5px;
+  padding: 2px 5px 2px 5px;
   margin-top: 0px;
 
   border: none;
@@ -49,16 +44,10 @@ const TaskHeader = styled.div`
   border-top-right-radius: 5px;
 
   position: relative;
+
+  text-overflow: ellipsis;
+  overflow-x: clip;
 `
-
-// const TaskTitleBtn = styled.div`
-//   height: 100%;
-//   width: 100%;
-//   background-color: transparent;
-//   border: none
-
-//   text-align: left;
-// `
 
 const CompleteBtn = styled.button`
   background-color: transparent;
