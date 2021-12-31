@@ -104,7 +104,7 @@ const Lane = (props) => {
       // tag filter
       setChildrenToDisplay(
         data.children.filter((task, index) => 
-          task.tags.filter((tag, index) => tag.name.toLowerCase() == props.searchQuery.slice(1).toLowerCase()).length > 0
+          task.tags.filter((tag, index) => tag.name.toLowerCase().includes(props.searchQuery.slice(1).toLowerCase())).length > 0
         )
       )
     }
