@@ -27,7 +27,8 @@ import {
 } from "./DnD/DnDHelpers";
 import {
   retrieveProject,
-  createLane
+  createLane,
+  createTask
 } from "../../../actions/projectActions"
 
 const BaseDiv = styled.div`
@@ -103,8 +104,6 @@ const Project = (props) => {
   // const [projectLayout, setProjectLayout] = useState(null)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
-  updateLane
-  const [taskModalRes, setTaskModalRes] = useState({})
 
   const projectInfo = props.projectInfo
   const projectDataChanged = props.projectDataChanged
@@ -194,29 +193,29 @@ const Project = (props) => {
 
   }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
 
-  // Update Database on Task Changes
-  useEffect(()=> {
-    if (Object.keys(taskModalRes).length > 0) {
-      if (taskModalRes.toDelete) {
-        deleteTask(taskModalRes.taskId).then(resp => {
-          // ensure database changes are committed
-          setProjectDataChanged(true)
-        })
-      }
-      else {
-        updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
-          requestNewTags(taskModalRes.tagsToAdd).then(resp => {
-            deleteTags(taskModalRes.tagsToDelete.map((tag, index) => tag.tagId)).then(resp => {
-              // ensure database changes are committed
-              setProjectDataChanged(true)
-            })
-          })
-        })
-      } 
+  // // Update Database on Task Changes
+  // useEffect(()=> {
+  //   if (Object.keys(taskModalRes).length > 0) {
+  //     if (taskModalRes.toDelete) {
+  //       deleteTask(taskModalRes.taskId).then(resp => {
+  //         // ensure database changes are committed
+  //         setProjectDataChanged(true)
+  //       })
+  //     }
+  //     else {
+  //       updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
+  //         requestNewTags(taskModalRes.tagsToAdd).then(resp => {
+  //           deleteTags(taskModalRes.tagsToDelete.map((tag, index) => tag.tagId)).then(resp => {
+  //             // ensure database changes are committed
+  //             setProjectDataChanged(true)
+  //           })
+  //         })
+  //       })
+  //     } 
 
-      setLaneModalRes({})
-    }
-  }, [taskModalRes])
+  //     setLaneModalRes({})
+  //   }
+  // }, [taskModalRes])
 
   const addLaneOnClick = () => {
     dispatch(createLane(projectInfo.id))
@@ -224,14 +223,8 @@ const Project = (props) => {
   }
 
   const addTaskOnClick = (lane_id) => () => {
-    requestNewTask(lane_id).then(resp => {
-      const newTask = resp.data
-
-      const lane = projectLayout.filter((lane, index) => lane.id == lane_id)[0]
-      lane.children = insert(lane.children, lane.children.length, newTask)
-
-      setToUpdateTaskLayout(true) // position of tasks needs to be updated
-    })
+    dispatch(createTask(lane_id))
+    // TODO: UPDATE TASK LAYOUT IN LANE
   }
 
   const completeTaskOnClick = (task_id) => {
@@ -271,8 +264,6 @@ const Project = (props) => {
                       searchQuery={props.searchQuery}
                       addTaskOnClick={addTaskOnClick(lane.id)}
                       completeTaskOnClick={completeTaskOnClick}
-                      setLaneModalRes={setLaneModalRes}
-                      setTaskModalRes={setTaskModalRes}
                     />}
                   </React.Fragment>
                 );

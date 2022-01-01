@@ -195,7 +195,7 @@ const Task = (props) => {
           />
         </TaskContent>
       </BaseDiv>
-      <EditTaskModal setModalRes={setTaskModalRes} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
+      <EditTaskModal laneId={props.laneId} taskId={props.taskId} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
     </React.Fragment>
   )
 }

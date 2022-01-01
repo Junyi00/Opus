@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import DraggableTag from "./DraggableTag"
 import TagThrashZone from './TagThrashZone';
@@ -8,6 +9,7 @@ import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
 import Tag from '../Tag';
 import { getCommonTags } from '../DatabaseOp';
+import { updateTask, deleteTask, createTags, deleteTags } from '../../../../actions/projectActions'
 
 const BaseDiv = styled.div`
   display: flex;
@@ -124,8 +126,10 @@ const EditTaskModal = (props) => {
 
 	const showModal = props.showModal
 	const setShowModal = props.setShowModal
-	const setModalRes = props.setModalRes
+	const laneId = props.laneId
 	const taskId = props.taskData.id
+
+	const dispatch = useDispatch()
 
 	const [commonTags, setCommonTags] = useState([])
 	useEffect(() => {
@@ -142,19 +146,22 @@ const EditTaskModal = (props) => {
 	}, [props.tags])
 
 	const submitAction = () => {
-		setModalRes({
-			taskId: taskId, 
-			toDelete: false, 
-			data: {
-				name: taskTitleValue.trim(),
-				description: taskDescValue.trim(),
-				starred: taskStarred
-			},
-			tagsToAdd: tags.filter((tag, index)=> !('id' in tag)),
-			tagsToDelete: [...tagsToDelete]
-		});
+		dispatch(updateTask(laneId, taskId, {
+			name: taskTitleValue.trim(),
+			description: taskDescValue.trim(),
+			starred: taskStarred
+		}))
 		
-		setTagsToDelete([])
+		const tagsToAdd = tags.filter((tag, index) => !('id' in tag))
+		if (tagsToAdd.length > 0) {
+			dispatch(createTags(laneId, taskId, tagsToAdd))
+		}
+
+		if (tagsToDelete.length > 0) {
+			dispatch(deleteTags(laneId, taskId, [...tagsToDelete]))
+			setTagsToDelete([])
+		}
+		
 		requestClose()
 	}
 
@@ -163,10 +170,8 @@ const EditTaskModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			setModalRes({
-				taskId: taskId,
-				toDelete: true, 
-			});
+			dispatch(deleteTask(laneId, taskId))
+
 			requestClose()
 		}	
 	}

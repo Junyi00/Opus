@@ -23,6 +23,42 @@ export default (
       }
     case 'DELETE_LANE':
       return state.filter((lane, index) => lane.id != action.laneId)
+    case 'CREATE_TASK':
+      {
+        const laneToUpdate = state.filter((lane, index) => lane.id == action.laneId)[0]
+
+        return [
+          ...state.filter((lane, index) => lane.pos < laneToUpdate.pos),
+          { ...laneToUpdate,
+            children: [
+              ...laneToUpdate.children,
+              action.data
+            ]
+          },
+          ...state.filter((lane, index) => lane.pos > laneToUpdate.pos)
+        ]
+      }
+    case 'UPDATE_TASK':
+      {
+        const laneToUpdate = state.filter((lane, index) => lane.id == action.laneId)[0]
+        const taskToUpdate = laneToUpdate.children.filter((task, index) => task.id == action.taskId)[0]
+        const updatedTask = {
+          ...taskToUpdate,
+          ...action.data
+        }
+
+        return [
+          ...state.filter((lane, index) => lane.pos < laneToUpdate.pos),
+          { ...laneToUpdate,
+            children: [
+              ...laneToUpdate.children.filter((task, index) => task.pos < updatedTask.pos),
+              updatedTask,
+              ...laneToUpdate.children.filter((task, index) => task.pos > updatedTask.pos)
+            ]
+          },
+          ...state.filter((lane, index) => lane.pos > laneToUpdate.pos)
+        ]
+      }
     case 'DELETE_TASK':
       {
         const laneToUpdate = state.filter((lane, index) => lane.id == action.laneId)[0]
@@ -36,13 +72,37 @@ export default (
           ...state.filter((lane, index) => lane.pos > laneToUpdate.pos)
         ]
       }
-    case 'UPDATE_TASK':
+    case 'CREATE_TAGS':
       {
         const laneToUpdate = state.filter((lane, index) => lane.id == action.laneId)[0]
         const taskToUpdate = laneToUpdate.children.filter((task, index) => task.id == action.taskId)[0]
         const updatedTask = {
           ...taskToUpdate,
-          ...action.data
+          tags: [
+            ...taskToUpdate.tags,
+            ...action.tags
+          ]
+        }
+
+        return [
+          ...state.filter((lane, index) => lane.pos < laneToUpdate.pos),
+          { ...laneToUpdate,
+            children: [
+              ...laneToUpdate.children.filter((task, index) => task.pos < updatedTask.pos),
+              updatedTask,
+              ...laneToUpdate.children.filter((task, index) => task.pos > updatedTask.pos)
+            ]
+          },
+          ...state.filter((lane, index) => lane.pos > laneToUpdate.pos)
+        ]
+      }
+    case 'DELETE_TAGS':
+      {
+        const laneToUpdate = state.filter((lane, index) => lane.id == action.laneId)[0]
+        const taskToUpdate = laneToUpdate.children.filter((task, index) => task.id == action.taskId)[0]
+        const updatedTask = {
+          ...taskToUpdate,
+          tags: taskToUpdate.tags.filter((tag, index) => action.tagItems.filter((removeTag, removeIndex) => removeTag.tagId == tag.id).length == 0)
         }
 
         return [
