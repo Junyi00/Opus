@@ -310,7 +310,6 @@ const EditTaskModal = (props) => {
 										color: key[1],
 										id: null
 									}
-									console.log(item, tag)
 									return (
 										<button 
 											key={index}

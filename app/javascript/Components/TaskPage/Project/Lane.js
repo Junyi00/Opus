@@ -78,7 +78,6 @@ const Lane = (props) => {
   const path = props.path
   const handleDrop = props.handleDrop
   const addTaskOnClick = props.addTaskOnClick
-  const setLaneModalRes = props.setLaneModalRes
   const setTaskModalRes = props.setTaskModalRes
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -172,7 +171,7 @@ const Lane = (props) => {
             </LaneContentDiv>
           </BaseDiv>
       }
-      <EditLaneModal showModal={showModal} setShowModal={setShowModal} setModalRes={setLaneModalRes} laneName={data.name} laneId={data.id}/>
+      <EditLaneModal showModal={showModal} setShowModal={setShowModal} laneName={data.name} laneId={data.id}/>
     </React.Fragment> 
   )
 }

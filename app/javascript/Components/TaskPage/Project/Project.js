@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 import Lane from "./Lane";
 import DropZone from "./DnD/DropZone"
@@ -24,6 +25,10 @@ import {
   favourStarredTasks,
   insert
 } from "./DnD/DnDHelpers";
+import {
+  retrieveProject,
+  createLane
+} from "../../../actions/projectActions"
 
 const BaseDiv = styled.div`
   display: flex;
@@ -95,16 +100,18 @@ const EmptyBaseDiv = styled.div`
 `
 
 const Project = (props) => {
-  const [projectLayout, setProjectLayout] = useState(null)
+  // const [projectLayout, setProjectLayout] = useState(null)
   const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
-
-  const [laneModalRes, setLaneModalRes] = useState({})
+  updateLane
   const [taskModalRes, setTaskModalRes] = useState({})
 
   const projectInfo = props.projectInfo
   const projectDataChanged = props.projectDataChanged
   const setProjectDataChanged = props.setProjectDataChanged
+
+  const dispatch = useDispatch()
+  const projectLayout = useSelector((state) => state.project)
 
   const handleDrop = useCallback(
     (dropZone, item) => {
@@ -165,17 +172,8 @@ const Project = (props) => {
   );
 
   useEffect(() => {
-    axios.get('/api/v1/projects/' + projectInfo.id)
-    .then( resp => {
-      if (projectDataChanged) {
-        setProjectLayout(resp.data.children)
-        setProjectDataChanged(false)
-      }
-    })
-    .catch( data => {
-      debugger
-    })
-  }, [projectInfo, projectDataChanged])
+    dispatch(retrieveProject(projectInfo.id))
+  }, [projectInfo])
 
   // Update Database on Layout Changes (update task / lane positions)
   useEffect(() => {
@@ -195,37 +193,6 @@ const Project = (props) => {
     }
 
   }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
-
-  // Update Database on Lane Changes
-  useEffect(()=> {
-    if (Object.keys(laneModalRes).length > 0) {
-      if (laneModalRes.toDelete) {
-        deleteLane(laneModalRes.laneId).then(resp => {
-          setProjectLayout(
-            projectLayout.filter((lane, index) => 
-              lane.id != laneModalRes.laneId
-            )
-          )
-
-          // ensure database changes are committed
-          setProjectDataChanged(true) 
-        })
-      }
-      else {
-        updateLaneName(laneModalRes.laneId, laneModalRes.newName).then(resp => {
-          const laneToEdit = projectLayout.filter((lane, index) => 
-            lane.id == laneModalRes.laneId
-          )[0]
-          laneToEdit.name = laneModalRes.newName
-
-          // ensure database changes are committed
-          setProjectDataChanged(true) 
-        })
-      }
-
-      setLaneModalRes({})
-    }
-  }, [laneModalRes])
 
   // Update Database on Task Changes
   useEffect(()=> {
@@ -252,11 +219,8 @@ const Project = (props) => {
   }, [taskModalRes])
 
   const addLaneOnClick = () => {
-    requestNewLane(projectInfo.id).then(resp => {
-      const newLane = resp.data
-      setProjectLayout(insert(projectLayout, projectLayout.length, newLane))
-      setToUpdateLaneLayout(true) // position of lanes needs to be updated
-    })
+    dispatch(createLane(projectInfo.id))
+    // TODO: UPDATE LANE LAYOUT
   }
 
   const addTaskOnClick = (lane_id) => () => {

@@ -75,7 +75,6 @@ export const updateLaneName = (lane_id, name) => {
 }
 
 export const updateTask = (task_id, data) => {
-  console.log(data)
   return axios.patch(
     '/api/v1/tasks/' + task_id, 
     { task: data }

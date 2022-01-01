@@ -1,6 +1,9 @@
 import { Dialog } from '@headlessui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+
+import { updateLane, deleteLane } from '../../../../actions/projectActions';
 
 const ModalBtn = styled.button`
 	background-color: transparent;
@@ -22,18 +25,18 @@ const EditLaneModal = (props) => {
 
 	const showModal = props.showModal
 	const setShowModal = props.setShowModal
-	const setModalRes = props.setModalRes
 	const laneName = props.laneName
 	const laneId = props.laneId
+
+	const dispatch = useDispatch()
 
 	const submitAction = () => {
 			const trimmedLaneName = laneNameValue.trim()
 			if (trimmedLaneName !== '' && trimmedLaneName !== laneName)
-			setModalRes({
-				laneId: laneId,
-				toDelete: false, 
-				newName: trimmedLaneName
-			});
+
+			dispatch(updateLane(laneId, {
+				name: trimmedLaneName
+			}))
 			requestClose()
 	}
 
@@ -42,10 +45,8 @@ const EditLaneModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			setModalRes({
-				laneId: laneId,
-				toDelete: true, 
-			});
+			dispatch(deleteLane(laneId))
+			
 			requestClose()
 		}	
 	}
