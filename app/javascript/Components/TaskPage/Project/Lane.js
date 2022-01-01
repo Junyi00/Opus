@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDrag } from 'react-dnd';
+import { useDispatch } from "react-redux";
 
 import { ItemTypes } from "./DnD/ItemTypes";
 import DropZone from "./DnD/DropZone";
 import Task from "./Task";
 import EditLaneModal from "./Modals/EditLaneModal";
+import { createTask } from "../../../actions/projectActions";
 
 const BaseDiv = styled.div`
   border-radius: var(--standard-br);
@@ -77,8 +79,9 @@ const Lane = (props) => {
   const data = props.data
   const path = props.path
   const handleDrop = props.handleDrop
-  const addTaskOnClick = props.addTaskOnClick
   const setTaskModalRes = props.setTaskModalRes
+
+  const dispatch = useDispatch()
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.LANE,
@@ -113,6 +116,9 @@ const Lane = (props) => {
     }
   }, [props.searchQuery])
 
+  const addTaskOnClick = () => {
+    dispatch(createTask(data.id , data.children.length))
+  }
 
   return (
     <React.Fragment>

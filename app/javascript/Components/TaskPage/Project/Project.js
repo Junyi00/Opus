@@ -1,34 +1,21 @@
 import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
 import Lane from "./Lane";
 import DropZone from "./DnD/DropZone"
-import { ItemTypes } from "./DnD/ItemTypes";
 import { 
   updateLanesPos, 
   updateTasksPos,
-  updateLaneName, 
   updateTask,
-  requestNewLane, 
-  requestNewTask, 
-  requestNewTags,
-  deleteLane,
-  deleteTask,
-  deleteTags 
 } from "./DatabaseOp";
-import {
-  handleMoveWithinParent,
-  handleMoveToDifferentParent,
-  handleMoveToNewParent,
-  favourStarredTasks,
-  insert
-} from "./DnD/DnDHelpers";
 import {
   retrieveProject,
   createLane,
-  createTask
+  moveTaskToLane,
+  reorderTaskInLane,
+  reorderLane,
+  moveTaskToNewLane
 } from "../../../actions/projectActions"
 
 const BaseDiv = styled.div`
@@ -106,7 +93,6 @@ const Project = (props) => {
   const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
 
   const projectInfo = props.projectInfo
-  const projectDataChanged = props.projectDataChanged
   const setProjectDataChanged = props.setProjectDataChanged
 
   const dispatch = useDispatch()
@@ -115,116 +101,45 @@ const Project = (props) => {
   const handleDrop = useCallback(
     (dropZone, item) => {
 
-      const splitDropZonePath = dropZone.path.split("-");
-      const pathToDropZone = splitDropZonePath.slice(0, -1).join("-");
+      const splitDropZonePath = dropZone.path.split("-").map((pos, index) => parseInt(pos))
+      const pathToDropZone = splitDropZonePath.slice(0, -1).join("-")
 
-      const newItem = { id: item.id, type: item.type };
-      if (item.type === ItemTypes.LANE) {
-        newItem.children = item.children;
-      }
+      const splitItemPath = item.path.split("-").map((pos, index) => parseInt(pos))
+      const pathToItem = splitItemPath.slice(0, -1).join("-")
 
-      // move down here since sidebar items dont have path
-      const splitItemPath = item.path.split("-");
-      const pathToItem = splitItemPath.slice(0, -1).join("-");
-
-      // 2. Pure move (no create)
+      // 1. Pure move (no create)
       if (splitItemPath.length === splitDropZonePath.length) {
-        // 2.a. move within parent
+        // 1.a. move within parent
         if (pathToItem === pathToDropZone) {
-          setProjectLayout(
-            handleMoveWithinParent(projectLayout, splitDropZonePath, splitItemPath)
-          );
-          if (splitItemPath.length === 1) { setToUpdateLaneLayout(true) }
-          else { setToUpdateTaskLayout(true) }
-          
+          if (splitItemPath.length == 1) { 
+            // lanes shifted around
+            dispatch(reorderLane(splitDropZonePath, splitItemPath))
+          }
+          else { 
+            // tasks shifted within lane
+            dispatch(reorderTaskInLane(splitDropZonePath, splitItemPath))
+          }
           return;
         }
 
-        // 2.b. OR move different parent
-        // TODO FIX columns. item includes children
-        setProjectLayout(
-          handleMoveToDifferentParent(
-            projectLayout,
-            splitDropZonePath,
-            splitItemPath,
-            newItem
-          )
-        );
-        setToUpdateTaskLayout(true)
+        // 1.b. Move Task to Existing Lane
+        dispatch(moveTaskToLane(splitDropZonePath, splitItemPath, item))
         return;
       }
 
-      // 3. Move + Create
-      handleMoveToNewParent(
-        projectLayout,
-        splitDropZonePath,
-        splitItemPath,
-        newItem,
-        projectInfo.id
-      ).then (newLayout => {
-        setProjectLayout(newLayout)
-      })
-      setToUpdateLayout(true)
-
+      // 2. Move + Create
+      dispatch(moveTaskToNewLane(splitDropZonePath, splitItemPath, projectInfo.id))
     },
     [projectLayout]
   );
 
+  // A different project selected on the sidebar
   useEffect(() => {
     dispatch(retrieveProject(projectInfo.id))
   }, [projectInfo])
 
-  // Update Database on Layout Changes (update task / lane positions)
-  useEffect(() => {
-    if (toUpdateLaneLayout) {
-      updateLanesPos(projectLayout)
-
-      setToUpdateLaneLayout(false)
-    }
-    else if (toUpdateTaskLayout) {
-      projectLayout.map((lane, index) => {
-        lane = favourStarredTasks(lane)
-        updateTasksPos(lane.children)
-        return lane
-      })
-
-      setToUpdateTaskLayout(false)
-    }
-
-  }, [projectLayout, toUpdateTaskLayout, toUpdateLaneLayout])
-
-  // // Update Database on Task Changes
-  // useEffect(()=> {
-  //   if (Object.keys(taskModalRes).length > 0) {
-  //     if (taskModalRes.toDelete) {
-  //       deleteTask(taskModalRes.taskId).then(resp => {
-  //         // ensure database changes are committed
-  //         setProjectDataChanged(true)
-  //       })
-  //     }
-  //     else {
-  //       updateTask(taskModalRes.taskId, taskModalRes.data).then(resp => {
-  //         requestNewTags(taskModalRes.tagsToAdd).then(resp => {
-  //           deleteTags(taskModalRes.tagsToDelete.map((tag, index) => tag.tagId)).then(resp => {
-  //             // ensure database changes are committed
-  //             setProjectDataChanged(true)
-  //           })
-  //         })
-  //       })
-  //     } 
-
-  //     setLaneModalRes({})
-  //   }
-  // }, [taskModalRes])
-
   const addLaneOnClick = () => {
-    dispatch(createLane(projectInfo.id))
-    // TODO: UPDATE LANE LAYOUT
-  }
-
-  const addTaskOnClick = (lane_id) => () => {
-    dispatch(createTask(lane_id))
-    // TODO: UPDATE TASK LAYOUT IN LANE
+    dispatch(createLane(projectInfo.id, projectLayout.length))
   }
 
   const completeTaskOnClick = (task_id) => {
@@ -262,7 +177,6 @@ const Project = (props) => {
                       handleDrop={handleDrop} 
                       path={currentPath} 
                       searchQuery={props.searchQuery}
-                      addTaskOnClick={addTaskOnClick(lane.id)}
                       completeTaskOnClick={completeTaskOnClick}
                     />}
                   </React.Fragment>

@@ -129,7 +129,7 @@ const Task = (props) => {
     collect: monitor => ({
         isDragging: monitor.isDragging()
     })
-  }), [path]);
+  }), [path, taskStarred]);
 
   const opacity = isDragging ? 0 : 1;
   drag(ref);
