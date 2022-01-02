@@ -1,3 +1,5 @@
+import { updateTask } from "../actions/projectLayoutActions";
+
 export default (
   state = [],
   action
@@ -10,7 +12,6 @@ export default (
     case 'CREATE_LANE':
       {
         const laneToAdd = action.data
-        console.log("CREATE REDUCER")
         return [
           ...state.slice(0, laneToAdd.pos),
           laneToAdd,
@@ -148,7 +149,7 @@ export default (
         const maxLaneIndex = Math.max(splitItemPath[0], splitDropZonePath[0])
 
         let removedFromLane = state[splitItemPath[0]]
-        console.log(removedFromLane)
+
         // remove task and drop all pos by 1 for those below it
         removedFromLane = {
           ...removedFromLane,
@@ -162,7 +163,7 @@ export default (
         }
 
         let addedToLane = state[splitDropZonePath[0]]
-        console.log(addedToLane.children.slice(splitDropZonePath[1]))
+
         addedToLane = {
           ...addedToLane,
           children: [
@@ -244,7 +245,6 @@ export default (
       }
     case 'MOVE_TASK_TO_NEW_LANE':
       {
-        console.log("MOVE TASK", state)
         const splitItemPath = action.splitItemPath
         const splitDropZonePath = action.splitDropZonePath
         const orgLaneFromTask = state[splitItemPath[0]]

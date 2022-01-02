@@ -39,7 +39,6 @@ export const createLane = (projectId, lanePos) => (dispatch, getState) => {
     )
   ]) 
   .then((resps) => {
-    console.log(resps)
     for (let i=0; i<resps.length; i++) {
       const resp = resps[i]
       if (resp.data.status === 500) {
@@ -88,7 +87,6 @@ export const deleteLane = (laneId) => (dispatch, getState) => {
     )
   ])
   .then((resps) => {
-    console.log(resps)
     for (let i=0; i<resps.length; i++) {
       const resp = resps[i]
       if (resp.data.status === 500) {
@@ -209,13 +207,14 @@ export const deleteTags = (laneId, taskId, tagItems) => (dispatch) => {
 
 export const updateTasksPositions = (laneId) => (dispatch, getState) => {
   const layout = getState().projectLayout
-  const lane = layout.filter((lane, index) => lane.id = laneId)[0]
+  const lane = layout.filter((lane, index) => lane.id == laneId)[0]
 
   const orderedLane = {
     ...lane,
     children: [
-      ...lane.children.filter((task, index) => task.starred),
-      ...lane.children.filter((task, index) => !task.starred)
+      ...lane.children.filter((task, index) => task.starred && !task.completed),
+      ...lane.children.filter((task, index) => !task.starred && !task.completed),
+      ...lane.children.filter((task, index) => task.completed)
     ]
   }
 

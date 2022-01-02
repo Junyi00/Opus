@@ -114,7 +114,6 @@ const Task = (props) => {
   const taskName = props.data.name
   const taskDesc = props.data.description
   const taskStarred = props.data.starred
-  const setTaskModalRes = props.setTaskModalRes
   const dispatch = useDispatch()
 
   const DATE_FORMAT = "yyyy/MM/dd"
@@ -138,14 +137,10 @@ const Task = (props) => {
 
   const setDueDate = (date) => {
     _setDueDate(date)
-    setTaskModalRes({
-      taskId: props.data.id,
-      data: {
-        duedate: date !== null ? format(date, DATE_FORMAT) : null
-      },
-      tagsToAdd: [],
-      tagsToDelete: []
-    })
+    
+    dispatch(updateTask(props.laneId, props.data.id, {
+      duedate: date !== null ? format(date, DATE_FORMAT) : null
+    }))
   }
 
   const DueDateInput = forwardRef(({ value, onClick }, ref) => (

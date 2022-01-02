@@ -141,10 +141,7 @@ const Project = (props) => {
                 return (
                   <React.Fragment key={lane.id}>
                     <DropZone
-                      data={{
-                        path: currentPath,
-                        childrenCount: projectLayout.length
-                      }}
+                      data={{ path: currentPath }}
                       onDrop={handleDrop}
                       path={currentPath}
                       className="horizontalDrag"
@@ -161,10 +158,7 @@ const Project = (props) => {
               })
           }
           <DropZone
-            data={{
-              path: `${projectLayout.length}`,
-              childrenCount: projectLayout.length
-            }}
+            data={{ path: `${projectLayout.length}` }}
             onDrop={handleDrop}
             isLast
             className="horizontalDrag"

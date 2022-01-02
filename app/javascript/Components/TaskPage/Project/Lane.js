@@ -135,10 +135,7 @@ const Lane = (props) => {
                     return (
                       <React.Fragment key={task.id}>
                         <DropZone
-                          data={{
-                            path: currentPath,
-                            childrenCount: data.children.length,
-                          }}
+                          data={{ path: currentPath }}
                           onDrop={handleDrop}
                         />
                         <Task key={task.id} laneId={data.id} data={task} handleDrop={handleDrop} path={currentPath} />
@@ -147,10 +144,7 @@ const Lane = (props) => {
                 })
               }
               <DropZone
-                  data={{
-                      path: `${path}-${data.children.length}`,
-                      childrenCount: data.children.length,
-                  }}
+                  data={{ path: `${path}-${data.children.filter((task, index) => !task.completed).length}` }}
                   onDrop={handleDrop}
                   isLast
               />
@@ -158,7 +152,7 @@ const Lane = (props) => {
             </LaneContentDiv>
           </BaseDiv>
         
-        : <BaseDiv>
+        : <BaseDiv> 
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv>
               <div style={{minHeight:'40px', maxHeight:'40px'}} />
