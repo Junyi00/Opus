@@ -1,14 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import Lane from "./Lane";
 import DropZone from "./DnD/DropZone"
-import { 
-  updateLanesPos, 
-  updateTasksPos,
-  updateTask,
-} from "./DatabaseOp";
 import {
   retrieveProject,
   createLane,
@@ -88,12 +83,7 @@ const EmptyBaseDiv = styled.div`
 `
 
 const Project = (props) => {
-  // const [projectLayout, setProjectLayout] = useState(null)
-  const [toUpdateLaneLayout, setToUpdateLaneLayout] = useState(false)
-  const [toUpdateTaskLayout, setToUpdateTaskLayout] = useState(false)
-
   const projectInfo = props.projectInfo
-  const setProjectDataChanged = props.setProjectDataChanged
 
   const dispatch = useDispatch()
   const projectLayout = useSelector((state) => state.project)
@@ -142,14 +132,6 @@ const Project = (props) => {
     dispatch(createLane(projectInfo.id, projectLayout.length))
   }
 
-  const completeTaskOnClick = (task_id) => {
-    updateTask(task_id, {
-      completed: true
-    }).then(resp => {
-      setProjectDataChanged(true)
-    })
-  }
-
   if (projectLayout) {
 
     if (projectLayout.length > 0) {
@@ -177,7 +159,6 @@ const Project = (props) => {
                       handleDrop={handleDrop} 
                       path={currentPath} 
                       searchQuery={props.searchQuery}
-                      completeTaskOnClick={completeTaskOnClick}
                     />}
                   </React.Fragment>
                 );

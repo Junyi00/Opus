@@ -46,7 +46,7 @@ const TaskPage = () => {
       setProjInfoUpdated(false)
     }
     
-  }, [projInfoUpdated, userState])
+  }, [projInfoUpdated])
 
   const projectButtonOnClick = (projects, f) => {
     return (index) => { // generate individual onclick for each project

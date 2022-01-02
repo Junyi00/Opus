@@ -7,10 +7,12 @@ import getMonth from "date-fns/getMonth"
 import getYear from "date-fns/getYear"
 import format from "date-fns/format"
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch } from "react-redux";
 
 import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
 import ClockIcon from "images/Clock_Icon.png"
+import { updateTask } from "../../../actions/projectActions";
 
 const BaseDiv = styled.div`
   border-radius: 5px;
@@ -113,7 +115,7 @@ const Task = (props) => {
   const taskDesc = props.data.description
   const taskStarred = props.data.starred
   const setTaskModalRes = props.setTaskModalRes
-  const completeTaskOnClick = props.completeTaskOnClick
+  const dispatch = useDispatch()
 
   const DATE_FORMAT = "yyyy/MM/dd"
   const ref = useRef(null)
@@ -168,6 +170,12 @@ const Task = (props) => {
     </div>
   }
 
+  const completeTaskOnClick = () => {
+    dispatch(updateTask(props.laneId, props.data.id, {
+      completed: true
+    }))
+  }
+
   return (
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred} onDoubleClick={()=> setShowModal(true)}>
@@ -195,7 +203,7 @@ const Task = (props) => {
           />
         </TaskContent>
       </BaseDiv>
-      <EditTaskModal laneId={props.laneId} taskId={props.taskId} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
+      <EditTaskModal laneId={props.laneId} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
     </React.Fragment>
   )
 }
