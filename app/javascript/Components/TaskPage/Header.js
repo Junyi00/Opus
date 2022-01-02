@@ -87,9 +87,10 @@ const Header = (props) => {
   const searchQuery = props.searchQuery
   const setSearchQuery = props.setSearchQuery
 
-  const userState = useSelector((state) => state.user)
-
   const dispatch = useDispatch()
+  const userState = useSelector((state) => state.user)
+  const selectedIndex = useSelector((state) => state.projects.selectedIndex)
+  
 
   const logoutAction = () => {
     dispatch(logoutUser({
@@ -104,7 +105,7 @@ const Header = (props) => {
       </div>
       
       {
-        (props.projectLoaded === null) ? null :
+        (selectedIndex === null) ? null :
           <div style={{float: 'left', height: '70%', width: '40%', position: 'relative'}}>
             <SearchBar 
               value={searchQuery.trim()}

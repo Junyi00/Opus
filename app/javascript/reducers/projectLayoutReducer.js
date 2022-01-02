@@ -3,8 +3,10 @@ export default (
   action
 ) => {
   switch (action.type) {
-    case 'SET_INITIAL':
+    case 'SET_INITIAL_LAYOUT':
       return action.data
+    case 'RESET_PROJECT_LAYOUT':
+      return []
     case 'CREATE_LANE':
       {
         const laneToAdd = action.data

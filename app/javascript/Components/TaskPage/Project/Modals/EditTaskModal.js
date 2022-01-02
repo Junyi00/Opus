@@ -9,7 +9,7 @@ import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
 import Tag from '../Tag';
 import { getCommonTags } from '../DatabaseOp';
-import { updateTask, deleteTask, createTags, deleteTags, updateTasksPositions } from '../../../../actions/projectActions'
+import { updateTask, deleteTask, createTags, deleteTags, updateTasksPositions } from '../../../../actions/projectLayoutActions'
 
 const BaseDiv = styled.div`
   display: flex;

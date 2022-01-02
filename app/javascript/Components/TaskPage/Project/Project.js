@@ -5,13 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import Lane from "./Lane";
 import DropZone from "./DnD/DropZone"
 import {
-  retrieveProject,
+  retrieveProjectLayout,
   createLane,
   moveTaskToLane,
   reorderTaskInLane,
   reorderLane,
   moveTaskToNewLane
-} from "../../../actions/projectActions"
+} from "../../../actions/projectLayoutActions"
 
 const BaseDiv = styled.div`
   display: flex;
@@ -83,10 +83,12 @@ const EmptyBaseDiv = styled.div`
 `
 
 const Project = (props) => {
-  const projectInfo = props.projectInfo
 
   const dispatch = useDispatch()
-  const projectLayout = useSelector((state) => state.project)
+  const projectLayout = useSelector((state) => state.projectLayout)
+  const projectsState = useSelector((state) => state.projects)
+
+  const projId = projectsState.projects[projectsState.selectedIndex].id
 
   const handleDrop = useCallback(
     (dropZone, item) => {
@@ -118,22 +120,16 @@ const Project = (props) => {
       }
 
       // 2. Move + Create
-      dispatch(moveTaskToNewLane(splitDropZonePath, splitItemPath, projectInfo.id))
+      dispatch(moveTaskToNewLane(splitDropZonePath, splitItemPath, projId))
     },
     [projectLayout]
   );
 
-  // A different project selected on the sidebar
-  useEffect(() => {
-    dispatch(retrieveProject(projectInfo.id))
-  }, [projectInfo])
-
   const addLaneOnClick = () => {
-    dispatch(createLane(projectInfo.id, projectLayout.length))
+    dispatch(createLane(projId, projectLayout.length))
   }
 
   if (projectLayout) {
-
     if (projectLayout.length > 0) {
       return (
         <BaseDiv>

@@ -7,7 +7,7 @@ import { ItemTypes } from "./DnD/ItemTypes";
 import DropZone from "./DnD/DropZone";
 import Task from "./Task";
 import EditLaneModal from "./Modals/EditLaneModal";
-import { createTask } from "../../../actions/projectActions";
+import { createTask } from "../../../actions/projectLayoutActions";
 
 const BaseDiv = styled.div`
   border-radius: var(--standard-br);

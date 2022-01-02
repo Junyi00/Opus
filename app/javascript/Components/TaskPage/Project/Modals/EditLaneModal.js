@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import { updateLane, deleteLane } from '../../../../actions/projectActions';
+import { updateLane, deleteLane } from '../../../../actions/projectLayoutActions';
 
 const ModalBtn = styled.button`
 	background-color: transparent;

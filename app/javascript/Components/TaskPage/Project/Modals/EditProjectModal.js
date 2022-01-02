@@ -1,6 +1,8 @@
 import { Dialog } from '@headlessui/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateProject, deleteProject, resetSelectedProject } from '../../../../actions/projectsActions';
 
 const ModalBtn = styled.button`
 	background-color: transparent;
@@ -20,24 +22,21 @@ const EditProjectModal = (props) => {
 	const [projNameValue, setProjNameValue] = useState('')
 	const [showWarning, setShowWarning] = useState(false)
 
-	let projName = props.selectedIndex >= 0 ? props.projects[props.selectedIndex].name : '~Unknown~'
 	const showModal = props.showModal
 	const setShowModal = props.setShowModal
-	const setModalRes = props.setModalRes
 
-	// Update Modal when a new project is selected
-	useEffect(()=> {
-		projName = props.selectedIndex >= 0 ? props.projects[props.selectedIndex].name : '~Unknown~'
-	}, [props.selectedIndex])
+	const dispatch = useDispatch()
+	const projectsState = useSelector((state) => state.projects)
+	const projName = projectsState.selectedIndex !== null ? projectsState.projects[projectsState.selectedIndex].name : "~UNKNOWN~"
 
 	const submitAction = () => {
 			const trimmedProjName = projNameValue.trim()
-			if (trimmedProjName !== '' && trimmedProjName !== projName)
-			setModalRes({
-				projId: props.projects[props.selectedIndex].id,
-				toDelete: false, 
-				newName: trimmedProjName
-			});
+			if (trimmedProjName !== '' && trimmedProjName !== projName) {
+				dispatch(updateProject(projectsState.projects[projectsState.selectedIndex].id, { 
+					name: trimmedProjName 
+				}))
+			}
+
 			requestClose()
 	}
 
@@ -46,10 +45,7 @@ const EditProjectModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			setModalRes({
-				projId: props.projects[props.selectedIndex].id,
-				toDelete: true, 
-			});
+			dispatch(deleteProject(projectsState.projects[projectsState.selectedIndex].id))
 			requestClose()
 		}	
 	}

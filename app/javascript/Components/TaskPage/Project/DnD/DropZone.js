@@ -2,10 +2,8 @@ import React from "react";
 import classNames from "classnames";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
-import { useSelector } from "react-redux";
 
 const DropZone = ({ data, onDrop, isLast, className }) => {
-  const projectLayout = useSelector((state) => state.project)
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: [ItemTypes.LANE, ItemTypes.TASK],

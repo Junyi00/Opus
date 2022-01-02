@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
-import userReducer from './userReducer';
+import userauthReducer from './userauthReducer';
 import errorsReducer from './errorsReducer';
-import projectReducer from './projectReducer';
+import projectLayoutReducer from './projectLayoutReducer';
+import projectsReducer from './projectsReducer';
 
 const rootReducer = combineReducers({
-  user: userReducer,
+  user: userauthReducer,
   errors: errorsReducer,
-  project: projectReducer
+  projects: projectsReducer,
+  projectLayout: projectLayoutReducer
 });
 export default rootReducer;

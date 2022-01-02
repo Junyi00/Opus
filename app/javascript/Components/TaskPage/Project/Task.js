@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
 import ClockIcon from "images/Clock_Icon.png"
-import { updateTask } from "../../../actions/projectActions";
+import { updateTask } from "../../../actions/projectLayoutActions";
 
 const BaseDiv = styled.div`
   border-radius: 5px;

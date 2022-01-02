@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState   } from "react";
 import styled from "styled-components"
+import { useSelector, useDispatch } from "react-redux";
 
 import EditProjectModal from "./Project/Modals/EditProjectModal";
 import HelpModal from "./HelpModal"
+import { createProject, selectProject } from "../../actions/projectsActions";
+import { retrieveProjectLayout } from "../../actions/projectLayoutActions";
 
 const Base = styled.div`
   display: flex;
@@ -105,42 +108,26 @@ const GuideBtn = styled.button`
 `
 
 const SideBar = (props) => {
-  const [selectedIndex, setSelectedIndex] = useState(-1)
   const [showProjModal, setShowProjModal] = useState(false)
-  const [modalRes, setModalRes] = useState({})
   const [showHelpModal, setShowHelpModal] = useState(false)
 
   const isLoading = props.isLoading
-  const projects = props.projects
   const projOnClick = props.onClick
-  const addProjOnClick = props.addProjOnClick
-  const editProjName = props.editProjName
-  const delProj = props.delProj
 
-  // Listen for submit action from EditProjectModal
-  useEffect(()=> {
-    if (Object.keys(modalRes).length > 0) {
-      if (modalRes.toDelete) {
-        delProj(modalRes.projId)
-        setSelectedIndex(-1)
-      }
-      else {
-        editProjName(modalRes.projId, modalRes.newName)
-      }
+  const dispatch = useDispatch()
+  const userState = useSelector((state) => state.user)
+  const projects = useSelector((state) => state.projects.projects)
+  const selectedIndex = useSelector((state) => state.projects.selectedIndex)
 
-      setModalRes({})
-    }
-  }, [modalRes])
-
-  const createButtonOnClick = (index) => {
-    const fn = projOnClick(index)
-    return () => {
-      setSelectedIndex(index)
-      fn()
-    }
+  const addProjOnClick = () => {
+    dispatch(createProject(userState.id))
   }
 
-  const createProjectsElements = (projects, selectedIndex) => {
+  const createButtonOnClick = (index) => {
+    return () => dispatch(selectProject(index))
+  }
+
+  const createProjectsElements = () => {
     return projects.map((project, index) => {
       return (
         <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
@@ -162,13 +149,13 @@ const SideBar = (props) => {
           isLoading
             ? <a>Loading...</a>
             : <ProjectsList>
-              {createProjectsElements(projects, selectedIndex)}
+              {createProjectsElements()}
               <NewProjectBtn onClick={addProjOnClick}>+</NewProjectBtn>
             </ProjectsList>
         }
         <GuideBtn onClick={()=> setShowHelpModal(true)}>Guide</GuideBtn>
       </Base>
-      <EditProjectModal showModal={showProjModal} setShowModal={setShowProjModal} projects={projects} selectedIndex={selectedIndex} setModalRes={setModalRes}/>
+      <EditProjectModal showModal={showProjModal} setShowModal={setShowProjModal} projects={projects} />
       <HelpModal showModal={showHelpModal} setShowModal={setShowHelpModal}></HelpModal>
     </React.Fragment>
   )
