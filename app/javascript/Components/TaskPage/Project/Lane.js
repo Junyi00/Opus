@@ -116,7 +116,7 @@ const Lane = (props) => {
   }, [props.searchQuery])
 
   const addTaskOnClick = () => {
-    dispatch(createTask(data.id , data.children.length))
+    dispatch(createTask(data.id , data.children.filter((task, index) => !task.completed).length)) // TODO: Improve this
   }
 
   return (

@@ -1,11 +1,10 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import Lane from "./Lane";
 import DropZone from "./DnD/DropZone"
 import {
-  retrieveProjectLayout,
   createLane,
   moveTaskToLane,
   reorderTaskInLane,

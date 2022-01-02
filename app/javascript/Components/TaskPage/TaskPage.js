@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header'
 import SideBar from './SideBar'
 import Project from './Project/Project'
-import { retriveUserProjects, createProject, updateProject, deleteProject } from '../../actions/projectsActions'
+import { retriveUserProjects } from '../../actions/projectsActions'
 
 const ContentDiv = styled.div`
   position: absolute;

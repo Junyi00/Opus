@@ -217,6 +217,7 @@ export const updateTasksPositions = (laneId) => (dispatch, getState) => {
       ...lane.children.filter((task, index) => task.completed)
     ]
   }
+  orderedLane.children = orderedLane.children.map((task, index) => ({ ...task, pos: index}))
 
   return axios.all([
     ...orderedLane.children.map((task, index) => axios.patch(

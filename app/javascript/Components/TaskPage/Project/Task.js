@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import Tag from "./Tag";
 import EditTaskModal from "./Modals/EditTaskModal";
 import ClockIcon from "images/Clock_Icon.png"
-import { updateTask } from "../../../actions/projectLayoutActions";
+import { updateTask, updateTasksPositions } from "../../../actions/projectLayoutActions";
 
 const BaseDiv = styled.div`
   border-radius: 5px;
@@ -169,6 +169,9 @@ const Task = (props) => {
     dispatch(updateTask(props.laneId, props.data.id, {
       completed: true
     }))
+    .then(resp => {
+			dispatch(updateTasksPositions(props.laneId))
+		})
   }
 
   return (
