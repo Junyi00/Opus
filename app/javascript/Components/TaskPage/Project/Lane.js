@@ -54,17 +54,8 @@ const NewTaskBtn = styled.button`
 
   &:hover {
     width: 100%;
-    transition: 150ms width;
+    transition: 150ms all;
   }
-  
-  ${({ emptyDiv }) => emptyDiv && `
-    width: 40px;
-    height: 40px;
-
-    &:hover {
-      border-radius: 30px;
-    }
-  `}
 `
 
 const LaneHeaderBtn = styled.button`
@@ -143,26 +134,30 @@ const Lane = (props) => {
                     )
                 })
               }
-              <DropZone
-                  data={{ path: `${path}-${data.children.filter((task, index) => !task.completed).length}` }}
-                  onDrop={handleDrop}
-                  isLast
-              />
-              <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
+              <div style={{flex:'1 0 0', width: '100%', position:'relative', display:'flex', flexDirection:'column', alignItems:'center'}}>
+                <DropZone
+                    data={{ path: `${path}-${data.children.filter((task, index) => !task.completed).length}` }}
+                    onDrop={handleDrop}
+                    isLast
+                />
+                <div style={{position:'absolute', left:'0px', top:'35px', width:'100%', display:'flex', flexDirection:'column', alignItems:'center'}}>
+                  <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
+                </div>
+              </div>
             </LaneContentDiv>
           </BaseDiv>
         
         : <BaseDiv> 
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv>
-              <div style={{minHeight:'40px', maxHeight:'40px'}} />
+              <div style={{minHeight:'35px', maxHeight:'35px'}} />
               {
                 childrenToDisplay.map((task, index) => {
                   const currentPath = `${path}-${index}`;
                   return (
                     <React.Fragment key={task.id}>
                       <Task key={task.id} laneId={data.id} data={task} handleDrop={handleDrop} path={currentPath} />
-                      <div style={{minHeight:'40px', maxHeight:'40px'}} />
+                      <div style={{minHeight:'35px', maxHeight:'35px'}} />
                     </React.Fragment>
                   )
                 })
