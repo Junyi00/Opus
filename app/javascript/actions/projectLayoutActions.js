@@ -135,6 +135,14 @@ export const updateTask = (laneId, taskId, data, undoable=false) => (dispatch) =
     
     return dispatch({ type: 'UPDATE_TASK', laneId: laneId, taskId: taskId, data: data, undoable: undoable })
   })
+  .then((resp) => {
+    return dispatch(updateTasksPositions(laneId))
+  })
+  .then((resp) => {
+    if (undoable) {
+      dispatch({ type: 'SHOW_UNDO_ALERT' })
+    }
+  })
   .catch((resp) => {
     debugger
   })

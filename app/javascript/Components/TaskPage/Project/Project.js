@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -11,6 +11,7 @@ import {
   reorderLane,
   moveTaskToNewLane
 } from "../../../actions/projectLayoutActions"
+import { undoLastAction, hideUndoAlert } from "../../../actions/undoActions";
 
 const BaseDiv = styled.div`
   display: flex;
@@ -81,11 +82,26 @@ const EmptyBaseDiv = styled.div`
   justify-content: center;
 `
 
+const UndoAlert = styled.button`
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  translate: transform(-50%, 0%);
+
+  background-color: white;
+  border-radius: var(--standard-br);
+  // border: 1px solid black;
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
+  color: var(--highlight-color);
+  padding: 5px 10px;  
+`
+
 const Project = (props) => {
 
   const dispatch = useDispatch()
   const projectLayout = useSelector((state) => state.projectLayout.data)
   const projectsState = useSelector((state) => state.projects)
+  const showUndoAlert = useSelector((state) => state.projectLayout.show_alert)
 
   const projId = projectsState.projects[projectsState.selectedIndex].id
 
@@ -124,6 +140,14 @@ const Project = (props) => {
     [projectLayout]
   );
 
+  useEffect(()=> {
+    if (showUndoAlert) {
+      setTimeout(() => {
+        dispatch(hideUndoAlert())
+      }, 5000) 
+    }
+  }, [showUndoAlert])
+
   const addLaneOnClick = () => {
     dispatch(createLane(projId, projectLayout.length))
   }
@@ -131,42 +155,53 @@ const Project = (props) => {
   if (projectLayout) {
     if (projectLayout.length > 0) {
       return (
-        <BaseDiv>
-          {
-            projectLayout
-              .map((lane, index) => {
-                const currentPath = `${index}`;
+        <React.Fragment>
+          <BaseDiv>
+            {
+              projectLayout
+                .map((lane, index) => {
+                  const currentPath = `${index}`;
 
-                return (
-                  <React.Fragment key={lane.id}>
-                    <DropZone
-                      data={{ path: currentPath }}
-                      onDrop={handleDrop}
-                      path={currentPath}
-                      className="horizontalDrag"
-                    />
-                    {<Lane 
-                      key={index} 
-                      data={lane} 
-                      handleDrop={handleDrop} 
-                      path={currentPath} 
-                      searchQuery={props.searchQuery}
-                    />}
-                  </React.Fragment>
-                );
-              })
+                  return (
+                    <React.Fragment key={lane.id}>
+                      <DropZone
+                        data={{ path: currentPath }}
+                        onDrop={handleDrop}
+                        path={currentPath}
+                        className="horizontalDrag"
+                      />
+                      {<Lane 
+                        key={index} 
+                        data={lane} 
+                        handleDrop={handleDrop} 
+                        path={currentPath} 
+                        searchQuery={props.searchQuery}
+                      />}
+                    </React.Fragment>
+                  );
+                })
+            }
+            <DropZone
+              data={{ path: `${projectLayout.length}` }}
+              onDrop={handleDrop}
+              isLast
+              className="horizontalDrag"
+            />
+            <div style={{height: '100%', width:'20px', position:'relative'}}>
+              <NewLaneButton onClick={addLaneOnClick}>+</NewLaneButton>
+            </div>
+            
+          </BaseDiv>
+          {
+            showUndoAlert && <UndoAlert onClick={() => {
+              // TODO: Update the backend on changes
+              dispatch(undoLastAction())
+              dispatch(hideUndoAlert())
+            }}>
+              <b>Click to Undo!</b>
+            </UndoAlert>
           }
-          <DropZone
-            data={{ path: `${projectLayout.length}` }}
-            onDrop={handleDrop}
-            isLast
-            className="horizontalDrag"
-          />
-          <div style={{height: '100%', width:'20px', position:'relative'}}>
-            <NewLaneButton onClick={addLaneOnClick}>+</NewLaneButton>
-          </div>
-          
-        </BaseDiv>
+        </React.Fragment>
       )
     }
     else {

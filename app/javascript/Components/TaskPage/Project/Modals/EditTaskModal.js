@@ -9,7 +9,7 @@ import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
 import Tag from '../Tag';
 import { getCommonTags } from '../DatabaseOp';
-import { updateTask, deleteTask, createTags, deleteTags, updateTasksPositions } from '../../../../actions/projectLayoutActions'
+import { updateTask, deleteTask, createTags, deleteTags } from '../../../../actions/projectLayoutActions'
 
 const BaseDiv = styled.div`
   display: flex;
@@ -151,9 +151,6 @@ const EditTaskModal = (props) => {
 			description: taskDescValue.trim(),
 			starred: taskStarred
 		}))
-		.then(resp => {
-			dispatch(updateTasksPositions(laneId))
-		})
 		
 		const tagsToAdd = tags.filter((tag, index) => !('id' in tag))
 		if (tagsToAdd.length > 0) {

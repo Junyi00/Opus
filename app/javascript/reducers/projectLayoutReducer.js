@@ -61,9 +61,9 @@ export default (
           ...state.filter((lane, index) => lane.pos < laneToUpdate.pos),
           { ...laneToUpdate,
             children: [
-              ...laneToUpdate.children.filter((task, index) => task.pos < updatedTask.pos),
+              ...laneToUpdate.children.filter((task, index) => task.pos < updatedTask.pos && task.id !== updatedTask.id),
               updatedTask,
-              ...laneToUpdate.children.filter((task, index) => task.pos > updatedTask.pos)
+              ...laneToUpdate.children.filter((task, index) => task.pos >= updatedTask.pos && task.id !== updatedTask.id)
             ]
           },
           ...state.filter((lane, index) => lane.pos > laneToUpdate.pos)
