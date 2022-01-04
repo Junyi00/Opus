@@ -19,7 +19,7 @@ export const resetProjectLayout = () => (dispatch) => {
 }
 
 export const createLane = (projectId, lanePos) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   return axios.all([
     axios.post(
@@ -71,7 +71,7 @@ export const updateLane = (laneId, data) => (dispatch) => {
 }
 
 export const deleteLane = (laneId) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   const laneToDelete = layout.filter((lane, index) => lane.id == laneId)[0]
   return axios.all([
@@ -123,7 +123,7 @@ export const createTask = (laneId, numTasks) => (dispatch) => {
   })
 }
 
-export const updateTask = (laneId, taskId, data) => (dispatch) => {
+export const updateTask = (laneId, taskId, data, undoable=false) => (dispatch) => {
   return axios.patch(
     '/api/v1/tasks/' + taskId, 
     { task: data }
@@ -133,7 +133,7 @@ export const updateTask = (laneId, taskId, data) => (dispatch) => {
       throw new Error(resp.data.error)
     } 
     
-    return dispatch({ type: 'UPDATE_TASK', laneId: laneId, taskId: taskId, data: data })
+    return dispatch({ type: 'UPDATE_TASK', laneId: laneId, taskId: taskId, data: data, undoable: undoable })
   })
   .catch((resp) => {
     debugger
@@ -206,7 +206,7 @@ export const deleteTags = (laneId, taskId, tagItems) => (dispatch) => {
 }
 
 export const updateTasksPositions = (laneId) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
   const lane = layout.filter((lane, index) => lane.id == laneId)[0]
 
   const orderedLane = {
@@ -250,7 +250,7 @@ export const moveTaskToLane = (
   splitDropZonePath,
   splitItemPath
 ) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   const taskData = layout[splitItemPath[0]].children[splitItemPath[1]]
   const orgLane = layout[splitItemPath[0]]
@@ -303,7 +303,7 @@ export const reorderTaskInLane = (
   splitDropZonePath,
   splitItemPath
 ) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   const taskData = layout[splitItemPath[0]].children[splitItemPath[1]]
   const lane = layout[splitItemPath[0]]
@@ -349,7 +349,7 @@ export const reorderLane = (
   splitDropZonePath,
   splitItemPath
 ) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   const laneToShift = layout[splitItemPath[0]]
   const orgPos = splitItemPath[0]
@@ -395,7 +395,7 @@ export const moveTaskToNewLane = (
   splitItemPath,
   projectId
 ) => (dispatch, getState) => {
-  const layout = getState().projectLayout
+  const layout = getState().projectLayout.data
 
   return dispatch(createLane(projectId, splitDropZonePath[0])).then(resp => { 
     const newLane = resp.data

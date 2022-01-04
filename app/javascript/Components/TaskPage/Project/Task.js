@@ -168,7 +168,7 @@ const Task = (props) => {
   const completeTaskOnClick = () => {
     dispatch(updateTask(props.laneId, props.data.id, {
       completed: true
-    }))
+    }, true))
     .then(resp => {
 			dispatch(updateTasksPositions(props.laneId))
 		})

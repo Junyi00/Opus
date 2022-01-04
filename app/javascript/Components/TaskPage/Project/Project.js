@@ -84,7 +84,7 @@ const EmptyBaseDiv = styled.div`
 const Project = (props) => {
 
   const dispatch = useDispatch()
-  const projectLayout = useSelector((state) => state.projectLayout)
+  const projectLayout = useSelector((state) => state.projectLayout.data)
   const projectsState = useSelector((state) => state.projects)
 
   const projId = projectsState.projects[projectsState.selectedIndex].id

@@ -1,5 +1,3 @@
-import { updateTask } from "../actions/projectLayoutActions";
-
 export default (
   state = [],
   action
@@ -247,11 +245,13 @@ export default (
       {
         const splitItemPath = action.splitItemPath
         const splitDropZonePath = action.splitDropZonePath
-        const orgLaneFromTask = state[splitItemPath[0]]
+        
+        const isNewLaneRight = splitDropZonePath[0] > splitItemPath[0]
+        const orgLaneFromTask = state[isNewLaneRight ? splitItemPath[0] : splitItemPath[0] + 1]
         const taskToShift = orgLaneFromTask.children[splitItemPath[1]]
         const newLane = state[splitDropZonePath[0]]
 
-        return splitDropZonePath[0] > splitItemPath[0]
+        return isNewLaneRight
           ? [
             ...state.slice(0, splitItemPath[0]),
             {
@@ -274,7 +274,7 @@ export default (
               ...newLane,
               children: [{ ...taskToShift, pos: 0 }]
             },
-            ...state.slice(splitDropZonePath[0] + 1, splitItemPath[0]),
+            ...state.slice(splitDropZonePath[0] + 1, splitItemPath[0] + 1),
             {
               ...orgLaneFromTask,
               children: [
@@ -282,7 +282,7 @@ export default (
                 ...orgLaneFromTask.children.slice(splitItemPath[1] + 1).map((task, index) => ({ ...task, pos: task.pos - 1 }))
               ]
             },
-            ...state.slice(splitItemPath[0] + 1)
+            ...state.slice(splitItemPath[0] + 2) // original lane has been shifted 1 index to the right
           ]
       }
     default:
