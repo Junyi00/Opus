@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import EditProjectModal from "./Project/Modals/EditProjectModal";
 import HelpModal from "./HelpModal"
 import { createProject, selectProject } from "../../actions/projectsActions";
-import { retrieveProjectLayout } from "../../actions/projectLayoutActions";
 
 const Base = styled.div`
   display: flex;
@@ -52,9 +51,14 @@ const ProjectsItem = styled.li`
   margin-bottom: 5px;
 
   > button {
-    color: gray;
+    padding: 5px;
+    border-radius: var(--standard-br); 
+    color: var(--dark-gray);
     ${({ selected }) => selected && `
-    color: black;`}
+      color: var(--highlight-color);
+      background-color: var(--bg-gray);
+    `}
+    
   }
 `
 
@@ -95,6 +99,8 @@ const GuideBtn = styled.button`
   border-width: 1px 0px 1px 0px;
   padding: 5px 0px 5px 0px;
 
+  color: var(--dark-gray);
+
   &:hover {
     padding: 0px;
     margin-bottom: 5px;
@@ -112,7 +118,6 @@ const SideBar = (props) => {
   const [showHelpModal, setShowHelpModal] = useState(false)
 
   const isLoading = props.isLoading
-  const projOnClick = props.onClick
 
   const dispatch = useDispatch()
   const userState = useSelector((state) => state.user)

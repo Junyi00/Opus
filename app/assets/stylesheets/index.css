@@ -9,7 +9,7 @@
 } 
 
 :root {
-  --highlight-color: #035efc;
+  --highlight-color: #1d6df7;
   --dark-red: #9e1c25;
   --light-gray: #dedede;
   --bg-gray: #f1f3f5;
@@ -41,6 +41,15 @@ html, body, #root, .App {
 
 .text-highlight {
   color: var(--highlight-color); /* Following tailwind css convention */
+}
+
+.popup_button {
+  background-color: white;
+  border-radius: var(--standard-br);
+  /* border: 1px solid black; */
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
+  color: var(--highlight-color);
+  padding: 5px 10px; 
 }
 
 /* Overriding default behaviour from react-datepicker pkg*/

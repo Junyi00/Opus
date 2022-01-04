@@ -161,7 +161,12 @@ const Task = (props) => {
     // debugger
     return <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0px 5px 0px 5px'}}>
       <button onClick={decreaseMonth}>{'<'}</button>
-      <a>{`${months[getMonth(date)]} ${getYear(date)} `}<button style={{color:'var(--dark-red)', border:'1px solid var(--dark-red)', borderRadius:'15px', padding:'0px 3px 0px 3px'}} onClick={()=> setDueDate(null)}>X</button></a>
+      <a>
+        {`${months[getMonth(date)]} ${getYear(date)} `}
+        <button style={{color:'var(--dark-red)', border:'1px solid var(--dark-red)', borderRadius:'15px', padding:'0px 3px 0px 3px'}} onClick={()=> setDueDate(null)}>
+          X
+        </button>
+      </a>
       <button onClick={increaseMonth}>{'>'}</button>
     </div>
   }

@@ -36,8 +36,14 @@ const Logo = styled.img`
 const UserInfo = styled.div`
   width: fit-content;
   margin-right: 10px;
+  padding: 5px;
+  border-radius: var(--standard-br);
 
   text-align: center;
+
+  &:hover {
+    background-color: var(--bg-gray);
+  }
 `
 
 const SearchBar = styled.input`
@@ -68,16 +74,13 @@ const UserMenuStyle = {
   top: 'var(--header-height)',
   right: '0px',
 
-  backgroundColor: 'var(--bg-gray)',
+  // backgroundColor: 'var(--bg-gray)',
   padding: '5px'
 }
 
 const MenuItemBtn = styled.button`
-  background-color: transparent;
-  border: none;
-
-  padding: 0px 2px 0px 2px;
-
+  color: black;
+  
   &:hover {
     color: var(--dark-red);
   }
@@ -128,7 +131,7 @@ const Header = (props) => {
             style={UserMenuStyle}
           >
             <Menu.Item>
-              <MenuItemBtn onClick={logoutAction}>Logout</MenuItemBtn>
+              <MenuItemBtn className="popup_button" onClick={logoutAction}>Logout</MenuItemBtn>
             </Menu.Item>
           </Menu.Items>
         </Menu>

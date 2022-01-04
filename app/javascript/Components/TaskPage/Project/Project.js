@@ -86,14 +86,7 @@ const UndoAlert = styled.button`
   position: fixed;
   bottom: 15px;
   left: 50%;
-  translate: transform(-50%, 0%);
-
-  background-color: white;
-  border-radius: var(--standard-br);
-  // border: 1px solid black;
-  box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
-  color: var(--highlight-color);
-  padding: 5px 10px;  
+  translate: transform(-50%, 0%); 
 `
 
 const Project = (props) => {
@@ -193,7 +186,7 @@ const Project = (props) => {
             
           </BaseDiv>
           {
-            showUndoAlert && <UndoAlert onClick={() => {
+            showUndoAlert && <UndoAlert className="popup_button" onClick={() => {
               // TODO: Update the backend on changes
               dispatch(undoLastAction())
               dispatch(hideUndoAlert())
