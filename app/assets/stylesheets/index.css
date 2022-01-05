@@ -64,6 +64,10 @@ html, body, #root, .App {
   background-color: var(--highlight-color) !important;
 }
 
+.react-datepicker__header {
+  background-color: var(--bg-gray) !important;
+}
+
 
 /* Scrollbar Design */
 
