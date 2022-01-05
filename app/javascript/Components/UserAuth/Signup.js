@@ -76,6 +76,7 @@ const Signup = (props) => {
           value={emailValue}
           onChange={(e)=>{setEmailValue(e.target.value)}}
           placeholder="LastChristmas@santa.org"
+          autoComplete="email"
         />
         <FormLabel gridArea='UserLbl'>User</FormLabel>
         <input 
@@ -84,6 +85,7 @@ const Signup = (props) => {
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
           placeholder="GiveMyHeart"
+          autoComplete="username"
         />
         <FormLabel gridArea='PassLbl'>Password</FormLabel>
         <input 
@@ -93,6 +95,7 @@ const Signup = (props) => {
           value={passValue}
           onChange={(e)=>{setPassValue(e.target.value)}}
           placeholder="ToSomeoneSpecial"
+          autoComplete="new-password"
         />
         <input 
           className="text_input"
@@ -101,6 +104,7 @@ const Signup = (props) => {
           value={passConfValue}
           onChange={(e)=>{setPassConfValue(e.target.value)}}
           placeholder="Another time..."
+          autoComplete="off"
         />
         <ModalBtn 
           type='submit'

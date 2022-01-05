@@ -69,6 +69,7 @@ const Login = (props) => {
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
           placeholder="GiveMyHeart"
+          autoComplete="username"
         />
         <FormLabel gridArea='PassLbl'>Password</FormLabel>
         <input 
@@ -78,6 +79,7 @@ const Login = (props) => {
           value={passValue}
           onChange={(e)=>{setPassValue(e.target.value)}}
           placeholder="ToSomeoneSpecial"
+          autoComplete="current-password"
         />
         <ModalBtn 
           type='submit'
