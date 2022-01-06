@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header'
 import SideBar from './SideBar'
 import Project from './Project/Project'
+import ErrorModal from './ErrorModal'
 import { retriveUserProjects } from '../../actions/projectsActions'
 
 const ContentDiv = styled.div`
@@ -20,17 +21,24 @@ const ContentDiv = styled.div`
 
 const TaskPage = () => {
   const [isLoading, setIsLoading] = useState(true)
-
   const [searchQuery, setSearchQuery] = useState('')
+  const [showErrorModal, setShowErrorModal] = useState(false)
 
   const dispatch = useDispatch()
   const projectsState = useSelector((state) => state.projects)
   const userState = useSelector((state) => state.user)
+  const appErrorState = useSelector((state) => state.errors.app)
 
   useEffect(() => {
     setIsLoading(true)
     dispatch(retriveUserProjects(userState.id)).then(resp => setIsLoading(false))
   }, [dispatch])  
+
+  useEffect(() => {
+    if (appErrorState !== null) {
+      setShowErrorModal(true)
+    }
+  }, [appErrorState])
 
   return (
     <React.Fragment>
@@ -44,6 +52,10 @@ const TaskPage = () => {
             : <Project searchQuery={searchQuery} />
         }
       </ContentDiv>
+      <ErrorModal 
+        showModal={showErrorModal}
+        setShowModal={setShowErrorModal}
+      />
     </React.Fragment>
   )
 }

@@ -1,6 +1,9 @@
 
 import React, { useState } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
+
+import { addUser } from "../../actions/authActions"
 
 const GridBaseDiv = styled.form`
   display: grid;
@@ -45,6 +48,8 @@ const MessageDiv = styled.div`
   border-radius: 10px;
   padding: 10px;
   margin-top: 10px;
+
+  white-space: pre-wrap
 `
 
 const Signup = (props) => {
@@ -53,7 +58,15 @@ const Signup = (props) => {
   const [passValue, setPassValue] = useState('')
   const [passConfValue, setPassConfValue] = useState('')
 
-  const signupOnClick = props.signupOnClick
+  const [signUpSuccess, setSignUpSuccess] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const signupAction = (data) => {
+    dispatch(addUser(data, ()=>{
+      setSignUpSuccess(true)
+    }))
+  }
 
   const submitAction = (e) => {
     e.preventDefault();
@@ -63,7 +76,7 @@ const Signup = (props) => {
       password: passValue,
       password_confirmation: passConfValue,
     };
-    signupOnClick(user);
+    signupAction(user);
   }
 
   return (
@@ -111,15 +124,14 @@ const Signup = (props) => {
           value='Sign Up!'
           style={{gridArea:'SignupBtn', marginTop:'5px'}}
           color='var(--highlight-color)'
-          onClick={submitAction}
         />
       </GridBaseDiv>
       {
-        props.successState && <MessageDiv>User Created!</MessageDiv>
+        signUpSuccess && <MessageDiv>User Created!</MessageDiv>
       }
       {
-        Object.keys(props.errorState).length !== 0 && props.errorState.request_type == "addUser" && <MessageDiv>
-          {props.errorState.error}
+        props.signupErrorState !== null && <MessageDiv>
+          <a style={{color:'var(--dark-red)'}}>Error: </a>{props.signupErrorState.message}
         </MessageDiv>
       }
     </React.Fragment>

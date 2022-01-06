@@ -10,7 +10,7 @@ export const retrieveProjectLayout = (projectId) => (dispatch) => {
     return dispatch({ type: 'SET_INITIAL_LAYOUT', data: resp.data.children })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: true, message: 'Failed to retrive your project', data: resp.message })
   })
 }
 
@@ -49,7 +49,7 @@ export const createLane = (projectId, lanePos) => (dispatch, getState) => {
     return dispatch({ type: 'CREATE_LANE', data: resps[0].data})
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to create lane', data: resp.message })
   })
 }
 
@@ -66,7 +66,7 @@ export const updateLane = (laneId, data) => (dispatch) => {
     return dispatch({ type: 'UPDATE_LANE', laneId: laneId, data: data })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to update lane details', data: resp.message })
   })
 }
 
@@ -97,7 +97,7 @@ export const deleteLane = (laneId) => (dispatch, getState) => {
     return dispatch({ type: 'DELETE_LANE', laneId: laneId })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to delete lane', data: resp.message })
   })
 }
 
@@ -119,7 +119,7 @@ export const createTask = (laneId, numTasks) => (dispatch) => {
     return dispatch({ type: 'CREATE_TASK', laneId: laneId, data: resp.data })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to create task', data: resp.message })
   })
 }
 
@@ -144,7 +144,7 @@ export const updateTask = (laneId, taskId, data, undoable=false) => (dispatch) =
     }
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to update task', data: resp.message })
   })
 }
 
@@ -160,7 +160,7 @@ export const deleteTask = (laneId, taskId) => (dispatch) => {
     return dispatch({ type: 'DELETE_TASK', laneId: laneId, taskId: taskId })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to delete task', data: resp.message })
   })
 }
 
@@ -188,7 +188,7 @@ export const createTags = (laneId, taskId, temp_tags) => (dispatch) => {
     return dispatch({ type: 'CREATE_TAGS', laneId: laneId, taskId: taskId, tags: tags })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to create tags', data: resp.message })
   })
 }
 
@@ -209,7 +209,7 @@ export const deleteTags = (laneId, taskId, tagItems) => (dispatch) => {
     return dispatch({ type: 'DELETE_TAGS', laneId: laneId, taskId: taskId, tagItems: tagItems })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to delete tags', data: resp.message })
   })
 }
 
@@ -248,7 +248,7 @@ export const updateTasksPositions = (laneId) => (dispatch, getState) => {
     return dispatch({ type: 'UPDATE_TASKS_POSITIONS', orderedLane: orderedLane })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to update task positions', data: resp.message })
   })
 }
 
@@ -303,7 +303,7 @@ export const moveTaskToLane = (
     return dispatch({ type: 'MOVE_TASK_TO_LANE', splitDropZonePath, splitItemPath })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Drag n Drop failed [Move Task to Lane]', data: resp.message })
   })
 }
 
@@ -349,7 +349,7 @@ export const reorderTaskInLane = (
     return dispatch({ type: 'REORDER_TASK_IN_LANE', splitDropZonePath, splitItemPath })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Drag n Drop failed [Reorder Task in Lane]', data: resp.message })
   })
 }
 
@@ -394,7 +394,7 @@ export const reorderLane = (
     return dispatch({ type: 'REORDER_LANE', splitDropZonePath, splitItemPath })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Drag n Drop failed [Reorder Lane]', data: resp.message })
   })
 }
 
@@ -447,7 +447,7 @@ export const moveTaskToNewLane = (
       return dispatch({ type: 'MOVE_TASK_TO_NEW_LANE', splitDropZonePath, splitItemPath })
     })
     .catch((resp) => {
-      debugger
+      return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Drag n Drop failed [Move Task to New Lane]', data: resp.message })
     })
   })
 }

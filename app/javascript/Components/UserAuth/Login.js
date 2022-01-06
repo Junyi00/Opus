@@ -1,6 +1,9 @@
 
 import React, { useState } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
+
+import { loginUser } from "../../actions/authActions"
 
 const GridBaseDiv = styled.form`
   display: grid;
@@ -43,17 +46,23 @@ const MessageDiv = styled.div`
   border-radius: 10px;
   padding: 10px;
   margin-top: 10px;
+
+  white-space: pre-wrap;
 `
 
 const Login = (props) => {
   const [userValue, setUserValue] = useState('')
   const [passValue, setPassValue] = useState('')
 
-  const loginOnClick = props.loginOnClick
+  const dispatch = useDispatch()
+
+  const loginAction = (data) => {
+    dispatch(loginUser(data, ()=>{}))
+  }
 
   const submitAction = (e) => {
     e.preventDefault();
-    loginOnClick({
+    loginAction({
       username: userValue,
       password: passValue,
     })
@@ -86,12 +95,11 @@ const Login = (props) => {
           value='Login'
           style={{gridArea:'LoginBtn', marginTop:'5px'}}
           color='var(--highlight-color)'
-          onClick={submitAction}
         />
       </GridBaseDiv>
       {
-        Object.keys(props.errorState).length !== 0 && props.errorState.request_type == "loginUser" && <MessageDiv>
-          {props.errorState.error}
+        props.loginErrorState !== null && <MessageDiv>
+          <a style={{color:'var(--dark-red)'}}>Error: </a>{props.loginErrorState.message}
         </MessageDiv>
       }
     </React.Fragment>
