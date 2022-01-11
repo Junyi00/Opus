@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Menu } from '@headlessui/react'
@@ -110,7 +111,7 @@ const Header = (props) => {
     <React.Fragment>
       <HeaderBase>
         <div style={{height:'100%'}}>
-          <Logo draggable="false" src={OpusLogo}></Logo>
+          <Link to='/'><Logo draggable="false" src={OpusLogo} /></Link>
         </div>
         
         {
