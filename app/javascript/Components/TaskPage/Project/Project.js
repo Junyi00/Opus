@@ -191,7 +191,7 @@ const Project = (props) => {
               dispatch(undoLastAction())
               dispatch(hideUndoAlert())
             }}>
-              <b>Click to Undo!</b>
+              <a>Click to Undo!</a>
             </UndoAlert>
           }
         </React.Fragment>

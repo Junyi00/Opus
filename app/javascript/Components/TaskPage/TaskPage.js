@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Header from './Header'
 import SideBar from './SideBar'
 import Project from './Project/Project'
-import ErrorModal from './ErrorModal'
+import ErrorModal from './Modals/ErrorModal'
 import { retriveUserProjects } from '../../actions/projectsActions'
 
 const ContentDiv = styled.div`

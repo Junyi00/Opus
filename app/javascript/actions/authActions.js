@@ -39,6 +39,26 @@ export const loginUser = (data, handleSuccess) => (dispatch) => {
   )
 }
 
+export const updatePassword = (data, curr_pw, handleSuccess) => (dispatch, getState) => {
+  const user_id = getState().user.id
+  return axios.patch(
+    '/api/v1/users/' + user_id,
+    { user: data, 
+      current_password: curr_pw 
+    }
+  ).then((resp) => {
+    if (resp.data.status === 500) {
+      throw new Error(resp.data.error)
+    }
+
+    dispatch({ type: 'CLEAR_ERRORS' });
+    handleSuccess()
+  }).catch((resp) => {
+
+    dispatch({ type: 'ADD_ERROR', error_type: 'update_pw', critical: false, message: resp.message })
+  })
+}
+
 export const logoutUser = (data) => (dispatch) => {
   axios.delete(
     '/api/v1/logout', 

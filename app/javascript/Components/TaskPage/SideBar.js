@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux";
 
 import EditProjectModal from "./Project/Modals/EditProjectModal";
-import HelpModal from "./HelpModal"
+import HelpModal from "./Modals/HelpModal"
 import { createProject, selectProject } from "../../actions/projectsActions";
 
 const Base = styled.div`
