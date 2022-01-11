@@ -1,24 +1,31 @@
-# README
+# Opus - Task Management Platform
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Opus is a task management web application created with React JS, Ruby on Rails & PostgreSQL  
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- User Authentication 
+- Customisable project workflow through lanes
+- Track projects & tasks progress (due dates etc...)
+- More to come...
 
-* System dependencies
+## Technologies
 
-* Configuration
+|              | Version |
+|:------------:|:-------:|
+|   React JS   |   17.0  |
+|    Rails     |  6.1.4  |
+|  PostreSQL   |   13.3  |
 
-* Database creation
+Others:
 
-* Database initialization
+- Redux (4.1) & redux-thunk (2.4) 
+- react-dnd (14.0)
 
-* How to run the test suite
+## Usage  
+[TO BE FILLED]
 
-* Services (job queues, cache servers, search engines, etc.)
+## Roadmap 
 
-* Deployment instructions
-
-* ...
+- Frontend Error Handling
+- Project Collaboration
