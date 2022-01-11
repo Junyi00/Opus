@@ -13,7 +13,7 @@ export const retriveUserProjects = (userId) => (dispatch) => {
     return dispatch({ type: 'SET_INITIAL_PROJECTS', data: resp.data })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: true, message: 'Failed to retrieve your projects', data: resp.message })
   })
 }
 
@@ -33,7 +33,7 @@ export const createProject = (userId) => (dispatch) => {
     return dispatch({ type: 'CREATE_PROJECT', data: resp.data })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to create project', data: resp.message })
   })
 }
 
@@ -52,7 +52,7 @@ export const updateProject = (projId, data) => (dispatch) => {
     return dispatch({ type: 'UPDATE_PROJECT', projId: projId, data: resp.data })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to update project details', data: resp.message })
   })
 }
 
@@ -69,7 +69,7 @@ export const deleteProject = (projId) => (dispatch) => {
     return dispatch({ type: 'DELETE_PROJECT', projId: projId })
   })
   .catch((resp) => {
-    debugger
+    return dispatch({ type: 'ADD_ERROR', error_type:'app', critical: false, message: 'Failed to delete project', data: resp.message })
   })
 }
 

@@ -9,7 +9,7 @@
 } 
 
 :root {
-  --highlight-color: #035efc;
+  --highlight-color: #1d6df7;
   --dark-red: #9e1c25;
   --light-gray: #dedede;
   --bg-gray: #f1f3f5;
@@ -43,6 +43,20 @@ html, body, #root, .App {
   color: var(--highlight-color); /* Following tailwind css convention */
 }
 
+.popup_button {
+  color: white;
+  background-color: #9a9a9a;
+
+  border-radius: var(--standard-br);
+  /* border: 1px solid black; */
+  box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
+  padding: 5px 10px; 
+}
+
+.popup_button:hover {
+  color: var(--highlight-color);
+}
+
 /* Overriding default behaviour from react-datepicker pkg*/
 
 .react-datepicker__input-container {
@@ -53,6 +67,10 @@ html, body, #root, .App {
 
 .react-datepicker__day--selected {
   background-color: var(--highlight-color) !important;
+}
+
+.react-datepicker__header {
+  background-color: var(--bg-gray) !important;
 }
 
 

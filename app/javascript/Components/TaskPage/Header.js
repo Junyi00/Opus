@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 import { Menu } from '@headlessui/react'
 
 import { logoutUser } from '../../actions/authActions'
 import OpusLogo from 'images/Opus_Logo.png'
+import UpdatePasswordModal from "./Modals/UpdatePasswordModal";
 
 const HeaderBase = styled.header`
   background-color: #fcfcfc;
@@ -36,8 +37,14 @@ const Logo = styled.img`
 const UserInfo = styled.div`
   width: fit-content;
   margin-right: 10px;
+  padding: 5px;
+  border-radius: var(--standard-br);
 
   text-align: center;
+
+  &:hover {
+    background-color: var(--bg-gray);
+  }
 `
 
 const SearchBar = styled.input`
@@ -68,29 +75,26 @@ const UserMenuStyle = {
   top: 'var(--header-height)',
   right: '0px',
 
-  backgroundColor: 'var(--bg-gray)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignitems: 'end',
+  rowGap: '5px', 
+
+  // backgroundColor: 'var(--bg-gray)',
   padding: '5px'
 }
 
-const MenuItemBtn = styled.button`
-  background-color: transparent;
-  border: none;
-
-  padding: 0px 2px 0px 2px;
-
-  &:hover {
-    color: var(--dark-red);
-  }
-`
+const MenuItemBtn = styled.button``
 
 const Header = (props) => {
   const searchQuery = props.searchQuery
   const setSearchQuery = props.setSearchQuery
 
+  const [showResetPassModal, setShowResetPassModal] = useState(false)
+
   const dispatch = useDispatch()
   const userState = useSelector((state) => state.user)
   const selectedIndex = useSelector((state) => state.projects.selectedIndex)
-  
 
   const logoutAction = () => {
     dispatch(logoutUser({
@@ -98,42 +102,52 @@ const Header = (props) => {
     }))
   }
 
+  const updatePasswordAction = () => {
+    setShowResetPassModal(true)
+  }
+
   return (
-    <HeaderBase>
-      <div style={{height:'100%'}}>
-        <Logo src={OpusLogo}></Logo>
-      </div>
-      
-      {
-        (selectedIndex === null) ? null :
-          <div style={{float: 'left', height: '70%', width: '40%', position: 'relative'}}>
-            <SearchBar 
-              value={searchQuery.trim()}
-              onChange={(e)=>{setSearchQuery(e.target.value)}}
-              placeholder="Search task names / #tags"
-            />
-            <SearchCancelBtn onClick={()=>setSearchQuery('')} style={{display: (searchQuery  == '' ? 'none' : 'block')}}>X</SearchCancelBtn>
-          </div>
-          
-      }
-      { userState.isLoggedIn && 
-        <Menu>
-          <Menu.Button>
-            <UserInfo>
-              <a style={{fontSize: '10px'}}>Logged in:</a><br />
-              <b style={{color: 'var(--highlight-color)'}}>{userState.username}</b>
-            </UserInfo>
-          </Menu.Button>
-          <Menu.Items
-            style={UserMenuStyle}
-          >
-            <Menu.Item>
-              <MenuItemBtn onClick={logoutAction}>Logout</MenuItemBtn>
-            </Menu.Item>
-          </Menu.Items>
-        </Menu>
-      }
-    </HeaderBase>
+    <React.Fragment>
+      <HeaderBase>
+        <div style={{height:'100%'}}>
+          <Logo draggable="false" src={OpusLogo}></Logo>
+        </div>
+        
+        {
+          (selectedIndex === null) ? null :
+            <div style={{float: 'left', height: '70%', width: '40%', position: 'relative'}}>
+              <SearchBar 
+                value={searchQuery.trim()}
+                onChange={(e)=>{setSearchQuery(e.target.value)}}
+                placeholder="Search task names / #tags"
+              />
+              <SearchCancelBtn onClick={()=>setSearchQuery('')} style={{display: (searchQuery  == '' ? 'none' : 'block')}}>X</SearchCancelBtn>
+            </div>
+            
+        }
+        { userState.isLoggedIn && 
+          <Menu>
+            <Menu.Button>
+              <UserInfo>
+                <a style={{fontSize: '10px'}}>Logged in:</a><br />
+                <b style={{color: 'var(--highlight-color)'}}>{userState.username}</b>
+              </UserInfo>
+            </Menu.Button>
+            <Menu.Items
+              style={UserMenuStyle}
+            >
+              <Menu.Item>
+                <MenuItemBtn className="popup_button" onClick={updatePasswordAction}>Reset Password</MenuItemBtn>
+              </Menu.Item>
+              <Menu.Item>
+                <MenuItemBtn className="popup_button" onClick={logoutAction}>Logout</MenuItemBtn>
+              </Menu.Item>
+            </Menu.Items>
+          </Menu>
+        }
+      </HeaderBase>
+      <UpdatePasswordModal showModal={showResetPassModal} setShowModal={setShowResetPassModal}/>
+    </React.Fragment>
   )
 }
 

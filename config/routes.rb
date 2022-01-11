@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :tasks
       resources :tags
 
-      resources :users, only: [:create]
+      resources :users, only: [:create, :update]
       post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#is_logged_in?'

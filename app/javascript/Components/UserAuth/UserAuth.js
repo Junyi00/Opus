@@ -5,7 +5,6 @@ import { Tab } from '@headlessui/react'
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { addUser, loginUser, logoutUser } from '../../actions/authActions';
 import Signup from "./Signup";
 import Login from "./Login";
 import OpusIcon from 'images/Opus_Icon.png'
@@ -25,6 +24,7 @@ const BaseDiv = styled.div`
 `
 
 const ContentDiv = styled.div`
+  max-width: 80%;
   width: fit-content;
   height: fit-content;
   padding: 20px;
@@ -57,17 +57,6 @@ class UserAuth extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      signUpSuccess: false,
-    }
-  }
-
-  loginActionOnClick = (data) => {
-    this.props.loginUser(data, ()=>{});
-  }
-  
-  signupActionOnClick = (data) => {
-    this.props.addUser(data, ()=>{this.setState({signUpSuccess:true})});
   }
 
   render() {
@@ -98,15 +87,12 @@ class UserAuth extends Component {
               </Tab.List>
               <Tab.Panel style={{padding:'10px'}}>
                 <Login
-                  loginOnClick={this.loginActionOnClick}
-                  errorState={this.props.errors}
+                  loginErrorState={this.props.errors.login}
                 />
               </Tab.Panel>
               <Tab.Panel style={{padding:'10px'}}>
                 <Signup 
-                  signupOnClick={this.signupActionOnClick} 
-                  successState={this.state.signUpSuccess}
-                  errorState={this.props.errors}
+                  signupErrorState={this.props.errors.signup}
                 />
               </Tab.Panel>
             </Tab.Group>
@@ -122,12 +108,4 @@ const mapStateToProps = (state) => ({
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => {
-    return {
-      addUser: (...args) => { dispatch(addUser(...args)) },
-      loginUser: (...args) => { dispatch(loginUser(...args)) },
-      logoutUser: (...args) => { dispatch(logoutUser(...args)) }
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserAuth)
+export default connect(mapStateToProps, null)(UserAuth)

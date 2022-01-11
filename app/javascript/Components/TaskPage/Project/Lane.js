@@ -59,6 +59,7 @@ const NewTaskBtn = styled.button`
 `
 
 const LaneHeaderBtn = styled.button`
+  width: 100%;
   background-color: transparent;
   border: none;
 `
