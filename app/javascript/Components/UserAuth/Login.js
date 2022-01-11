@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 
 import { loginUser } from "../../actions/authActions"
+import ResetPasswordModal from "./ResetPasswordModal"
 
 const GridBaseDiv = styled.form`
   display: grid;
@@ -11,9 +12,9 @@ const GridBaseDiv = styled.form`
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   grid-template-areas:
-  "UserLbl UserField UserField"
-  "PassLbl PassField PassField"
-  "   .        .     LoginBtn ";
+  " UserLbl  UserField UserField"
+  " PassLbl  PassField PassField"
+  "ForgetBtn ForgetBtn LoginBtn ";
 
   gap: 5px 10px;
 `
@@ -50,9 +51,24 @@ const MessageDiv = styled.div`
   white-space: pre-wrap;
 `
 
+const ForgetBtn = styled.button`
+  height: fit-content;
+  width: fit-content;
+
+  border: none;
+  text-align: left;
+  font-size: 12px;
+  color: var(--highlight-color);
+
+  &:hover {
+    text-decoration: underline; 
+  }
+`
+
 const Login = (props) => {
   const [userValue, setUserValue] = useState('')
   const [passValue, setPassValue] = useState('')
+  const [showResetModal, setShowResetModal] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -66,6 +82,11 @@ const Login = (props) => {
       username: userValue,
       password: passValue,
     })
+  }
+
+  const forgetPasswordAction = (e) => {
+    e.preventDefault()
+    setShowResetModal(true)
   }
 
   return (
@@ -96,12 +117,19 @@ const Login = (props) => {
           style={{gridArea:'LoginBtn', marginTop:'5px'}}
           color='var(--highlight-color)'
         />
+        <div style={{gridArea:'ForgetBtn', display:'flex', alignItems:'end'}}>
+          <ForgetBtn 
+            onClick={forgetPasswordAction}>Forget Password?
+          </ForgetBtn>
+        </div>
+        
       </GridBaseDiv>
       {
         props.loginErrorState !== null && <MessageDiv>
           <a style={{color:'var(--dark-red)'}}>Error: </a>{props.loginErrorState.message}
         </MessageDiv>
       }
+      <ResetPasswordModal showModal={showResetModal} setShowModal={setShowResetModal}/>
     </React.Fragment>
   )
 }

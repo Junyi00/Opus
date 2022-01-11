@@ -59,6 +59,39 @@ export const updatePassword = (data, curr_pw, handleSuccess) => (dispatch, getSt
   })
 }
 
+export const sendResetEmail = (email, handleSuccess) => (dispatch) => {
+  return axios.post(
+    '/api/v1/password/forgot',
+    { email: email }
+  ).then((resp) => {  
+    if (resp.data.status === 500) {
+      throw new Error(resp.data.error)
+    }
+
+    dispatch({ type: 'CLEAR_ERRORS' });
+    handleSuccess()
+  }).catch((resp) => {
+
+    dispatch({ type: 'ADD_ERROR', error_type: 'reset_pw', critical: false, message: resp.message })
+  })
+}
+
+export const forgetResetPassword = (token, data, handleSuccess) => (dispatch) => {
+  return axios.post(
+    '/api/v1/password/reset',
+    { token: token, ...data }
+  ).then((resp) => {  
+    if (resp.data.status === 500) {
+      throw new Error(resp.data.error)
+    }
+
+    dispatch({ type: 'CLEAR_ERRORS' });
+    handleSuccess()
+  }).catch((resp) => {
+    dispatch({ type: 'ADD_ERROR', error_type: 'reset_pw', critical: false, message: resp.error })
+  })
+}
+
 export const logoutUser = (data) => (dispatch) => {
   axios.delete(
     '/api/v1/logout', 

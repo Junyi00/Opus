@@ -77,4 +77,21 @@ Rails.application.configure do
   config.session_store :cookie_store, key: '_interslice_session'
   config.middleware.use ActionDispatch::Cookies
   config.middleware.use config.session_store, config.session_options
+
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default_options = {from: 'opustaskmanager@gmail.com'}
+  config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'example.com',
+    user_name:            'opustaskmanager',
+    password:             'hxdcpkiwuhjoxnwz',
+    authentication:       'plain',
+   enable_starttls_auto: true  
+}
 end

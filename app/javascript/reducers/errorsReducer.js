@@ -1,9 +1,12 @@
-export default (state = {
+const initialState = {
   signup: null,
   login: null,
   update_pw: null,
+  reset_pw: null,
   app: null
-}, action) => {
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_ERROR':
       return {
@@ -16,14 +19,9 @@ export default (state = {
       }
       
     case 'CLEAR_ERRORS':
-      return {
-        signup: null,
-        login: null,
-        update_pw: null,
-        app: null
-      };
+      return initialState
 
     default:
-      return state;
+      return state
   }
 };
