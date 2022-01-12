@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import Signup from "./Signup";
 import Login from "./Login";
+import ResetPassword from "./ResetPassword";
 import OpusIcon from 'images/Opus_Icon.png'
 
 const BaseDiv = styled.div`
@@ -45,12 +46,12 @@ const TabListStyle = {
   padding: '5px',
   borderRadius: '10px',
   backgroundColor: 'transparent',
-  border: '1px solid var(--highlight-color)'
+  // border: '1px solid var(--highlight-color)'
 }
 
 const TabBtnStyle = {
   padding: '5px',
-  borderRadius: '10px',
+  borderWidth: '0px 0px 1px 0px'
 }
 
 class UserAuth extends Component {
@@ -75,16 +76,23 @@ class UserAuth extends Component {
                 <Tab
                   style={TabBtnStyle}
                   className={({ selected }) =>
-                    selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
+                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
                   }
                 >Login</Tab>
                 <Tab
                   style={TabBtnStyle}
                   className={({ selected }) =>
-                    selected ? 'bg-transparent text-highlight' : 'bg-transparent text-gray'
+                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
                   }
                 >Sign Up</Tab>
+                <Tab
+                  style={TabBtnStyle}
+                  className={({ selected }) =>
+                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
+                  }
+                >Reset</Tab>
               </Tab.List>
+              
               <Tab.Panel style={{padding:'10px'}}>
                 <Login
                   loginErrorState={this.props.errors.login}
@@ -94,6 +102,9 @@ class UserAuth extends Component {
                 <Signup 
                   signupErrorState={this.props.errors.signup}
                 />
+              </Tab.Panel>
+              <Tab.Panel style={{padding:'10px'}}>
+                <ResetPassword />
               </Tab.Panel>
             </Tab.Group>
           </ContentDiv>

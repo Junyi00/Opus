@@ -43,6 +43,18 @@ html, body, #root, .App {
   color: var(--highlight-color); /* Following tailwind css convention */
 }
 
+.text-light-gray {
+  color: var(--light-gray); /* Following tailwind css convention */
+}
+
+.border-highlight-color {
+  border-color: var(--highlight-color);
+}
+
+.border-light-gray-color {
+  border-color: var(--light-gray);
+}
+
 .popup_button {
   color: white;
   background-color: #9a9a9a;

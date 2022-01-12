@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
-
 import { sendResetEmail } from '../../../actions/authActions'
+
+import { Dialog } from '@headlessui/react'
 
 const BaseDiv = styled.div`
   display: flex;
@@ -63,6 +63,11 @@ const MessageDiv = styled.div`
 
   white-space: pre-wrap;
 `
+
+/*
+NOT IN USE
+ResetPassword tab in the page is used instead (for aesthetics reasons)
+*/
 
 const ResetPasswordModal = (props) => {
   const showModal = props.showModal

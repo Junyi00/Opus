@@ -4,8 +4,6 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { loginUser } from "../../actions/authActions"
 
-import ResetPasswordModal from "./Modals/ResetPasswordModal"
-
 const GridBaseDiv = styled.form`
   display: grid;
 
@@ -84,10 +82,10 @@ const Login = (props) => {
     })
   }
 
-  const forgetPasswordAction = (e) => {
-    e.preventDefault()
-    setShowResetModal(true)
-  }
+  // const forgetPasswordAction = (e) => {
+  //   e.preventDefault()
+  //   setShowResetModal(true)
+  // }
 
   return (
     <React.Fragment>
@@ -117,19 +115,12 @@ const Login = (props) => {
           style={{gridArea:'LoginBtn', marginTop:'5px'}}
           color='var(--highlight-color)'
         />
-        <div style={{gridArea:'ForgetBtn', display:'flex', alignItems:'end'}}>
-          <ForgetBtn 
-            onClick={forgetPasswordAction}>Forget Password?
-          </ForgetBtn>
-        </div>
-        
       </GridBaseDiv>
       {
         props.loginErrorState !== null && <MessageDiv>
           <a style={{color:'var(--dark-red)'}}>Error: </a>{props.loginErrorState.message}
         </MessageDiv>
       }
-      { showResetModal && <ResetPasswordModal showModal={showResetModal} setShowModal={setShowResetModal}/> }
     </React.Fragment>
   )
 }
