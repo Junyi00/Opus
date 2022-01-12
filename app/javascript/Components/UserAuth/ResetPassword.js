@@ -34,9 +34,21 @@ const ModalBtn = styled.input`
 
 	padding: 2px 5px 2px 5px;
 
+  ${({ disabled }) => disabled && `
+    background-color: white;
+    color: black;
+    border-color: black;
+  `}
+
 	&:hover {
 		background-color: ${props => props.color || "black"};
 		color: white;
+    
+    ${({ disabled }) => disabled && `
+      background-color: white;
+      color: black;
+      border-color: black;
+    `}
 	}
 `
 
@@ -52,6 +64,7 @@ const MessageDiv = styled.div`
 const ResetPassword = (props) => {
   const [email, setEmail] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+  const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
 
   const dispatch = useDispatch()
   const resetPwErrorState = useSelector((state) => state.errors.reset_pw)
@@ -59,8 +72,18 @@ const ResetPassword = (props) => {
   const submitAction = (e) => {
     e.preventDefault();
     setShowSuccessMessage(false)
+    setSubmitBtnDisabled(true)
 
-    dispatch(sendResetEmail(email, () => setShowSuccessMessage(true)))
+    dispatch(sendResetEmail(
+      email, 
+      () => {
+        setShowSuccessMessage(true)
+        setSubmitBtnDisabled(false)
+      },
+      () => {
+        setSubmitBtnDisabled(false)
+      }
+    ))
   }
 
   return (
@@ -78,6 +101,7 @@ const ResetPassword = (props) => {
         />
         <ModalBtn 
           type='submit'
+          disabled={submitBtnDisabled}
           value='Reset Password'
           style={{gridArea:'SubmitBtn', marginTop:'5px'}}
           color='var(--highlight-color)'

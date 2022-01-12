@@ -59,7 +59,7 @@ export const updatePassword = (data, curr_pw, handleSuccess) => (dispatch, getSt
   })
 }
 
-export const sendResetEmail = (email, handleSuccess) => (dispatch) => {
+export const sendResetEmail = (email, handleSuccess, handleFailure) => (dispatch) => {
   return axios.post(
     '/api/v1/password/forgot',
     { email: email }
@@ -73,6 +73,7 @@ export const sendResetEmail = (email, handleSuccess) => (dispatch) => {
   }).catch((resp) => {
 
     dispatch({ type: 'ADD_ERROR', error_type: 'reset_pw', critical: false, message: resp.message })
+    handleFailure()
   })
 }
 
