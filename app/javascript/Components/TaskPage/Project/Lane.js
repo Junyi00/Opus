@@ -117,7 +117,7 @@ const Lane = (props) => {
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv
-              onTouchStart={(e)=>{if (e.target.className == 'dropZone') { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
+              onTouchStart={(e)=>{if (e.target.className.includes('dropZone')) { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
             >
               {
                 data.children
