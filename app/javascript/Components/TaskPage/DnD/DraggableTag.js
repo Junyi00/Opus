@@ -1,16 +1,14 @@
 import React from "react";
 import { useDrag } from "react-dnd";
-
-import Tag from "../Tag";
-
-export const EditTag = 'EditTag'
+import { ItemTypes } from "./itemTypes";
+import Tag from "../Project/Tag";
 
 const DraggableTag = (props) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: EditTag,
+    type: ItemTypes.EDIT_TAG,
     item: () => {
       return {
-        type: EditTag,
+        type: ItemTypes.EDIT_TAG,
         tagId: props.data.id,
         index: props.index
     }},

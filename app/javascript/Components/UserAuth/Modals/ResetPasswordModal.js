@@ -3,7 +3,7 @@ import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { sendResetEmail } from '../../actions/authActions'
+import { sendResetEmail } from '../../../actions/authActions'
 
 const BaseDiv = styled.div`
   display: flex;

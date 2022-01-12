@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-
-import Header from './Header'
-import SideBar from './SideBar'
-import Project from './Project/Project'
-import ErrorModal from './Modals/ErrorModal'
 import { retriveUserProjects } from '../../actions/projectsActions'
+
+import Header from '../Header'
+import SideBar from './SideBar'
+import Project from './Project'
+import ErrorModal from './Modals/ErrorModal'
 
 const ContentDiv = styled.div`
   position: absolute;

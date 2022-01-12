@@ -1,8 +1,8 @@
 import { Dialog } from '@headlessui/react';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateProject, deleteProject, resetSelectedProject } from '../../../../actions/projectsActions';
+import { updateProject, deleteProject } from '../../../actions/projectsActions';
 
 const ModalBtn = styled.button`
 	background-color: transparent;
@@ -27,7 +27,9 @@ const EditProjectModal = (props) => {
 
 	const dispatch = useDispatch()
 	const projectsState = useSelector((state) => state.projects)
-	const projName = projectsState.selectedIndex !== null ? projectsState.projects[projectsState.selectedIndex].name : "~UNKNOWN~"
+	const projName = projectsState.selectedIndex !== null ? projectsState.projects[projectsState.selectedIndex].name : "~UNKNOWN~"		
+
+	let initialFocusRef = useRef(null)
 
 	const submitAction = () => {
 			const trimmedProjName = projNameValue.trim()
@@ -60,13 +62,14 @@ const EditProjectModal = (props) => {
 
 	return (
 		<Dialog 
+			initialFocus={initialFocusRef}
 			open={showModal}
 			onClose={requestClose}
 			as="div"
-			className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+			className="fixed inset-0 z-10 overflow-y-auto"
 		>
 
-			<div className="flex items-center justify-center min-h-screen">
+			<div ref={initialFocusRef} className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
 
 				<div className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl z-10">

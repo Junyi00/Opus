@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Header from "../TaskPage/Header";
+import Header from "../Header";
 import { Tab } from '@headlessui/react'
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';

@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 
-import { EditTag } from "./DraggableTag";
+import { ItemTypes } from "./itemTypes";
 import ThrashIcon from "images/Thrash_Icon.png"
 
 const ThrashZone = styled.div`
@@ -20,7 +20,7 @@ const ThrashZone = styled.div`
 const TagThrashZone = ({ onDrop }) => {
   
   const [{ isOver }, drop] = useDrop({
-    accept: [EditTag],
+    accept: [ItemTypes.EDIT_TAG],
     drop: (item, monitor) => {
       onDrop(item);
     },

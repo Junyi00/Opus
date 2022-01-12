@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { useDrop } from "react-dnd";
-import { ItemTypes } from "./ItemTypes";
+import { ItemTypes } from "./itemTypes";
 
 const DropZone = ({ data, onDrop, isLast, className }) => {
 

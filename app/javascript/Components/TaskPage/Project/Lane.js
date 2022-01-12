@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useDrag } from 'react-dnd';
 import { useDispatch } from "react-redux";
 
-import { ItemTypes } from "./DnD/ItemTypes";
-import DropZone from "./DnD/DropZone";
+import { ItemTypes } from "../DnD/itemTypes";
+import DropZone from "../DnD/DropZone";
 import Task from "./Task";
-import EditLaneModal from "./Modals/EditLaneModal";
+import EditLaneModal from "../Modals/EditLaneModal";
 import { createTask } from "../../../actions/projectLayoutActions";
 
 const BaseDiv = styled.div`

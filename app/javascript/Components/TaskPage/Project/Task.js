@@ -1,19 +1,19 @@
 import React, { useRef, useState, forwardRef } from "react";
 import { useDrag } from "react-dnd";
-import { ItemTypes } from "./DnD/ItemTypes";
+import { ItemTypes } from "../DnD/itemTypes";
 import styled from "styled-components";
 import DatePicker from "react-datepicker"
 import getMonth from "date-fns/getMonth"
 import getYear from "date-fns/getYear"
 import format from "date-fns/format"
 import "react-datepicker/dist/react-datepicker.css";
+import { updateTask } from "../../../actions/projectLayoutActions";
+import { showUndoAlert } from "../../../actions/undoActions";
 import { useDispatch } from "react-redux";
 
 import Tag from "./Tag";
-import EditTaskModal from "./Modals/EditTaskModal";
+import EditTaskModal from "../Modals/EditTaskModal";
 import ClockIcon from "images/Clock_Icon.png"
-import { updateTask } from "../../../actions/projectLayoutActions";
-import { showUndoAlert } from "../../../actions/undoActions";
 
 const BaseDiv = styled.div`
   border-radius: 5px;

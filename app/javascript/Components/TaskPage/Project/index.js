@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-
-import Lane from "./Lane";
-import DropZone from "./DnD/DropZone"
+import { undoLastAction, hideUndoAlert } from "../../../actions/undoActions";
 import {
   createLane,
   moveTaskToLane,
@@ -11,7 +9,9 @@ import {
   reorderLane,
   moveTaskToNewLane
 } from "../../../actions/projectLayoutActions"
-import { undoLastAction, hideUndoAlert } from "../../../actions/undoActions";
+
+import Lane from "./Lane";
+import DropZone from "../DnD/DropZone"
 
 const BaseDiv = styled.div`
   display: flex;
@@ -187,7 +187,6 @@ const Project = (props) => {
           </BaseDiv>
           {
             showUndoAlert && <UndoAlert className="popup_button" onClick={() => {
-              // TODO: Update the backend on changes
               dispatch(undoLastAction())
               dispatch(hideUndoAlert())
             }}>

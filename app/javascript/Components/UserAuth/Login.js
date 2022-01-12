@@ -2,9 +2,9 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-
 import { loginUser } from "../../actions/authActions"
-import ResetPasswordModal from "./ResetPasswordModal"
+
+import ResetPasswordModal from "./Modals/ResetPasswordModal"
 
 const GridBaseDiv = styled.form`
   display: grid;
@@ -129,7 +129,7 @@ const Login = (props) => {
           <a style={{color:'var(--dark-red)'}}>Error: </a>{props.loginErrorState.message}
         </MessageDiv>
       }
-      <ResetPasswordModal showModal={showResetModal} setShowModal={setShowResetModal}/>
+      { showResetModal && <ResetPasswordModal showModal={showResetModal} setShowModal={setShowResetModal}/> }
     </React.Fragment>
   )
 }

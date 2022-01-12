@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
@@ -74,6 +74,8 @@ const UpdatePasswordModal = (props) => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
+  let initialFocusRef = useRef(null)
+
   const dispatch = useDispatch()
   const updatePwErrorState = useSelector((state) => state.errors.update_pw)
 
@@ -94,6 +96,7 @@ const UpdatePasswordModal = (props) => {
 
   return (
     <Dialog
+      initialFocus={initialFocusRef}
       open={showModal}
       onClose={closeAction}
       as="div"
@@ -102,7 +105,7 @@ const UpdatePasswordModal = (props) => {
       <div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
           
-        <BaseDiv className='rounded-2xl p-5 z-10'>
+        <BaseDiv ref={initialFocusRef} className='rounded-2xl p-5 z-10'>
           <Dialog.Title>Reset Password</Dialog.Title>
 
           <GridContainer onSubmit={submitAction}>

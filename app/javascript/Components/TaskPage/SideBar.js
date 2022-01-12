@@ -2,7 +2,7 @@ import React, { useState   } from "react";
 import styled from "styled-components"
 import { useSelector, useDispatch } from "react-redux";
 
-import EditProjectModal from "./Project/Modals/EditProjectModal";
+import EditProjectModal from "./Modals/EditProjectModal";
 import HelpModal from "./Modals/HelpModal"
 import { createProject, selectProject } from "../../actions/projectsActions";
 

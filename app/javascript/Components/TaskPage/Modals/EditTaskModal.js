@@ -2,14 +2,15 @@ import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { getCommonTags } from '../../../utils/databaseOps';
+import { updateTask, deleteTask, createTags, deleteTags } from '../../../actions/projectLayoutActions'
 
-import DraggableTag from "./DraggableTag"
-import TagThrashZone from './TagThrashZone';
+import DraggableTag from "../DnD/DraggableTag"
+import TagThrashZone from '../DnD/TagThrashZone';
 import FlagOff from 'images/Flag_Off_Icon.png'
 import FlagOn from 'images/Flag_On_Icon.png'
-import Tag from '../Tag';
-import { getCommonTags } from '../DatabaseOp';
-import { updateTask, deleteTask, createTags, deleteTags } from '../../../../actions/projectLayoutActions'
+import Tag from '../Project/Tag';
+
 
 const BaseDiv = styled.div`
   display: flex;
@@ -229,9 +230,8 @@ const EditTaskModal = (props) => {
 			open={showModal}
 			onClose={requestClose}
 			as="div"
-			className="fixed inset-0 z-10 flex items-center justify-center overflow-y-auto"
+			className="fixed inset-0 z-10 overflow-y-auto"
 		>
-			
 			<div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
 

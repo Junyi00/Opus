@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from 'styled-components'
 import { useSelector, useDispatch } from 'react-redux'
-import { Menu } from '@headlessui/react'
-
-import { logoutUser } from '../../actions/authActions'
+import { logoutUser } from '../actions/authActions'
 import OpusLogo from 'images/Opus_Logo.png'
-import UpdatePasswordModal from "./Modals/UpdatePasswordModal";
+
+import { Menu } from '@headlessui/react'
+import UpdatePasswordModal from "./TaskPage/Modals/UpdatePasswordModal";
 
 const HeaderBase = styled.header`
   background-color: #fcfcfc;

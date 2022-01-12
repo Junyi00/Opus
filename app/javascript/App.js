@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { fetchLoginStatus } from './actions/authActions';
 
-import TaskPage from './Components/TaskPage/TaskPage'
+import TaskPage from './components/TaskPage'
 import NotFoundPage from './NotFoundPage'
-import UserAuth from './Components/UserAuth/UserAuth';
-import ResetPassword from './Components/ResetPassword';
+import UserAuth from './components/UserAuth';
+import ResetPassword from './components/ResetPassword';
 
 class App extends React.Component {
 

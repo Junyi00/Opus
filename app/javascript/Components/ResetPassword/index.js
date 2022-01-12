@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { forgetResetPassword } from "../../actions/authActions";
 import OpusIcon from 'images/Opus_Icon.png'
 
-import Header from "../TaskPage/Header";
+import Header from "../Header";
 
 const BaseDiv = styled.div`
   position: absolute;
@@ -99,7 +99,7 @@ const ResetPassword = () => {
     dispatch(forgetResetPassword(
       searchParams.get('token'), 
       { password: newPassword },
-      () => { console.log("HEY"); setShowSuccessMessage(true) }
+      () => { setShowSuccessMessage(true) }
     ))
   }
 
