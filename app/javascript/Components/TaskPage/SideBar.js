@@ -38,6 +38,8 @@ const ProjectsList = styled.ul`
   margin-top: 10px;
   text-align: center;
 
+  width: 100%;
+
   list-style: none;
   // list-style-type: '> ';
 
@@ -47,18 +49,22 @@ const ProjectsList = styled.ul`
 `
 
 const ProjectsItem = styled.li`
-  margin-top: 5px;
-  margin-bottom: 5px;
 
   > button {
+    width: 100%;
+
     padding: 5px;
-    border-radius: var(--standard-br); 
+    // border-radius: var(--standard-br);
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: var(--light-gray);
     color: var(--dark-gray);
+
     ${({ selected }) => selected && `
       color: var(--highlight-color);
-      background-color: var(--bg-gray);
+      // background-color: var(--bg-gray);
+      border-color: var(--highlight-color);
     `}
-    
   }
 `
 
