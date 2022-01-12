@@ -11,7 +11,7 @@ const BaseDiv = styled.div`
   align-items: center;
   
   width: 90%;
-  maxHeight: 95vh; // prevent from exceeding the height of the screen
+  max-height: 95vh; // prevent from exceeding the height of the screen
 
   background-color: white;
 
@@ -62,7 +62,7 @@ const PageDiv = styled.div`
   }
 
   & > img {
-    width: 100%;
+    width: 80%;
   }
 `
 
