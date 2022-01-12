@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { undoLastAction, hideUndoAlert } from "../../../actions/undoActions";
 import {
   createLane,
   moveTaskToLane,
@@ -12,6 +11,7 @@ import {
 
 import Lane from "./Lane";
 import DropZone from "../DnD/DropZone"
+import UndoPopup from "./UndoPopup";
 
 const BaseDiv = styled.div`
   display: flex;
@@ -82,19 +82,11 @@ const EmptyBaseDiv = styled.div`
   justify-content: center;
 `
 
-const UndoAlert = styled.button`
-  position: fixed;
-  bottom: 15px;
-  left: 50%;
-  translate: transform(-50%, 0%); 
-`
-
 const Project = (props) => {
 
   const dispatch = useDispatch()
   const projectLayout = useSelector((state) => state.projectLayout.data)
   const projectsState = useSelector((state) => state.projects)
-  const showUndoAlert = useSelector((state) => state.projectLayout.show_alert)
 
   const projId = projectsState.projects[projectsState.selectedIndex].id
 
@@ -132,14 +124,6 @@ const Project = (props) => {
     },
     [projectLayout]
   );
-
-  useEffect(()=> {
-    if (showUndoAlert) {
-      setTimeout(() => {
-        dispatch(hideUndoAlert())
-      }, 5000) 
-    }
-  }, [showUndoAlert])
 
   const addLaneOnClick = () => {
     dispatch(createLane(projId, projectLayout.length))
@@ -185,14 +169,7 @@ const Project = (props) => {
             </div>
             
           </BaseDiv>
-          {
-            showUndoAlert && <UndoAlert className="popup_button" onClick={() => {
-              dispatch(undoLastAction())
-              dispatch(hideUndoAlert())
-            }}>
-              <a>Click to Undo!</a>
-            </UndoAlert>
-          }
+          <UndoPopup />
         </React.Fragment>
       )
     }

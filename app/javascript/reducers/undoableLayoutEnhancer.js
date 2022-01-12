@@ -2,7 +2,7 @@ export default function undoableLayoutEnhancer(reducer, max_past=1) {
   const initialState = {
     past_actions: [],
     data: reducer(undefined, {}),
-    show_alert: false,
+    show_alert: null,
   }
 
   return (state = initialState, action) => {
@@ -11,13 +11,13 @@ export default function undoableLayoutEnhancer(reducer, max_past=1) {
       case 'SHOW_UNDO_ALERT':
         return {
           ...state,
-          show_alert: true
+          show_alert: Date.now()
         }
 
       case 'HIDE_UNDO_ALERT':
         return {
           ...state,
-          show_alert: false
+          show_alert: null
         }
 
       default: 
@@ -37,6 +37,7 @@ export default function undoableLayoutEnhancer(reducer, max_past=1) {
         }
 
         return {
+          ...state,
           past_actions: new_past_actions.splice(-1 * max_past),
           data: nextData
         }
