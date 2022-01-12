@@ -100,6 +100,10 @@ export const logoutUser = (data) => (dispatch) => {
   )
   .then((resp) => {
     dispatch({ type: 'LOGOUT_USER' });
+
+    // Clear app data
+    dispatch({ type: 'RESET_PROJECTS' })
+    dispatch({ type: 'RESET_PROJECT_LAYOUT' })
     dispatch({ type: 'CLEAR_ERRORS' });
   })
   .catch((error) =>

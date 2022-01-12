@@ -17,6 +17,10 @@ export const retriveUserProjects = (userId) => (dispatch) => {
   })
 }
 
+export const resetProjects = () => (dispatch) => {
+  return dispatch({ type: 'RESET_PROJECTS' })
+}
+
 export const createProject = (userId) => (dispatch) => {
   return axios.post(
     '/api/v1/projects',

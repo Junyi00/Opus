@@ -1,8 +1,10 @@
+const initialState = {
+  projects: [],
+  selectedIndex: null
+}
+
 export default (
-  state = {
-    projects: [],
-    selectedIndex: null
-  },
+  state = initialState,
   action
 ) => {
   switch (action.type) {
@@ -11,6 +13,8 @@ export default (
         ...state,
         projects: action.data
       }
+    case 'RESET_PROJECTS':
+      return initialState
     case 'CREATE_PROJECT':
       return {
         ...state,
