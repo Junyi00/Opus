@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { getCommonTags } from '../../../utils/databaseOps';
 import { updateTask, deleteTask, createTags, deleteTags } from '../../../actions/projectLayoutActions'
 
@@ -112,25 +112,22 @@ const ColorBoxWrapper = styled.div`
 	}
 `
 
-const EditTaskModal = (props) => {
+const EditTaskModal = ({
+	showModal, setShowModal, laneId, taskData, tags, updateTask, deleteTask, createTags, deleteTags
+}) => {
 	const tagColors = ["#4ce4d6", "#a9d18e", "#ffd966", "#ea9846", "#f781f1", "#ef5a7e", "#adb9ca"]
 
-	const [taskTitleValue, setTaskTitleValue] = useState(props.taskData.name)
-	const [taskDescValue, setTaskDescValue] = useState(props.taskData.description)
-	const [taskStarred, setTaskStarred] = useState(props.taskData.starred)
+	const [taskTitleValue, setTaskTitleValue] = useState(taskData.name)
+	const [taskDescValue, setTaskDescValue] = useState(taskData.description)
+	const [taskStarred, setTaskStarred] = useState(taskData.starred)
 	const [newTagValue, setNewTagValue] = useState('')
 	const [selectedColor, setSelectedColor] = useState(tagColors[0])
-	const [tags, setTags] = useState(props.tags)
+	const [displayTags, setDisplayTags] = useState(tags)
 	const [tagsToDelete, setTagsToDelete] = useState([])
 
 	const [showWarning, setShowWarning] = useState(false)
 
-	const showModal = props.showModal
-	const setShowModal = props.setShowModal
-	const laneId = props.laneId
-	const taskId = props.taskData.id
-
-	const dispatch = useDispatch()
+	const taskId = taskData.id
 
 	const [commonTags, setCommonTags] = useState([])
 	useEffect(() => {
@@ -143,23 +140,23 @@ const EditTaskModal = (props) => {
 
 	// Update tags with proper database tag details after new tags are created
 	useEffect(()=>{
-		setTags(props.tags)
-	}, [props.tags])
+		setDisplayTags(tags)
+	}, [tags])
 
 	const submitAction = () => {
-		dispatch(updateTask(laneId, taskId, {
+		updateTask(laneId, taskId, {
 			name: taskTitleValue.trim(),
 			description: taskDescValue.trim(),
 			starred: taskStarred
-		}))
+		})
 		
-		const tagsToAdd = tags.filter((tag, index) => !('id' in tag))
+		const tagsToAdd = displayTags.filter((tag, index) => !('id' in tag))
 		if (tagsToAdd.length > 0) {
-			dispatch(createTags(laneId, taskId, tagsToAdd))
+			createTags(laneId, taskId, tagsToAdd)
 		}
 
 		if (tagsToDelete.length > 0) {
-			dispatch(deleteTags(laneId, taskId, [...tagsToDelete]))
+			deleteTags(laneId, taskId, [...tagsToDelete])
 			setTagsToDelete([])
 		}
 		
@@ -171,7 +168,7 @@ const EditTaskModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			dispatch(deleteTask(laneId, taskId))
+			deleteTask(laneId, taskId)
 
 			requestClose()
 		}	
@@ -200,9 +197,9 @@ const EditTaskModal = (props) => {
 	}
 
 	const removeTagOnDrop = (item) => {
-		setTags([
-			...tags.slice(0, item.index),
-			...tags.slice(item.index + 1)
+		setDisplayTags([
+			...displayTags.slice(0, item.index),
+			...displayTags.slice(item.index + 1)
 		])
 		
 		if ('tagId' in item && item.tagId !== undefined) { 
@@ -215,8 +212,8 @@ const EditTaskModal = (props) => {
 	}
 
 	const addTag = (name, color) => {
-		setTags([
-			...tags,
+		setDisplayTags([
+			...displayTags,
 			{
 				name: name,
 				color: color,
@@ -300,7 +297,7 @@ const EditTaskModal = (props) => {
 						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap: '10px'}}>
 							<DisplayTagsDiv className="rounded-2xl">
 								{
-									tags.map((tag, index) => <DraggableTag key={index} index={index} data={tag} />)
+									displayTags.map((tag, index) => <DraggableTag key={index} index={index} data={tag} />)
 								}
 							</DisplayTagsDiv>
 							<TagThrashZone onDrop={removeTagOnDrop} />
@@ -335,4 +332,12 @@ const EditTaskModal = (props) => {
 
 }
 
-export default EditTaskModal
+export default connect(
+	null,
+	(dispatch) => ({
+		updateTask: (...args) => dispatch(updateTask(...args)),
+		deleteTask: (...args) => dispatch(deleteTask(...args)),
+		createTags: (...args) => dispatch(createTags(...args)),
+		deleteTags: (...args) => dispatch(deleteTags(...args)),
+	})
+)(EditTaskModal)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
 import { clearErrors } from '../../../actions/authActions'
 
@@ -18,16 +18,13 @@ const BaseDiv = styled.div`
   position: relative;
 `
 
-const ErrorModal = (props) => {
-  const showModal = props.showModal
-  const setShowModal = props.setShowModal
-
-  const dispatch = useDispatch()
-  const appErrorState = useSelector((state) => state.errors.app)
+const ErrorModal = ({
+  showModal, setShowModal, appErrorState, clearErrors
+}) => {
 
   const closeAction = () => {
     if (!appErrorState.critical) {
-      dispatch(clearErrors()).then(resp => {
+      clearErrors().then(resp => {
         setShowModal(false)
       })
     }
@@ -67,4 +64,11 @@ const ErrorModal = (props) => {
   )
 }
 
-export default ErrorModal
+export default connect(
+  (state) => ({
+    appErrorState: state.errors.app,
+  }),
+  (dispatch) => ({
+    clearErrors: () => dispatch(clearErrors())
+  })
+)(ErrorModal)

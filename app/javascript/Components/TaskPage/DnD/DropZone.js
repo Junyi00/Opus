@@ -3,7 +3,9 @@ import classNames from "classnames";
 import { useDrop } from "react-dnd";
 import { ItemTypes } from "./itemTypes";
 
-const DropZone = ({ data, onDrop, isLast, className }) => {
+const DropZone = ({ 
+  data, onDrop, isLast, className 
+}) => {
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: [ItemTypes.LANE, ItemTypes.TASK],

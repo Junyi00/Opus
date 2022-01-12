@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { sendResetEmail } from '../../../actions/authActions'
 
 import { Dialog } from '@headlessui/react'
@@ -69,15 +69,11 @@ NOT IN USE
 ResetPassword tab in the page is used instead (for aesthetics reasons)
 */
 
-const ResetPasswordModal = (props) => {
-  const showModal = props.showModal
-  const setShowModal = props.setShowModal
-
+const ResetPasswordModal = ({
+  showModal, setShowModal, resetPwErrorState, sendResetEmail
+}) => {
   const [email, setEmail] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-
-  const dispatch = useDispatch()
-  const resetPwErrorState = useSelector((state) => state.errors.reset_pw)
 
   const closeAction = () => {
     setShowModal(false)
@@ -87,7 +83,7 @@ const ResetPasswordModal = (props) => {
     e.preventDefault();
     setShowSuccessMessage(false)
 
-    dispatch(sendResetEmail(email, () => setShowSuccessMessage(true)))
+    sendResetEmail(email, () => setShowSuccessMessage(true))
   }
 
   return (
@@ -133,4 +129,11 @@ const ResetPasswordModal = (props) => {
   )
 }
 
-export default ResetPasswordModal
+export default connect(
+  (state) => ({
+    resetPwErrorState: state.errors.reset_pw,
+  }),
+  (dispatch) => ({
+    sendResetEmail: (...args) => dispatch(sendResetEmail(...args))
+  })
+)(ResetPasswordModal)

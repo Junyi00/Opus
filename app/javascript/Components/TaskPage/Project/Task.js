@@ -9,7 +9,7 @@ import format from "date-fns/format"
 import "react-datepicker/dist/react-datepicker.css";
 import { updateTask } from "../../../actions/projectLayoutActions";
 import { showUndoAlert } from "../../../actions/undoActions";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
 import Tag from "./Tag";
 import EditTaskModal from "../Modals/EditTaskModal";
@@ -107,15 +107,15 @@ const TagsDiv = styled.div`
   column-gap: 2px;
 `
 
-const Task = (props) => {
+const Task = ({
+  path, laneId, data, showUndoAlert, updateTask 
+}) => {
   const [showModal, setShowModal] = useState(false)
-  const [dueDate, _setDueDate] = useState(Date.parse(props.data.duedate));
+  const [dueDate, _setDueDate] = useState(Date.parse(data.duedate));
 
-  const path = props.path
-  const taskName = props.data.name
-  const taskDesc = props.data.description
-  const taskStarred = props.data.starred
-  const dispatch = useDispatch()
+  const taskName = data.name
+  const taskDesc = data.description
+  const taskStarred = data.starred
 
   const DATE_FORMAT = "yyyy/MM/dd"
   const ref = useRef(null)
@@ -125,7 +125,7 @@ const Task = (props) => {
     item: () => {
       return {
         type: ItemTypes.TASK,
-        id: props.data.id,
+        id: data.id,
         path: path
     }},
     collect: monitor => ({
@@ -139,9 +139,9 @@ const Task = (props) => {
   const setDueDate = (date) => {
     _setDueDate(date)
     
-    dispatch(updateTask(props.laneId, props.data.id, {
+    updateTask(laneId, data.id, {
       duedate: date !== null ? format(date, DATE_FORMAT) : null
-    }))
+    })
   }
 
   const DueDateInput = forwardRef(({ value, onClick }, ref) => (
@@ -173,11 +173,11 @@ const Task = (props) => {
   }
 
   const completeTaskOnClick = () => {
-    dispatch(updateTask(props.laneId, props.data.id, {
+    updateTask(laneId, data.id, {
       completed: true
-    }, true))
+    }, true)
     .then(resp => {
-      return dispatch(showUndoAlert())
+      return showUndoAlert()
     })
   }
 
@@ -188,12 +188,12 @@ const Task = (props) => {
           {/* <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}> */}
             {taskName}
           {/* </TaskTitleBtn> */}
-          <CompleteBtn onClick={() => completeTaskOnClick(props.data.id)} starred={taskStarred}></CompleteBtn>
+          <CompleteBtn onClick={() => completeTaskOnClick(data.id)} starred={taskStarred}></CompleteBtn>
         </TaskHeader>
         <TaskContent>
           <TagsDiv>
             {
-              props.data.tags.map((tag, index) => 
+              data.tags.map((tag, index) => 
                 <Tag key={index} data={tag}></Tag>
               )
             }
@@ -208,12 +208,18 @@ const Task = (props) => {
           />
         </TaskContent>
       </BaseDiv>
-      <EditTaskModal laneId={props.laneId} tags={props.data.tags} taskData={props.data} showModal={showModal} setShowModal={setShowModal}/>
+      <EditTaskModal laneId={laneId} tags={data.tags} taskData={data} showModal={showModal} setShowModal={setShowModal}/>
     </React.Fragment>
   )
 }
 
-export default Task
+export default connect(
+  null,
+  (dispatch) => ({
+    showUndoAlert: () => dispatch(showUndoAlert()),
+    updateTask: (...args) => dispatch(updateTask(...args))
+  })
+)(Task)
 
 const months = [
   "January",

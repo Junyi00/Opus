@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { updatePassword } from '../../../actions/authActions'
 
 const BaseDiv = styled.div`
@@ -65,19 +65,15 @@ const MessageDiv = styled.div`
   white-space: pre-wrap;
 `
 
-const UpdatePasswordModal = (props) => {
-  const showModal = props.showModal
-  const setShowModal = props.setShowModal
-
+const UpdatePasswordModal = ({
+  showModal, setShowModal, updatePwErrorState, updatePassword
+}) => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
 
   let initialFocusRef = useRef(null)
-
-  const dispatch = useDispatch()
-  const updatePwErrorState = useSelector((state) => state.errors.update_pw)
 
   const closeAction = () => {
     setShowModal(false)
@@ -91,7 +87,7 @@ const UpdatePasswordModal = (props) => {
       password: newPassword,
       password_confirmation: confirmNewPassword,
     };
-    dispatch(updatePassword(user, currentPassword, () => setShowSuccessMessage(true)))
+    updatePassword(user, currentPassword, () => setShowSuccessMessage(true))
   }
 
   return (
@@ -158,4 +154,11 @@ const UpdatePasswordModal = (props) => {
   )
 }
 
-export default UpdatePasswordModal
+export default connect(
+  (state) => ({
+    updatePwErrorState: state.errors.update_pw,
+  }),
+  (dispatch) => ({
+    updatePassword: (...args) => dispatch(updatePassword(...args))
+  })
+)(UpdatePasswordModal)

@@ -1,7 +1,7 @@
 
 import React, { useState } from "react"
 import styled from "styled-components"
-import { useSelector, useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { sendResetEmail } from '../../actions/authActions'
 
 const GridBaseDiv = styled.form`
@@ -61,20 +61,19 @@ const MessageDiv = styled.div`
   white-space: pre-wrap;
 `
 
-const ResetPassword = (props) => {
+const ResetPassword = ({
+  resetPwErrorState, sendResetEmail
+}) => {
   const [email, setEmail] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [submitBtnDisabled, setSubmitBtnDisabled] = useState(false)
-
-  const dispatch = useDispatch()
-  const resetPwErrorState = useSelector((state) => state.errors.reset_pw)
 
   const submitAction = (e) => {
     e.preventDefault();
     setShowSuccessMessage(false)
     setSubmitBtnDisabled(true)
 
-    dispatch(sendResetEmail(
+    sendResetEmail(
       email, 
       () => {
         setShowSuccessMessage(true)
@@ -83,7 +82,7 @@ const ResetPassword = (props) => {
       () => {
         setSubmitBtnDisabled(false)
       }
-    ))
+    )
   }
 
   return (
@@ -121,4 +120,11 @@ const ResetPassword = (props) => {
   )
 }
 
-export default ResetPassword
+export default connect(
+  (state) => ({
+    resetPwErrorState: state.errors.reset_pw,
+  }),
+  (dispatch) => ({
+    sendResetEmail: (...args) => dispatch(sendResetEmail(...args))
+  })
+)(ResetPassword)

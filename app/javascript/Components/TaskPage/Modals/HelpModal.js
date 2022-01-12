@@ -107,12 +107,11 @@ const NavBtn = styled.a`
   }
 `
 
-const HelpModal = (props) => {
+const HelpModal = ({
+  showModal, setShowModal
+}) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const dummyInitialRef = useRef(null)
-
-  const showModal = props.showModal
-  const setShowModal = props.setShowModal
 
   const TOTAL_PAGES = 2;
 

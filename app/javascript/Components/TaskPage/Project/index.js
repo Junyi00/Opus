@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import {
   createLane,
   moveTaskToLane,
@@ -82,11 +82,14 @@ const EmptyBaseDiv = styled.div`
   justify-content: center;
 `
 
-const Project = (props) => {
-
-  const dispatch = useDispatch()
-  const projectLayout = useSelector((state) => state.projectLayout.data)
-  const projectsState = useSelector((state) => state.projects)
+const Project = ({
+  searchQuery, projectLayout, projectsState, 
+  createLane,
+  moveTaskToLane,
+  reorderTaskInLane,
+  reorderLane,
+  moveTaskToNewLane 
+}) => {
 
   const projId = projectsState.projects[projectsState.selectedIndex].id
 
@@ -105,28 +108,28 @@ const Project = (props) => {
         if (pathToItem === pathToDropZone) {
           if (splitItemPath.length == 1) { 
             // lanes shifted around
-            dispatch(reorderLane(splitDropZonePath, splitItemPath))
+            reorderLane(splitDropZonePath, splitItemPath)
           }
           else { 
             // tasks shifted within lane
-            dispatch(reorderTaskInLane(splitDropZonePath, splitItemPath))
+            reorderTaskInLane(splitDropZonePath, splitItemPath)
           }
           return;
         }
 
         // 1.b. Move Task to Existing Lane
-        dispatch(moveTaskToLane(splitDropZonePath, splitItemPath, item))
+        moveTaskToLane(splitDropZonePath, splitItemPath, item)
         return;
       }
 
       // 2. Move + Create
-      dispatch(moveTaskToNewLane(splitDropZonePath, splitItemPath, projId))
+      moveTaskToNewLane(splitDropZonePath, splitItemPath, projId)
     },
     [projectLayout]
   );
 
   const addLaneOnClick = () => {
-    dispatch(createLane(projId, projectLayout.length))
+    createLane(projId, projectLayout.length)
   }
 
   if (projectLayout) {
@@ -152,7 +155,7 @@ const Project = (props) => {
                         data={lane} 
                         handleDrop={handleDrop} 
                         path={currentPath} 
-                        searchQuery={props.searchQuery}
+                        searchQuery={searchQuery}
                       />}
                     </React.Fragment>
                   );
@@ -189,4 +192,16 @@ const Project = (props) => {
 
 }
 
-export default Project
+export default connect(
+  (state) => ({
+    projectLayout: state.projectLayout.data,
+    projectsState: state.projects
+  }),
+  (dispatch) => ({
+    reorderLane: (...args) => dispatch(reorderLane(...args)),
+    reorderTaskInLane: (...args) => dispatch(reorderTaskInLane(...args)),
+    moveTaskToLane: (...args) => dispatch(moveTaskToLane(...args)),
+    moveTaskToNewLane: (...args) => dispatch(moveTaskToNewLane(...args)),
+    createLane: (...args) => dispatch(createLane(...args)),
+  })
+)(Project)

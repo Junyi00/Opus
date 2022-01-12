@@ -16,9 +16,7 @@ const BaseDiv = styled.div`
   // text-align: center;
 `
 
-const Tag = (props) => {
-
-  const data = props.data
+const Tag = ({data}) => {
 
   return (
     <BaseDiv color={data.color}>

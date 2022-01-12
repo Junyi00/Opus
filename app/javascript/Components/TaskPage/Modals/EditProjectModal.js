@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { updateProject, deleteProject } from '../../../actions/projectsActions';
 
 const ModalBtn = styled.button`
@@ -18,23 +18,20 @@ const ModalBtn = styled.button`
 	}
 `
 
-const EditProjectModal = (props) => {
+const EditProjectModal = ({
+	showModal, setShowModal, projectsState, updateProject, deleteProject
+}) => {
 	const [projNameValue, setProjNameValue] = useState('')
 	const [showWarning, setShowWarning] = useState(false)
 
-	const showModal = props.showModal
-	const setShowModal = props.setShowModal
-
-	const dispatch = useDispatch()
-	const projectsState = useSelector((state) => state.projects)
 	const projName = projectsState.selectedIndex !== null ? projectsState.projects[projectsState.selectedIndex].name : "~UNKNOWN~"		
 
 	const submitAction = () => {
 			const trimmedProjName = projNameValue.trim()
 			if (trimmedProjName !== '' && trimmedProjName !== projName) {
-				dispatch(updateProject(projectsState.projects[projectsState.selectedIndex].id, { 
+				updateProject(projectsState.projects[projectsState.selectedIndex].id, { 
 					name: trimmedProjName 
-				}))
+				})
 			}
 
 			requestClose()
@@ -45,7 +42,7 @@ const EditProjectModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			dispatch(deleteProject(projectsState.projects[projectsState.selectedIndex].id))
+			deleteProject(projectsState.projects[projectsState.selectedIndex].id)
 			requestClose()
 		}	
 	}
@@ -101,4 +98,12 @@ const EditProjectModal = (props) => {
 
 }
 
-export default EditProjectModal
+export default connect(
+	(state) => ({
+		projectsState: state.projects
+	}),
+	(dispatch) => ({
+		updateProject: (...args) => dispatch(updateProject(...args)),
+		deleteProject: (...args) => dispatch(deleteProject(...args))
+	})
+)(EditProjectModal)

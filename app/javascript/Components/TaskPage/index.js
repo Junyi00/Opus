@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Navigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { retriveUserProjects } from '../../actions/projectsActions'
 
 import Header from '../Header'
@@ -19,20 +19,17 @@ const ContentDiv = styled.div`
   overflow: scroll;
 `
 
-const TaskPage = () => {
+const TaskPage = ({
+  projectsState, userState, appErrorState, retriveUserProjects
+}) => {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showErrorModal, setShowErrorModal] = useState(false)
 
-  const dispatch = useDispatch()
-  const projectsState = useSelector((state) => state.projects)
-  const userState = useSelector((state) => state.user)
-  const appErrorState = useSelector((state) => state.errors.app)
-
   useEffect(() => {
     setIsLoading(true)
-    dispatch(retriveUserProjects(userState.id)).then(resp => setIsLoading(false))
-  }, [dispatch])  
+    retriveUserProjects(userState.id).then(resp => setIsLoading(false))
+  }, [userState.id])  
 
   useEffect(() => {
     if (appErrorState !== null) {
@@ -60,4 +57,13 @@ const TaskPage = () => {
   )
 }
 
-export default TaskPage
+export default connect(
+  (state) => ({
+    projectsState: state.projects,
+    userState: state.user,
+    appErrorState: state.errors.app
+  }),
+  (dispatch) => ({
+    retriveUserProjects: (...args) => dispatch(retriveUserProjects(...args))
+  })
+)(TaskPage)

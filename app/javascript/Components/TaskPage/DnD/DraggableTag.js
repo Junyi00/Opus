@@ -3,23 +3,25 @@ import { useDrag } from "react-dnd";
 import { ItemTypes } from "./itemTypes";
 import Tag from "../Project/Tag";
 
-const DraggableTag = (props) => {
+const DraggableTag = ({
+  index, data
+}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.EDIT_TAG,
     item: () => {
       return {
         type: ItemTypes.EDIT_TAG,
-        tagId: props.data.id,
-        index: props.index
+        tagId: data.id,
+        index: index
     }},
     collect: monitor => ({
         isDragging: monitor.isDragging()
     })
-  }), [props.index]);
+  }), [index]);
 
   return (
     <div ref={drag}>
-      <Tag data={props.data}></Tag>
+      <Tag data={data}></Tag>
     </div>
   )
 }

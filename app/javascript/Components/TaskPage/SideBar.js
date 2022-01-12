@@ -1,6 +1,6 @@
 import React, { useState   } from "react";
 import styled from "styled-components"
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
 import EditProjectModal from "./Modals/EditProjectModal";
 import HelpModal from "./Modals/HelpModal"
@@ -119,23 +119,18 @@ const GuideBtn = styled.button`
   margin-top: auto; // align button to the bottom
 `
 
-const SideBar = (props) => {
+const SideBar = ({
+  userState, projects, selectedIndex, createProject, selectProject, isLoading
+}) => {
   const [showProjModal, setShowProjModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
 
-  const isLoading = props.isLoading
-
-  const dispatch = useDispatch()
-  const userState = useSelector((state) => state.user)
-  const projects = useSelector((state) => state.projects.projects)
-  const selectedIndex = useSelector((state) => state.projects.selectedIndex)
-
   const addProjOnClick = () => {
-    dispatch(createProject(userState.id))
+    createProject(userState.id)
   }
 
   const createButtonOnClick = (index) => {
-    return () => dispatch(selectProject(index))
+    return () => selectProject(index)
   }
 
   const createProjectsElements = () => {
@@ -172,4 +167,14 @@ const SideBar = (props) => {
   )
 }
 
-export default SideBar
+export default connect(
+  (state) => ({
+    userState: state.user,
+    projects: state.projects.projects,
+    selectedIndex: state.projects.selectedIndex
+  }),
+  (dispatch) => ({
+    createProject: (...args) => dispatch(createProject(...args)),
+    selectProject: (...args) => dispatch(selectProject(...args))
+  })
+)(SideBar)

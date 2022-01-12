@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { forgetResetPassword } from "../../actions/authActions";
 import OpusIcon from 'images/Opus_Icon.png'
 
@@ -86,21 +86,20 @@ const MessageDiv = styled.div`
   white-space: pre-wrap;
 `
 
-const ResetPassword = () => {
+const ResetPassword = ({
+  resetPwErrorState, forgetResetPassword
+}) => {
   const [newPassword, setNewPassword] = useState('')
   const [showSuccessMessage, setShowSuccessMessage] = useState(false)
   const [searchParams, _] = useSearchParams();
 
-  const dispatch = useDispatch();
-  const resetPwErrorState = useSelector((state) => state.errors.reset_pw)
-
   const submitAction = (e) => {
     e.preventDefault()
-    dispatch(forgetResetPassword(
+    forgetResetPassword(
       searchParams.get('token'), 
       { password: newPassword },
       () => { setShowSuccessMessage(true) }
-    ))
+    )
   }
 
   return (
@@ -158,4 +157,11 @@ const ResetPassword = () => {
   )
 }
 
-export default ResetPassword
+export default connect(
+  (state) => ({
+    resetPwErrorState: state.errors.reset_pw
+  }),
+  (dispatch) => ({
+    forgetResetPassword: (...args) => dispatch(forgetResetPassword(...args))
+  })
+)(ResetPassword)

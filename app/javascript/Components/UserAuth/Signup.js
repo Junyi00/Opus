@@ -1,7 +1,7 @@
 
 import React, { useState } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { connect } from "react-redux"
 
 import { addUser } from "../../actions/authActions"
 
@@ -52,7 +52,9 @@ const MessageDiv = styled.div`
   white-space: pre-wrap
 `
 
-const Signup = (props) => {
+const Signup = ({
+  signupErrorState, addUser
+}) => {
   const [emailValue, setEmailValue] = useState('')
   const [userValue, setUserValue] = useState('')
   const [passValue, setPassValue] = useState('')
@@ -60,12 +62,10 @@ const Signup = (props) => {
 
   const [signUpSuccess, setSignUpSuccess] = useState(false)
 
-  const dispatch = useDispatch()
-
   const signupAction = (data) => {
-    dispatch(addUser(data, ()=>{
+    addUser(data, ()=>{
       setSignUpSuccess(true)
-    }))
+    })
   }
 
   const submitAction = (e) => {
@@ -130,12 +130,19 @@ const Signup = (props) => {
         signUpSuccess && <MessageDiv>User Created!</MessageDiv>
       }
       {
-        props.signupErrorState !== null && <MessageDiv>
-          <a style={{color:'var(--dark-red)'}}>Error: </a>{props.signupErrorState.message}
+        signupErrorState !== null && <MessageDiv>
+          <a style={{color:'var(--dark-red)'}}>Error: </a>{signupErrorState.message}
         </MessageDiv>
       }
     </React.Fragment>
   )
 }
 
-export default Signup
+export default connect(
+  (state) => ({
+    signupErrorState: state.errors.signup
+  }),
+  (dispatch) => ({
+    addUser: (...args) => dispatch(addUser(...args))
+  })
+)(Signup)

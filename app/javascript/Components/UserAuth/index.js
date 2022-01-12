@@ -54,69 +54,59 @@ const TabBtnStyle = {
   borderWidth: '0px 0px 1px 0px'
 }
 
-class UserAuth extends Component {
+const UserAuth = ({ user }) => {
+  return (
+    <React.Fragment>
+      { user.isLoggedIn && (<Navigate to="/" replace={true} />)}
+      <Header 
+        projectLoaded={null}
+        searchQuery=''
+      />
+      <BaseDiv>
+        <img style={{position:'absolute', opacity:'10%', width:'80%', zIndex:'-1'}} src={OpusIcon} />
+        <ContentDiv>
+          <Tab.Group>
+            <Tab.List style={TabListStyle}>
+              <Tab
+                style={TabBtnStyle}
+                className={({ selected }) =>
+                  selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
+                }
+              >Login</Tab>
+              <Tab
+                style={TabBtnStyle}
+                className={({ selected }) =>
+                  selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
+                }
+              >Sign Up</Tab>
+              <Tab
+                style={TabBtnStyle}
+                className={({ selected }) =>
+                  selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
+                }
+              >Reset</Tab>
+            </Tab.List>
+            
+            <Tab.Panel style={{padding:'10px'}}>
+              <Login />
+            </Tab.Panel>
+            <Tab.Panel style={{padding:'10px'}}>
+              <Signup />
+            </Tab.Panel>
+            <Tab.Panel style={{padding:'10px'}}>
+              <ResetPassword />
+            </Tab.Panel>
+          </Tab.Group>
+        </ContentDiv>
+      </BaseDiv>
+    </React.Fragment>
+  )
 
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        { this.props.user.isLoggedIn && (<Navigate to="/" replace={true} />)}
-        <Header 
-          projectLoaded={null}
-          searchQuery=''
-        />
-        <BaseDiv>
-          <img style={{position:'absolute', opacity:'10%', width:'80%', zIndex:'-1'}} src={OpusIcon} />
-          <ContentDiv>
-            <Tab.Group>
-              <Tab.List style={TabListStyle}>
-                <Tab
-                  style={TabBtnStyle}
-                  className={({ selected }) =>
-                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
-                  }
-                >Login</Tab>
-                <Tab
-                  style={TabBtnStyle}
-                  className={({ selected }) =>
-                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
-                  }
-                >Sign Up</Tab>
-                <Tab
-                  style={TabBtnStyle}
-                  className={({ selected }) =>
-                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
-                  }
-                >Reset</Tab>
-              </Tab.List>
-              
-              <Tab.Panel style={{padding:'10px'}}>
-                <Login
-                  loginErrorState={this.props.errors.login}
-                />
-              </Tab.Panel>
-              <Tab.Panel style={{padding:'10px'}}>
-                <Signup 
-                  signupErrorState={this.props.errors.signup}
-                />
-              </Tab.Panel>
-              <Tab.Panel style={{padding:'10px'}}>
-                <ResetPassword />
-              </Tab.Panel>
-            </Tab.Group>
-          </ContentDiv>
-        </BaseDiv>
-      </React.Fragment>
-    )
-  }
 }
 
-const mapStateToProps = (state) => ({
-  errors: state.errors,
-  user: state.user
-});
-
-export default connect(mapStateToProps, null)(UserAuth)
+export default connect(
+  (state) => ({
+    user: state.user
+  }), 
+  null
+)(UserAuth)

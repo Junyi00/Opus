@@ -1,7 +1,7 @@
 
 import React, { useState } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { connect } from "react-redux"
 import { loginUser } from "../../actions/authActions"
 
 const GridBaseDiv = styled.form`
@@ -63,15 +63,15 @@ const ForgetBtn = styled.button`
   }
 `
 
-const Login = (props) => {
+const Login = ({
+  loginErrorState, loginUser
+}) => {
   const [userValue, setUserValue] = useState('')
   const [passValue, setPassValue] = useState('')
   const [showResetModal, setShowResetModal] = useState(false)
 
-  const dispatch = useDispatch()
-
   const loginAction = (data) => {
-    dispatch(loginUser(data, ()=>{}))
+    loginUser(data, ()=>{})
   }
 
   const submitAction = (e) => {
@@ -117,12 +117,19 @@ const Login = (props) => {
         />
       </GridBaseDiv>
       {
-        props.loginErrorState !== null && <MessageDiv>
-          <a style={{color:'var(--dark-red)'}}>Error: </a>{props.loginErrorState.message}
+        loginErrorState !== null && <MessageDiv>
+          <a style={{color:'var(--dark-red)'}}>Error: </a>{loginErrorState.message}
         </MessageDiv>
       }
     </React.Fragment>
   )
 }
 
-export default Login
+export default connect(
+  (state) => ({
+    loginErrorState: state.errors.login
+  }),
+  (dispatch) => ({
+    loginUser: (...args) => dispatch(loginUser(...args))
+  })
+)(Login)

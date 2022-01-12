@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from 'styled-components'
-import { useSelector, useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { logoutUser } from '../actions/authActions'
 import OpusLogo from 'images/Opus_Logo.png'
 
@@ -87,20 +87,15 @@ const UserMenuStyle = {
 
 const MenuItemBtn = styled.button``
 
-const Header = (props) => {
-  const searchQuery = props.searchQuery
-  const setSearchQuery = props.setSearchQuery
-
+const Header = ({
+  searchQuery, setSearchQuery, userState, selectedIndex, logoutUser
+}) => {
   const [showResetPassModal, setShowResetPassModal] = useState(false)
 
-  const dispatch = useDispatch()
-  const userState = useSelector((state) => state.user)
-  const selectedIndex = useSelector((state) => state.projects.selectedIndex)
-
   const logoutAction = () => {
-    dispatch(logoutUser({
+    logoutUser({
       user_id: userState.id
-    }))
+    })
   }
 
   const updatePasswordAction = () => {
@@ -152,4 +147,12 @@ const Header = (props) => {
   )
 }
 
-export default Header
+export default connect(
+  (state) => ({
+    userState: state.user,
+    selectedIndex: state.projects.selectedIndex
+  }),
+  (dispatch) => ({
+    logoutUser: (...args) => dispatch(logoutUser(...args))
+  })
+)(Header)

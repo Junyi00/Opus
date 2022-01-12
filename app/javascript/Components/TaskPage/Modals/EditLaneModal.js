@@ -1,7 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { updateLane, deleteLane } from '../../../actions/projectLayoutActions';
 
 const ModalBtn = styled.button`
@@ -18,24 +18,19 @@ const ModalBtn = styled.button`
 	}
 `
 
-const EditLaneModal = (props) => {
+const EditLaneModal = ({
+	showModal, setShowModal, laneName, laneId, updateLane, deleteLane
+}) => {
 	const [laneNameValue, setLaneNameValue] = useState('')
 	const [showWarning, setShowWarning] = useState(false)
-
-	const showModal = props.showModal
-	const setShowModal = props.setShowModal
-	const laneName = props.laneName
-	const laneId = props.laneId
-
-	const dispatch = useDispatch()
 
 	const submitAction = () => {
 			const trimmedLaneName = laneNameValue.trim()
 			if (trimmedLaneName !== '' && trimmedLaneName !== laneName)
 
-			dispatch(updateLane(laneId, {
+			updateLane(laneId, {
 				name: trimmedLaneName
-			}))
+			})
 			requestClose()
 	}
 
@@ -44,7 +39,7 @@ const EditLaneModal = (props) => {
 			setShowWarning(true)
 		}
 		else {
-			dispatch(deleteLane(laneId))
+			deleteLane(laneId)
 			
 			requestClose()
 		}	
@@ -100,4 +95,10 @@ const EditLaneModal = (props) => {
 
 }
 
-export default EditLaneModal
+export default connect(
+	null,
+	(dispatch) => ({
+		updateLane: (...args) => dispatch(updateLane(...args)), 
+		deleteLane: (...args) => dispatch(deleteLane(...args)),
+	})
+)(EditLaneModal)

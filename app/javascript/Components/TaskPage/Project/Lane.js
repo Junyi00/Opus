@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDrag } from 'react-dnd';
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 
 import { ItemTypes } from "../DnD/itemTypes";
 import DropZone from "../DnD/DropZone";
@@ -64,15 +64,11 @@ const LaneHeaderBtn = styled.button`
   border: none;
 `
 
-const Lane = (props) => {
+const Lane = ({
+  path, data, handleDrop, searchQuery, createTask
+}) => {
   const [showModal, setShowModal] = useState(false)
   const [childrenToDisplay, setChildrenToDisplay] = useState([])
-
-  const data = props.data
-  const path = props.path
-  const handleDrop = props.handleDrop
-
-  const dispatch = useDispatch()
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.LANE,
@@ -91,29 +87,29 @@ const Lane = (props) => {
   const opacity = isDragging ? 0 : 1;
 
   useEffect(()=> {
-    if (props.searchQuery == '') { return }
+    if (searchQuery == '') { return }
 
-    if (props.searchQuery.charAt(0) == '#') {
+    if (searchQuery.charAt(0) == '#') {
       // tag filter
       setChildrenToDisplay(
         data.children.filter((task, index) => 
-          task.tags.filter((tag, index) => tag.name.toLowerCase().includes(props.searchQuery.slice(1).toLowerCase())).length > 0
+          task.tags.filter((tag, index) => tag.name.toLowerCase().includes(searchQuery.slice(1).toLowerCase())).length > 0
         )
       )
     }
     else {
       // title filter
-      setChildrenToDisplay(data.children.filter((task, index) => task.name.toLowerCase().includes(props.searchQuery.toLowerCase())))
+      setChildrenToDisplay(data.children.filter((task, index) => task.name.toLowerCase().includes(searchQuery.toLowerCase())))
     }
-  }, [props.searchQuery])
+  }, [searchQuery])
 
   const addTaskOnClick = () => {
-    dispatch(createTask(data.id , data.children.filter((task, index) => !task.completed).length)) // TODO: Improve this
+    createTask(data.id , data.children.filter((task, index) => !task.completed).length)
   }
 
   return (
     <React.Fragment>
-      { props.searchQuery == ''
+      { searchQuery == ''
         ? <BaseDiv ref={drag}>
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv
@@ -171,4 +167,9 @@ const Lane = (props) => {
   )
 }
 
-export default Lane
+export default connect(
+  null,
+  (dispatch) => ({
+    createTask: (...args) => dispatch(createTask(...args))
+  })
+)(Lane)
