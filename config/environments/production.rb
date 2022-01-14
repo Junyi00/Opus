@@ -121,4 +121,18 @@ Rails.application.configure do
   config.session_store :cookie_store, key: '_interslice_session'
   config.middleware.use ActionDispatch::Cookies
   config.middleware.use config.session_store, config.session_options
+
+  config.action_mailer.default_options = {from: ENV['MAILER_EMAIL']}
+  config.action_mailer.default_url_options = { :host => 'opus-taskmanager.herokuapp.com', protocol: 'https' }
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'opus-taskmanager.herokuapp.com',
+    user_name:            ENV['MAILER_USERNAME'],
+    password:             ENV["MAILER_PASSWORD"],
+    authentication:       'plain',
+    enable_starttls_auto: true  
+  }
 end

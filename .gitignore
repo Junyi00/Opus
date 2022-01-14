@@ -34,3 +34,6 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# dev environment vars
+/config/initializers/app_env_vars.rb

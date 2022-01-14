@@ -81,7 +81,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.default_options = {from: 'opustaskmanager@gmail.com'}
+  config.action_mailer.default_options = {from: ENV['MAILER_EMAIL']}
   config.action_mailer.default_url_options = { :host => 'localhost:3000', protocol: 'http' }
 
   config.action_mailer.delivery_method = :smtp
@@ -89,8 +89,8 @@ Rails.application.configure do
     address:              'smtp.gmail.com',
     port:                 587,
     domain:               'example.com',
-    user_name:            'opustaskmanager',
-    password:             'hxdcpkiwuhjoxnwz',
+    user_name:            ENV['MAILER_USERNAME'],
+    password:             ENV["MAILER_PASSWORD"],
     authentication:       'plain',
    enable_starttls_auto: true  
 }
