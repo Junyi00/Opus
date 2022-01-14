@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Dialog } from '@headlessui/react'
 import styled from 'styled-components'
 
 import Page1 from "images/guides/Page1.png"
 import Page2 from "images/guides/Page2.png"
+import Page3 from "images/guides/Page3.png"
+import Page4 from "images/guides/Page4.png"
 
 const BaseDiv = styled.div`
   display: flex;
@@ -78,42 +80,53 @@ const Dot = styled.a`
   `}
 `
 
-const NavBtn = styled.a`
-  position: absolute;
-  width: 10%;
-  height: 100%;
-  background-color: transparent;
-
-  top: 0px;
-  ${({ isLeft }) => isLeft && ` 
-    left: 0px;
-    border-top-left-radius: 1em;
-    border-bottom-left-radius: 1em;
-  `}
-  ${({ isRight }) => isRight && ` 
-    right: 0px;
-    border-top-right-radius: 1em;
-    border-bottom-right-radius: 1em;
-  `}
-
-  &:hover {
-    background-color: var(--light-gray);
-    opacity: 30%;
-  }
-
-  &:focus {
-    background-color: var(--highlight-color);
-    opacity: 30%;
-  }
-`
-
 const HelpModal = ({
   showModal, setShowModal
 }) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const dummyInitialRef = useRef(null)
 
-  const TOTAL_PAGES = 2;
+  const [isScrolling, setIsScrolling] = useState(false)
+  // const [scrollLeft, setScrollLeft] = useState(0)
+  const [clientX, setClientX] = useState(0)
+
+  const scrollDivRef = useRef(null)
+
+  const TOTAL_PAGES = 4;
+
+  useEffect(() => {
+    if (scrollDivRef && showModal) {
+      window.addEventListener('mousemove', onMouseMove)
+      window.addEventListener('mouseup', onMouseUp)
+      window.addEventListener('mousedown', onMouseDown)
+    }
+    
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
+      window.removeEventListener('mousedown', onMouseDown)
+    }
+  }, [scrollDivRef, showModal, isScrolling, clientX])
+
+  const onMouseMove = (event) => {
+    if (isScrolling) {
+      console.log(scrollDivRef.current.scrollLeft, clientX, event.clientX)
+      const dragDiff = (clientX - event.clientX) * 1.5 // increase sensitivity
+      scrollDivRef.current.scrollLeft = scrollDivRef.current.scrollLeft + dragDiff
+    }
+  };
+
+  const onMouseUp =  () => {
+    console.log("RESET")
+    setIsScrolling(false)
+    setClientX(0)
+  };
+
+  const onMouseDown = (event) => {
+    console.log("INITIAL CLIENTX: " + event.clientX)
+    setIsScrolling(true)
+    setClientX(event.clientX)
+  };
 
   return (
     <Dialog
@@ -127,7 +140,7 @@ const HelpModal = ({
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
         
         <BaseDiv className='rounded-2xl p-5 z-10'>
-          <SlidesDiv>
+          <SlidesDiv ref={scrollDivRef} onMouseDown={()=>{}}>
             <PageDiv id='page0'>
               <b>Projects - Lanes - Tasks</b> 
               <img draggable="false" src={Page1}/>
@@ -136,17 +149,15 @@ const HelpModal = ({
               <b>Drag and Drop!</b> 
               <img draggable="false" src={Page2} />
             </PageDiv>
+            <PageDiv id='page2'>
+              <b>The Header</b> 
+              <img draggable="false" src={Page3} />
+            </PageDiv>
+            <PageDiv id='page3'>
+              <b>Editing Task!</b> 
+              <img draggable="false" src={Page4} />
+            </PageDiv>
           </SlidesDiv>
-          <NavBtn 
-            isLeft 
-            href={'#page' + (selectedIndex == 0 ? selectedIndex : selectedIndex - 1)}
-            onClick={()=>setSelectedIndex(selectedIndex == 0 ? selectedIndex : selectedIndex - 1)} 
-          />
-          <NavBtn 
-            isRight 
-            href={'#page' + (selectedIndex == TOTAL_PAGES - 1 ? selectedIndex : selectedIndex + 1)} 
-            onClick={()=>setSelectedIndex(selectedIndex == TOTAL_PAGES - 1 ? selectedIndex : selectedIndex + 1)} 
-          />
           <div style={{display:'flex', width:'fit-content', alignItems:'center', columnGap:'5px'}}>
             {
               [...Array(TOTAL_PAGES)].map((_, index) => 
