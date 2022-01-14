@@ -148,17 +148,15 @@ const EditTaskModal = ({
 			name: taskTitleValue.trim(),
 			description: taskDescValue.trim(),
 			starred: taskStarred
+		}).then(resp => {
+			const tagsToAdd = displayTags.filter((tag, index) => !('id' in tag))
+			createTags(laneId, taskId, tagsToAdd).then(resp => {
+				if (tagsToDelete.length > 0) {
+					deleteTags(laneId, taskId, [...tagsToDelete])
+					setTagsToDelete([])
+				}
+			})
 		})
-		
-		const tagsToAdd = displayTags.filter((tag, index) => !('id' in tag))
-		if (tagsToAdd.length > 0) {
-			createTags(laneId, taskId, tagsToAdd)
-		}
-
-		if (tagsToDelete.length > 0) {
-			deleteTags(laneId, taskId, [...tagsToDelete])
-			setTagsToDelete([])
-		}
 		
 		requestClose()
 	}
