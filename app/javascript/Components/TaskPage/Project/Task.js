@@ -17,19 +17,26 @@ import ClockIcon from "images/Clock_Icon.png"
 
 const BaseDiv = styled.div`
   border-radius: 5px;
+  // border: 1px solid var(--bg-gray);
   box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
 
-  flex: 1 0 0;
+  // flex: 1 0 0;
   width: 95%;
-  min-width: 200px;
-  max-width: 300px;
-  min-height: 100px;
-  max-height: 100px;
+  min-width: 150px;
+  max-width: 250px;
+  min-height: 90px;
+  max-height: 90px;
   background-color: white;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &:hover {
+    box-shadow: rgba(100, 100, 111, 0.3) 0px 0px 35px 0px;
+
+    transition: 100ms box-shadow;
+  }
 `
 
 const TaskHeader = styled.a`
@@ -37,11 +44,10 @@ const TaskHeader = styled.a`
   height: fit-content;
   flex: 0 0 0;
   
-  padding: 2px 5px 2px 5px;
-  margin-top: 0px;
+  padding: 2px 5px 0px 5px;
 
   border: none;
-  border-bottom: 1px solid var(--light-gray);
+  // border-bottom: 1px solid var(--light-gray);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 
@@ -76,16 +82,22 @@ const CompleteBtn = styled.button`
 const TaskContent = styled.div`
   flex: 1 0 0;
   width: 100%;
-  padding: 5px;
-
-  font-size: 15px;
-  line-height: 15px;
-  white-space: pre-wrap;
-  overflow-y: auto;
+  padding: 0px 5px 5px 5px;
 
   display: flex;
   flex-direction: column;
   justify-content: stretch;
+`
+
+const TaskDesc = styled.a`
+  font-size: 12px;
+  line-height: 12px;
+  white-space: pre-wrap;
+  overflow-y: auto;
+  color: rgb(136, 136, 136);
+
+  min-height: 20px;
+  flex: 1 0 0;
 
   ::-webkit-scrollbar {
     width: 5px;
@@ -103,8 +115,14 @@ const TaskContent = styled.div`
 const TagsDiv = styled.div`
   display: flex;
   flex-direction: row;
-  flex-flow: wrap;
+  // flex-flow: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   column-gap: 2px;
+
+  margin-bottom: 2px;
+  margin-top: 2px;
 `
 
 const Task = ({
@@ -145,13 +163,14 @@ const Task = ({
   }
 
   const DueDateInput = forwardRef(({ value, onClick }, ref) => (
-    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', width:'100%'}}>
+    <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
       <button onClick={onClick} style={{height:'12px', display:'flex', alignItems:'center', justifyContent:'stretch', columnGap:'2px'}}>
         <img src={ClockIcon} style={{height:'12px'}}/>
         <a style={{
           fontSize:'12px', 
           lineHeight:'12px',
-          color: value == format(new Date(), DATE_FORMAT) ? 'var(--dark-red)' : 'black' // TODO: better implementation?
+          textAlign:'center',
+          color: value == format(new Date(), DATE_FORMAT) ? 'var(--dark-red)' : 'rgb(140,140,140)' // TODO: better implementation?
         }}>{value}</a>
       </button>
     </div>
@@ -185,27 +204,45 @@ const Task = ({
     <React.Fragment>
       <BaseDiv ref={ref} starred={taskStarred} onDoubleClick={()=> setShowModal(true)}>
         <TaskHeader>
-          {/* <TaskTitleBtn onDoubleClick={()=> setShowModal(true)}> */}
             {taskName}
-          {/* </TaskTitleBtn> */}
-          <CompleteBtn onClick={() => completeTaskOnClick(data.id)} starred={taskStarred}></CompleteBtn>
+          <CompleteBtn onClick={() => completeTaskOnClick(data.id)} starred={taskStarred} />
         </TaskHeader>
         <TaskContent>
-          <TagsDiv>
-            {
-              data.tags.map((tag, index) => 
-                <Tag key={index} data={tag}></Tag>
-              )
-            }
-          </TagsDiv>
-          <a style={{fontSize: '12px', flex:'1 0 0'}}>{taskDesc}</a>
-          <DatePicker
-            selected={dueDate}
-            onChange={(date) => setDueDate(date)}
-            dateFormat={DATE_FORMAT}
-            customInput={<DueDateInput />}
-            renderCustomHeader={DueDateHeader}
-          />
+          <TaskDesc>{taskDesc}</TaskDesc>
+          { data.tags.length > 2
+            ?  <React.Fragment>
+              <TagsDiv>
+                {
+                  data.tags.map((tag, index) => 
+                    <Tag key={index} data={tag}></Tag>
+                  )
+                }
+              </TagsDiv>
+              <DatePicker
+                selected={dueDate}
+                onChange={(date) => setDueDate(date)}
+                dateFormat={DATE_FORMAT}
+                customInput={<DueDateInput />}
+                renderCustomHeader={DueDateHeader}
+              />
+            </React.Fragment>
+            : <div style={{display:'flex', alignItems:'end', justifyContent:'space-between'}}>
+              <DatePicker
+                selected={dueDate}
+                onChange={(date) => setDueDate(date)}
+                dateFormat={DATE_FORMAT}
+                customInput={<DueDateInput />}
+                renderCustomHeader={DueDateHeader}
+              />
+              <TagsDiv>
+                {
+                  data.tags.map((tag, index) => 
+                    <Tag key={index} data={tag}></Tag>
+                  )
+                }
+              </TagsDiv>
+            </div>
+          }
         </TaskContent>
       </BaseDiv>
       <EditTaskModal laneId={laneId} tags={data.tags} taskData={data} showModal={showModal} setShowModal={setShowModal}/>

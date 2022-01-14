@@ -53,6 +53,9 @@ const ForgetBtn = styled.button`
   height: fit-content;
   width: fit-content;
 
+  position: absolute;
+  bottom: 0px;
+
   border: none;
   text-align: left;
   font-size: 12px;
@@ -64,11 +67,10 @@ const ForgetBtn = styled.button`
 `
 
 const Login = ({
-  loginErrorState, loginUser
+  setShowResetTab, loginErrorState, loginUser
 }) => {
   const [userValue, setUserValue] = useState('')
   const [passValue, setPassValue] = useState('')
-  const [showResetModal, setShowResetModal] = useState(false)
 
   const loginAction = (data) => {
     loginUser(data, ()=>{})
@@ -82,10 +84,10 @@ const Login = ({
     })
   }
 
-  // const forgetPasswordAction = (e) => {
-  //   e.preventDefault()
-  //   setShowResetModal(true)
-  // }
+  const forgetPasswordAction = (e) => {
+    e.preventDefault()
+    setShowResetTab(true)
+  }
 
   return (
     <React.Fragment>
@@ -115,6 +117,11 @@ const Login = ({
           style={{gridArea:'LoginBtn', marginTop:'5px'}}
           color='var(--highlight-color)'
         />
+        <div style={{gridArea:'ForgetBtn', position:'relative'}}>
+          <ForgetBtn onClick={forgetPasswordAction}>
+            Forget Password?
+          </ForgetBtn>
+        </div>
       </GridBaseDiv>
       {
         loginErrorState !== null && <MessageDiv>

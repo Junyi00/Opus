@@ -52,6 +52,11 @@ const SearchBar = styled.input`
   width: 100%;
   height: 100%;
   border-radius: var(--standard-br);
+  
+  background-color: var(--bg-gray);
+  border-color: var(--bg-gray);
+
+  color: black;
 
   padding-left: 5px;
 `

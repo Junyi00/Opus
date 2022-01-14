@@ -48,35 +48,27 @@ const ProjectsList = styled.ul`
   // }
 `
 
-const ProjectsItem = styled.li`
-
-  > button {
-    width: 100%;
-
-    padding: 5px;
-    // border-radius: var(--standard-br);
-    border-width: 0px 0px 0px 1px;
-    border-style: solid;
-    border-color: var(--light-gray);
-    color: var(--dark-gray);
-
-    ${({ selected }) => selected && `
-      color: var(--highlight-color);
-      // background-color: var(--bg-gray);
-      border-color: var(--highlight-color);
-    `}
-  }
-`
-
 const ProjectButton = styled.button`
+  width: 100%;
+
   background-color: transparent;
-  border: none;
+  border-width: 0px 0px 0px 1px;
+  border-style: solid;
+  border-color: var(--light-gray);
+  padding: 5px;
 
   font-size: 15px;
+  color: darkgray;
 
   &:hover {
     color: var(--highlight-color);
   }
+
+  ${({ selected }) => selected && `
+    color: var(--highlight-color);
+    // background-color: var(--bg-gray);
+    border-color: var(--highlight-color);
+  `}
 `
 
 const NewProjectBtn = styled.button`
@@ -101,11 +93,12 @@ const NewProjectBtn = styled.button`
 
 const GuideBtn = styled.button`
   background-color: transparent;
-  border-color: gray;
+  border-color: darkgray;
   border-width: 1px 0px 1px 0px;
   padding: 5px 0px 5px 0px;
 
-  color: var(--dark-gray);
+  color: darkgray;
+  font-style: bold;
 
   &:hover {
     padding: 0px;
@@ -136,14 +129,15 @@ const SideBar = ({
   const createProjectsElements = () => {
     return projects.map((project, index) => {
       return (
-        <ProjectsItem selected={index == selectedIndex} id={project.name} key={index}>
+        <li id={project.name} key={index}>
           <ProjectButton 
+            selected={index == selectedIndex}
             onClick={createButtonOnClick(index)} 
             onDoubleClick={() => setShowProjModal(true)}
           >
             {project.name}
           </ProjectButton>
-        </ProjectsItem>)
+        </li>)
     })
   }
 

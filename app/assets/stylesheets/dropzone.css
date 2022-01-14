@@ -1,8 +1,8 @@
 /* DropZone styles */
 .dropZone {
   flex: 0 0 auto;
-  min-height: 35px;
-  height: 35px;
+  min-height: 30px;
+  height: 30px;
   width: 95%;
   transition: 200ms all;
 }

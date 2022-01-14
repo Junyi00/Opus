@@ -8,12 +8,13 @@ const BaseDiv = styled.div`
   background-color: ${props => props.color};
 
   width: fit-content;
-  height: 20px;
+  height: 16px;
   padding: 0px 2px 0px 2px;
   
+  display: flex;
+  align-items: center;
   font-size: 12px;
-  line-height: 20px;
-  // text-align: center;
+  line-height: 12px;
 `
 
 const Tag = ({data}) => {

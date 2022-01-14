@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../Header";
 import { Tab } from '@headlessui/react'
@@ -55,6 +55,8 @@ const TabBtnStyle = {
 }
 
 const UserAuth = ({ user }) => {
+  const [showResetTab, setShowResetTab] = useState(false)
+
   return (
     <React.Fragment>
       { user.isLoggedIn && (<Navigate to="/" replace={true} />)}
@@ -63,7 +65,7 @@ const UserAuth = ({ user }) => {
         searchQuery=''
       />
       <BaseDiv>
-        <img style={{position:'absolute', opacity:'10%', width:'80%', zIndex:'-1'}} src={OpusIcon} />
+        <img style={{position:'absolute', opacity:'10%', width:'60%', zIndex:'-1'}} src={OpusIcon} />
         <ContentDiv>
           <Tab.Group>
             <Tab.List style={TabListStyle}>
@@ -79,23 +81,33 @@ const UserAuth = ({ user }) => {
                   selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
                 }
               >Sign Up</Tab>
-              <Tab
-                style={TabBtnStyle}
-                className={({ selected }) =>
-                  selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
-                }
-              >Reset</Tab>
+              { showResetTab && 
+                <Tab
+                  style={TabBtnStyle}
+                  className={({ selected }) =>
+                    selected ? 'border-highlight-color text-highlight' : 'border-light-gray-color text-gray-500'
+                  }
+                >
+                  Reset
+                </Tab>
+              }
+              
             </Tab.List>
             
             <Tab.Panel style={{padding:'10px'}}>
-              <Login />
+              <Login 
+                setShowResetTab={setShowResetTab}
+              />
             </Tab.Panel>
             <Tab.Panel style={{padding:'10px'}}>
               <Signup />
             </Tab.Panel>
-            <Tab.Panel style={{padding:'10px'}}>
-              <ResetPassword />
-            </Tab.Panel>
+            { showResetTab && 
+              <Tab.Panel style={{padding:'10px'}}>
+                <ResetPassword />
+              </Tab.Panel>
+            }
+            
           </Tab.Group>
         </ContentDiv>
       </BaseDiv>

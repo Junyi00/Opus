@@ -11,10 +11,10 @@ import { createTask } from "../../../actions/projectLayoutActions";
 
 const BaseDiv = styled.div`
   border-radius: var(--standard-br);
-  background-color: var(--bg-gray);
-  // border: 1px solid var(--light-gray);
+  background-color: var(--bg-gray); 
+  // border: 1px solid var(--bg-gray);
   flex: 1 0 0;
-  min-width: 250px;
+  min-width: 230px;
   margin: 5px;
   
   display: flex;
@@ -53,7 +53,7 @@ const NewTaskBtn = styled.button`
   align-items: center;
 
   &:hover {
-    width: 100%;
+    width: 95%;
     transition: 150ms all;
   }
 `
@@ -111,7 +111,7 @@ const Lane = ({
     <React.Fragment>
       { searchQuery == ''
         ? <BaseDiv ref={drag}>
-            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
+            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}>{data.name}</LaneHeaderBtn>
             <LaneContentDiv
               onTouchStart={(e)=>{if (e.target.className.includes('dropZone')) { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
             >
@@ -147,14 +147,14 @@ const Lane = ({
         : <BaseDiv> 
             <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv>
-              <div style={{minHeight:'35px', maxHeight:'35px'}} />
+              <div style={{minHeight:'30px', maxHeight:'30px'}} />
               {
                 childrenToDisplay.map((task, index) => {
                   const currentPath = `${path}-${index}`;
                   return (
                     <React.Fragment key={task.id}>
                       <Task key={task.id} laneId={data.id} data={task} handleDrop={handleDrop} path={currentPath} />
-                      <div style={{minHeight:'35px', maxHeight:'35px'}} />
+                      <div style={{minHeight:'30px', maxHeight:'30px'}} />
                     </React.Fragment>
                   )
                 })
