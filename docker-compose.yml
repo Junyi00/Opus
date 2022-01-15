@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  db:
+    env_file: .docker_env
+    image: postgres
+
+  web:
+    build: .
+    volumes:
+      - .:/app
+      - assets:/app/public
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    env_file: .docker_env
+    environment:
+      RAILS_ENV: production
+      RAILS_MAX_THREADS: 5
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    command: server
+    volumes:
+      - assets:/var/www/public
+    links:
+      - web:web
+    ports:
+      - 80:80
+
+volumes:
+  postgres:
+  assets:
