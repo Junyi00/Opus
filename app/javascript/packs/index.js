@@ -12,8 +12,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { TouchBackend } from 'react-dnd-touch-backend'
 import supportsTouch from './supportsTouch'
 
-import rootReducer from '../reducers/index'
+import rootReducer from '../reducers'
 import App from '../App'
+import "stylesheets/index.css"
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
