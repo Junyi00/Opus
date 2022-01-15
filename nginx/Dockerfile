@@ -1,5 +1,5 @@
 From nginx:latest
-LABEL maintainer="Author <Author@email.com>"
+LABEL maintainer="Goh Jun Yi <gohjunyi00@gmail.com>"
 
 COPY ./docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]

@@ -16,6 +16,7 @@ Opus is a task management web application created with React JS, Ruby on Rails &
 |   React JS   |   17.0  |
 |    Rails     |  6.1.4  |
 |  PostreSQL   |   13.3  |
+|    Nginx     |   1.21  |
 
 Others:
 
@@ -24,13 +25,25 @@ Others:
 
 ## Setup  
 
+### **Deploying with Docker**
+
+1. Install [Docker](https://www.docker.com/)
+2. Clone this repository
+3. Build the necessary images
+    ```
+    docker-compose build
+    ```
+4. Run Opus
+    ```
+    docker-compose up -d
+    ```
+
 ### **Deploying on Heroku**
 
 1. Create Project in Heroku (Take note of your app name!)
 2. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 3. Add _nodejs_ and _ruby_ buildpacks 
     ```
-      
     heroku buildpacks:add --index 2 heroku/ruby -a <APP_NAME>
     ```
 4. Clone this repository
@@ -64,6 +77,13 @@ _GMail - Google_
 4. Setting email configruation for Opus to use
     ```
     heroku config:set MAILER_EMAIL=<GMAIL_EMAIL> MAILER_USERNAME=<GMAIL_USERNAME> MAILER_PASSWORD=<APP_PASSWORD>
+    ```
+    OR
+    Append the following lines to .docker_env
+    ```
+    MAILER_EMAIL=<GMAIL_EMAIL>
+    MAILER_USERNAME=<GMAIL_USERNAME> 
+    MAILER_PASSWORD=<APP_PASSWORD>
     ```
 5. Restart your heroku instance
 
