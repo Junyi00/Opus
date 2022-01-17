@@ -52,13 +52,8 @@ Others:
     heroku git:remote -a <APP_NAME>
     ```
 6. Push to heroku remote   
-  Use _main_ branch for a more stable build
     ```
-    git push heroku main
-    ```
-    OR
-    ```
-    git push heroku dev:main 
+    git push heroku `git subtree split --prefix src main`:refs/heads/main
     ```
 7. Setup your database
     ```
