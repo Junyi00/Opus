@@ -5,9 +5,10 @@ services:
     image: postgres
 
   web:
-    build: .
+    build: 
+      context: src
+      dockerfile: Dockerfile
     volumes:
-      - .:/app
       - assets:/app/public
     ports:
       - "3000:3000"
