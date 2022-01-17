@@ -1,4 +1,4 @@
-From nginx:latest
+FROM nginx:latest
 LABEL maintainer="Goh Jun Yi <gohjunyi00@gmail.com>"
 
 COPY ./docker-entrypoint.sh /

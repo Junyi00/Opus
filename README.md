@@ -74,11 +74,11 @@ _GMail - Google_
 1. Create an account
 2. Setup 2-factor authentication
 3. Create an [App Password](https://support.google.com/accounts/answer/185833?hl=en) for the gmail account
-4. Setting email configruation for Opus to use
+4. Set the email configuration for Opus to use
     ```
     heroku config:set MAILER_EMAIL=<GMAIL_EMAIL> MAILER_USERNAME=<GMAIL_USERNAME> MAILER_PASSWORD=<APP_PASSWORD>
     ```
-    OR
+    OR  
     Append the following lines to .docker_env
     ```
     MAILER_EMAIL=<GMAIL_EMAIL>
