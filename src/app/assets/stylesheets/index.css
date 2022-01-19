@@ -1,5 +1,12 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('<%= asset_path("fonts/OpenSans-VariableFont_wdth,wght.ttf") %>') format('truetype');
+}
+
 * {
-  font-family: "Courier"; /* Site Default Font */
+  /* font-family: "Courier"; /* Site Default Font */
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 100;
   margin: 0px;
   padding: 0px;
 
