@@ -11,16 +11,16 @@ const GridBaseDiv = styled.form`
   grid-template-columns: 1fr 2fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
   grid-template-areas:
-  "EmailLbl   EmailField   EmailField  "
-  "UserLbl    UserField     UserField  "
-  "PassLbl    PassField     PassField  "
-  "   .     PassConfField PassConfField"
-  "   .           .         SignupBtn  ";
+  "EmailLbl     EmailField    EmailField  "
+  "UserLbl       UserField     UserField  "
+  "PassLbl       PassField     PassField  "
+  "PassConfLbl PassConfField PassConfField"
+  "   .              .         SignupBtn  ";
 
   gap: 5px 10px;
 `
 
-const FormLabel = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -82,27 +82,36 @@ const Signup = ({
   return (
     <React.Fragment>
       <GridBaseDiv onSubmit={submitAction}>
-        <FormLabel gridArea='EmailLbl'>Email</FormLabel>
+        <FormLabel htmlFor='EmailField' gridArea='EmailLbl'>Email</FormLabel>
         <input 
+          id='EmailField'
           className="text_input"
+          aria-label="Email"
+          aria-required="true"  
           style={{gridArea:'EmailField'}} 
           value={emailValue}
           onChange={(e)=>{setEmailValue(e.target.value)}}
           placeholder="LastChristmas@santa.org"
           autoComplete="email"
         />
-        <FormLabel gridArea='UserLbl'>User</FormLabel>
+        <FormLabel htmlFor='UserField' gridArea='UserLbl'>User</FormLabel>
         <input 
+          id='UserField'
           className="text_input"
+          aria-label="Username"
+          aria-required="true"  
           style={{gridArea:'UserField'}} 
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
           placeholder="GiveMyHeart"
           autoComplete="username"
         />
-        <FormLabel gridArea='PassLbl'>Password</FormLabel>
+        <FormLabel htmlFor='PassField' gridArea='PassLbl'>Password</FormLabel>
         <input 
+          id='PassField'
           className="text_input"
+          aria-label="Password"
+          aria-required="true"  
           style={{gridArea:'PassField'}} 
           type="password"
           value={passValue}
@@ -110,8 +119,12 @@ const Signup = ({
           placeholder="ToSomeoneSpecial"
           autoComplete="new-password"
         />
+        <FormLabel htmlFor='PassConfField' gridArea='PassConfLbl' style={{visibility:'hidden'}}/>
         <input 
+          id='PassConfField'
           className="text_input"
+          aria-label="Password Confirmation"
+          aria-required="true"  
           style={{gridArea:'PassConfField'}} 
           type="password"
           value={passConfValue}

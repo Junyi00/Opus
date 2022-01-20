@@ -33,7 +33,7 @@ const GridContainer = styled.form`
   margin-bottom: 10px;
 `
 
-const FormLabel = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -105,19 +105,26 @@ const UpdatePasswordModal = ({
           <Dialog.Title>Reset Password</Dialog.Title>
 
           <GridContainer onSubmit={submitAction}>
-            <FormLabel gridArea='cPassLbl'>Current Password</FormLabel>
+            <FormLabel htmlFor='cPassField' gridArea='cPassLbl'>Current Password</FormLabel>
             <input 
+              id='cPassField'
               className="text_input"
+              aria-label="Current Password"
+              aria-required="true"
               style={{gridArea:'cPassField'}}
               type="password"
               value={currentPassword}
               onChange={(e)=>{setCurrentPassword(e.target.value)}}
               placeholder=""
               autoComplete="current-password"
+              autoFocus
             />
-            <FormLabel gridArea='nPassLbl'>New Password</FormLabel>
+            <FormLabel htmlFor='nPassField' gridArea='nPassLbl'>New Password</FormLabel>
             <input 
+              id='nPassField'
               className="text_input"
+              aria-label="New Password"
+              aria-required="true"
               style={{gridArea:'nPassField'}} 
               type="password"
               value={newPassword}
@@ -125,8 +132,12 @@ const UpdatePasswordModal = ({
               placeholder=""
               autoComplete="off"
             />
+            <FormLabel htmlFor='cnPassField' gridArea='nPassLbl' style={{visibility:'hidden'}} />
             <input 
+              id='cnPassField'
               className="text_input"
+              aria-label="Password Confirmation"
+              aria-required="true"
               style={{gridArea:'cnPassField'}} 
               type="password"
               value={confirmNewPassword}
@@ -136,7 +147,7 @@ const UpdatePasswordModal = ({
             />
           </GridContainer>
           <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
-						<ModalBtn type='text' color='var(--highlight-color)' onClick={submitAction}>Reset</ModalBtn>
+						<ModalBtn type='submit' color='var(--highlight-color)'>Reset</ModalBtn>
 					</div>
           { updatePwErrorState !== null &&
             <MessageDiv>

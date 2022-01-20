@@ -66,21 +66,27 @@ const EditProjectModal = ({
 			<div className="flex items-center justify-center min-h-screen">
         <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
 
-				<div className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl z-10">
+				<form 
+					onSubmit={submitAction}
+					className="flex flex-col row-gap-2 items-center justfiy-center bg-white p-5 border-gray-50 rounded-2xl z-10"
+				>
 					<Dialog.Title>Project Title</Dialog.Title>
+					<label htmlFor='projectNameField' style={{visibility:'hidden'}} />
 					<input 
+						id='projectNameField'
 						className='text_input'
+						aria-label="Project Name"
+          				aria-required="true"
 						style={{textAlign: 'center'}}
 						value={projNameValue} 
-						onKeyUp={(e) => {e.key == "Enter" ? submitAction() : null}}
 						onChange={(e)=>{setProjNameValue(e.target.value)}} 
 						type='text'
 						placeholder={projName}
 						autoFocus
 					/>
 					<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
-						<ModalBtn type='text' color='var(--dark-red)' onClick={deleteAction}>Delete</ModalBtn>
-						<ModalBtn type='text' color='var(--highlight-color)' onClick={submitAction}>Save</ModalBtn>
+						<ModalBtn type='button' color='var(--dark-red)' onClick={deleteAction}>Delete</ModalBtn>
+						<ModalBtn type='submit' color='var(--highlight-color)' >Save</ModalBtn>
 					</div>
 					{
 						!showWarning ? null :
@@ -90,7 +96,7 @@ const EditProjectModal = ({
 								<a>Click the button again to confirm</a>
 							</div>
 					}
-				</div>
+				</form>
 			</div>
 
 		</Dialog>

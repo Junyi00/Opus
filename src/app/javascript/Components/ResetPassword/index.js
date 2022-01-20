@@ -68,7 +68,7 @@ const ModalBtn = styled.button`
 	}
 `
 
-const FormLabel = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -115,9 +115,12 @@ const ResetPassword = ({
           { searchParams.get('token') !== null ?  // TODO: CHECK FOR TOKEN VALIDITY
             <React.Fragment>
               <GridFormDiv onSubmit={submitAction}>
-                <FormLabel gridArea='passLbl'>New Password</FormLabel>
+                <FormLabel htmlFor='passField' gridArea='passLbl'>New Password</FormLabel>
                 <input 
+                  id='passField'
                   className="text_input"
+                  aria-label="Password"
+                  aria-required="true"  
                   style={{gridArea:'passField'}} 
                   type="password"
                   value={newPassword}

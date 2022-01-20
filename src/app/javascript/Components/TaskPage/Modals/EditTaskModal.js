@@ -17,7 +17,7 @@ const BaseDiv = styled.div`
   flex-direction: row;
 `
 
-const GridContainer = styled.div`
+const GridContainer = styled.form`
   display: grid;
 
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -26,16 +26,16 @@ const GridContainer = styled.div`
     "TaskLbl TaskText TaskText   Star  "
     "DescLbl DescText DescText DescText"
     "   .       .      DelBtn   SaveBtn"
-		" Footer  Footer   Footer   Footer ";
+	" Footer  Footer   Footer   Footer ";
 
-		${({ showWarning }) => showWarning && `
-		grid-template-rows: 1fr 3fr 1fr 3fr;
+  ${({ showWarning }) => showWarning && `
+	grid-template-rows: 1fr 3fr 1fr 3fr;
   `}
 
   gap: 10px 5px;
 `
 
-const LabelDiv = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -228,18 +228,24 @@ const EditTaskModal = ({
 			className="fixed inset-0 z-10 overflow-y-auto"
 		>
 			<div className="flex items-center justify-center min-h-screen">
-        <Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
+        	<Dialog.Overlay className="fixed inset-0 z-5 bg-black bg-opacity-25" />
 
-				<BaseDiv className='bg-white p-5 border-gray-50 rounded-2xl z-10'>
-					<GridContainer showWarning={showWarning}>
-						<LabelDiv style={{gridArea:'TaskLbl'}}>Task</LabelDiv>
+				<BaseDiv 
+					className='bg-white p-5 border-gray-50 rounded-2xl z-10'
+				>
+					<GridContainer onSubmit={submitAction} showWarning={showWarning}>
+						<FormLabel htmlFor='TaskText' style={{gridArea:'TaskLbl'}}>Task</FormLabel>
 						<input 
+							id='TaskText'
 							className='text_input'
+							aria-label="Task Name"
+          					aria-required="false"
 							value={taskTitleValue} 
 							onKeyUp={(e) => {e.key == "Enter" ? submitAction() : null}}
 							onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
 							type='text'
 							style={{gridArea:'TaskText'}} 
+							autoFocus
 						/>
 
 						<div style={{gridArea:'Star', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
@@ -248,17 +254,20 @@ const EditTaskModal = ({
 							</StarBtn>
 						</div>
 
-						<LabelDiv style={{gridArea:'DescLbl'}}>Description</LabelDiv>
+						<FormLabel htmlFor='DescText' style={{gridArea:'DescLbl'}}>Description</FormLabel>
 						<textarea 
+							id='DescText'
 							className='text_input'
+							aria-label="Project Name"
+          					aria-required="false"
 							value={taskDescValue} 
 							onChange={(e)=>{setTaskDescValue(e.target.value)}} 
 							type='text' 
 							style={{gridArea:'DescText', resize:'none'}} 
 						/>
 
-						<ModalBtn onClick={submitAction} color='var(--highlight-color)' style={{gridArea:'SaveBtn'}}>Save</ModalBtn>
-						<ModalBtn onClick={deleteAction} color='var(--dark-red)' style={{gridArea:'DelBtn'}}>Delete</ModalBtn>
+						<ModalBtn type='submit' color='var(--highlight-color)' style={{gridArea:'SaveBtn'}}>Save</ModalBtn>
+						<ModalBtn type='button' onClick={deleteAction} color='var(--dark-red)' style={{gridArea:'DelBtn'}}>Delete</ModalBtn>
 						{
 							!showWarning ? null :
 								<div style={{gridArea:'Footer', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -273,14 +282,17 @@ const EditTaskModal = ({
 
 					<TagDiv>
 						<div style={{display:'flex', flexDirection:'row', alignItems:'center', columnGap:'5px'}}>
-							<a>Add Tag</a>
+							<label htmlFor='AddTag'>Add Tag</label>
 							<input 
+								id='AddTag'
 								className='text_input'
+								aria-label="Add Tag"
+          						aria-required="false"
 								value={newTagValue.trim().toLowerCase()} onKeyUp={(e) => {e.key == "Enter" ? addTagOnClick() : null}}
 								onChange={(e)=>{setNewTagValue(e.target.value)}} 
 								type='text' 
 							/>
-							<ModalBtn onClick={addTagOnClick}>Add</ModalBtn>
+							<ModalBtn type='button' onClick={addTagOnClick}>Add</ModalBtn>
 						</div>
 						<div onChange={colorBoxesOnChange} style={{display:'flex', flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}>
 							{

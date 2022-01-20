@@ -17,7 +17,7 @@ const GridBaseDiv = styled.form`
   gap: 5px 10px;
 `
 
-const FormLabel = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -89,9 +89,12 @@ const ResetPassword = ({
     <React.Fragment>
       <GridBaseDiv onSubmit={submitAction}>
       <a style={{gridArea:'Header', textAlign:'center'}}>Reset Password</a>
-        <FormLabel gridArea='EmailLbl'>Email</FormLabel>
+        <FormLabel htmlFor='EmailField' gridArea='EmailLbl'>Email</FormLabel>
         <input 
+          id='EmailField'
           className="text_input"
+          aria-label="Email"
+          aria-required="true"  
           style={{gridArea:'EmailField'}}
           value={email}
           onChange={(e)=>{setEmail(e.target.value.trim())}}

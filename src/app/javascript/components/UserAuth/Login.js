@@ -17,7 +17,7 @@ const GridBaseDiv = styled.form`
   gap: 5px 10px;
 `
 
-const FormLabel = styled.div`
+const FormLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -92,18 +92,24 @@ const Login = ({
   return (
     <React.Fragment>
       <GridBaseDiv onSubmit={submitAction}>
-        <FormLabel gridArea='UserLbl'>User</FormLabel>
+        <FormLabel htmlFor='UserField' gridArea='UserLbl'>User</FormLabel>
         <input 
+          id='UserField'
           className="text_input"
+          aria-label="Username"
+          aria-required="true"  
           style={{gridArea:'UserField'}}
           value={userValue.trim()}
           onChange={(e)=>{setUserValue(e.target.value)}}
           placeholder="GiveMyHeart"
           autoComplete="username"
         />
-        <FormLabel gridArea='PassLbl'>Password</FormLabel>
+        <FormLabel htmlFor='PassField' gridArea='PassLbl'>Password</FormLabel>
         <input 
+          id='PassField'
           className="text_input"
+          aria-label="Password"
+          aria-required="true"  
           style={{gridArea:'PassField'}} 
           type="password"
           value={passValue}

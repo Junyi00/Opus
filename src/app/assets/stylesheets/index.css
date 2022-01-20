@@ -32,8 +32,8 @@ html, body, #root, .App {
   height: 100%;
 }
 
-* > button:focus, * > input, * > textarea {
-  outline: none !important; /* Override tailwind css */
+* > button:focus, * > input:focus, * > textarea:focus {
+  outline: 1px dotted gray !important; /* Override tailwind css */
 }
 
 * > textarea, * > input {
