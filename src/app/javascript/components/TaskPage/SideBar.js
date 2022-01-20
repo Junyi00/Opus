@@ -113,7 +113,7 @@ const GuideBtn = styled.button`
 `
 
 const SideBar = ({
-  userState, projects, selectedIndex, createProject, selectProject, isLoading
+  userState, projects, selectedIndex, createProject, selectProject
 }) => {
   const [showProjModal, setShowProjModal] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
@@ -146,7 +146,7 @@ const SideBar = ({
       <Base>
         <TitleText>Projects</TitleText>
         {
-          isLoading
+          projects == null
             ? <a>Loading...</a>
             : <ProjectsList>
               {createProjectsElements()}

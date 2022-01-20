@@ -22,16 +22,14 @@ const ContentDiv = styled.div`
 const TaskPage = ({
   projectsState, userState, appErrorState, retriveUserProjects
 }) => {
-  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [showErrorModal, setShowErrorModal] = useState(false)
 
   useEffect(() => {
-    setIsLoading(true)
-    retriveUserProjects(userState.id).then(resp => setIsLoading(false))
+    retriveUserProjects(userState.id)
   }, [userState.id])  
 
-  useEffect(() => {
+  useEffect(() => { 
     if (appErrorState !== null) {
       setShowErrorModal(true)
     }
@@ -41,7 +39,7 @@ const TaskPage = ({
     <React.Fragment>
       { !userState.isLoggedIn && (<Navigate to="/home" replace={true} />)}
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      <SideBar isLoading={isLoading} />
+      <SideBar />
       <ContentDiv>
         {
           projectsState.selectedIndex === null

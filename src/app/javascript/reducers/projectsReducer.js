@@ -1,5 +1,5 @@
 const initialState = {
-  projects: [],
+  projects: null,
   selectedIndex: null
 }
 
