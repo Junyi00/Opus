@@ -44,6 +44,7 @@ Others:
 2. Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 3. Add _nodejs_ and _ruby_ buildpacks 
     ```
+    heroku buildpacks:add --index 1 heroku/nodejs -a <APP_NAME>
     heroku buildpacks:add --index 2 heroku/ruby -a <APP_NAME>
     ```
 4. Clone this repository
@@ -52,6 +53,7 @@ Others:
     heroku git:remote -a <APP_NAME>
     ```
 6. Push to heroku remote   
+    _You may have to run this on `git bash`_
     ```
     git push heroku `git subtree split --prefix src main`:refs/heads/main
     ```
