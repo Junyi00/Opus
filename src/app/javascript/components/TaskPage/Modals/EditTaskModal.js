@@ -113,7 +113,7 @@ const ColorBoxWrapper = styled.div`
 `
 
 const EditTaskModal = ({
-	showModal, setShowModal, laneId, taskData, tags, updateTask, deleteTask, createTags, deleteTags
+	showModal, setShowModal, laneId, taskData, updateTask, deleteTask, createTags, deleteTags
 }) => {
 	const tagColors = ["#4ce4d6", "#a9d18e", "#ffd966", "#ea9846", "#f781f1", "#ef5a7e", "#adb9ca"]
 
@@ -122,7 +122,7 @@ const EditTaskModal = ({
 	const [taskStarred, setTaskStarred] = useState(taskData.starred)
 	const [newTagValue, setNewTagValue] = useState('')
 	const [selectedColor, setSelectedColor] = useState(tagColors[0])
-	const [displayTags, setDisplayTags] = useState(tags)
+	const [displayTags, setDisplayTags] = useState(taskData.tags)
 	const [tagsToDelete, setTagsToDelete] = useState([])
 
 	const [showWarning, setShowWarning] = useState(false)
@@ -140,8 +140,8 @@ const EditTaskModal = ({
 
 	// Update tags with proper database tag details after new tags are created
 	useEffect(()=>{
-		setDisplayTags(tags)
-	}, [tags])
+		setDisplayTags(taskData.tags)
+	}, [taskData.tags])
 
 	const handleDescInputOnFocus = (e) => {
 		const textLength = e.target.value.length
@@ -183,6 +183,13 @@ const EditTaskModal = ({
 	}
 
 	const requestClose = () => {
+		// Reset local states
+		setShowWarning(false)
+		setTaskTitleValue(taskData.name)
+		setTaskDescValue(taskData.description)
+		setNewTagValue('')
+		setDisplayTags(taskData.tags)
+		
 		setShowModal(false)
 	}
 

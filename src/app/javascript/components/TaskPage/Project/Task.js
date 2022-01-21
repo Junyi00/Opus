@@ -245,7 +245,7 @@ const Task = ({
           }
         </TaskContent>
       </BaseDiv>
-      <EditTaskModal laneId={laneId} tags={data.tags} taskData={data} showModal={showModal} setShowModal={setShowModal}/>
+      <EditTaskModal laneId={laneId} taskData={data} showModal={showModal} setShowModal={setShowModal}/>
     </React.Fragment>
   )
 }
