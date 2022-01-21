@@ -118,7 +118,7 @@ const Header = ({
           (selectedIndex === null) ? null :
             <div style={{float: 'left', height: '70%', width: '40%', position: 'relative'}}>
               <SearchBar 
-                value={searchQuery.trim()}
+                value={searchQuery}
                 onChange={(e)=>{setSearchQuery(e.target.value)}}
                 placeholder="Search task names / #tags"
               />
