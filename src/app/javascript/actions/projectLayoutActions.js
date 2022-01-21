@@ -106,7 +106,7 @@ export const createTask = (laneId, numTasks) => (dispatch) => {
     '/api/v1/tasks',
     {
       name: 'New Task',
-      description: 'A Description...',
+      description: '',
       pos: numTasks, // always insert at the end
       lane_id: laneId
     }

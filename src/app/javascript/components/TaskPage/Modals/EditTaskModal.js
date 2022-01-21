@@ -1,5 +1,5 @@
-import { Dialog } from '@headlessui/react';
 import React, { useEffect, useState } from 'react';
+import { Dialog } from '@headlessui/react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { getCommonTags } from '../../../utils/databaseOps';
@@ -143,6 +143,16 @@ const EditTaskModal = ({
 		setDisplayTags(tags)
 	}, [tags])
 
+	const handleDescInputOnFocus = (e) => {
+		const textLength = e.target.value.length
+		e.target.setSelectionRange(textLength, textLength)
+	}
+
+	const handleTitleInputOnFocus = (e) => {
+		const textLength = e.target.value.length
+		e.target.setSelectionRange(0, textLength)
+	}
+
 	const submitAction = () => {
 		updateTask(laneId, taskId, {
 			name: taskTitleValue.trim(),
@@ -239,10 +249,11 @@ const EditTaskModal = ({
 							id='TaskText'
 							className='text_input'
 							aria-label="Task Name"
-          					aria-required="false"
+          		aria-required="false"
 							value={taskTitleValue} 
 							onKeyUp={(e) => {e.key == "Enter" ? submitAction() : null}}
 							onChange={(e)=>{setTaskTitleValue(e.target.value)}} 
+							onFocus={handleTitleInputOnFocus}
 							type='text'
 							style={{gridArea:'TaskText'}} 
 							autoFocus
@@ -259,9 +270,11 @@ const EditTaskModal = ({
 							id='DescText'
 							className='text_input'
 							aria-label="Project Name"
-          					aria-required="false"
+							aria-required="false"
 							value={taskDescValue} 
+							placeholder="A description...."
 							onChange={(e)=>{setTaskDescValue(e.target.value)}} 
+							onFocus={handleDescInputOnFocus}
 							type='text' 
 							style={{gridArea:'DescText', resize:'none'}} 
 						/>
@@ -287,7 +300,7 @@ const EditTaskModal = ({
 								id='AddTag'
 								className='text_input'
 								aria-label="Add Tag"
-          						aria-required="false"
+								aria-required="false"
 								value={newTagValue.trim().toLowerCase()} onKeyUp={(e) => {e.key == "Enter" ? addTagOnClick() : null}}
 								onChange={(e)=>{setNewTagValue(e.target.value)}} 
 								type='text' 
