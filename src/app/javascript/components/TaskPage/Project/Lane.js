@@ -45,12 +45,13 @@ const NewTaskBtn = styled.button`
   height: 20px;
   width: 20px;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 15px;
   color: var(--highlight-color);
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
 
   &:hover {
     width: 95%;
@@ -93,13 +94,15 @@ const Lane = ({
       // tag filter
       setChildrenToDisplay(
         data.children.filter((task, index) => 
-          task.tags.filter((tag, index) => tag.name.toLowerCase().includes(searchQuery.slice(1).toLowerCase())).length > 0
+          task.tags.filter((tag, index) => tag.name.toLowerCase().includes(searchQuery.slice(1).toLowerCase())).length > 0 
+          &&
+          !task.completed
         )
       )
     }
     else {
       // title filter
-      setChildrenToDisplay(data.children.filter((task, index) => task.name.toLowerCase().includes(searchQuery.toLowerCase())))
+      setChildrenToDisplay(data.children.filter((task, index) => task.name.toLowerCase().includes(searchQuery.toLowerCase()) && !task.completed))
     }
   }, [searchQuery])
 
@@ -138,7 +141,7 @@ const Lane = ({
                     isLast
                 />
                 <div style={{position:'absolute', left:'0px', top:'35px', width:'100%', display:'flex', flexDirection:'column', alignItems:'center'}}>
-                  <NewTaskBtn onClick={addTaskOnClick}>+</NewTaskBtn>
+                  <NewTaskBtn onClick={addTaskOnClick}><a>+</a></NewTaskBtn>
                 </div>
               </div>
             </LaneContentDiv>

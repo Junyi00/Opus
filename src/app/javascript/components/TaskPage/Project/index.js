@@ -40,7 +40,13 @@ const NewLaneButton = styled.button`
   margin-left: 5px;
 
   font-size: 20px;
+  line-height: 15px;
   color: var(--highlight-color);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     height: 100%;
@@ -168,7 +174,7 @@ const Project = ({
               className="horizontalDrag"
             />
             <div style={{height: '100%', width:'20px', position:'relative'}}>
-              <NewLaneButton onClick={addLaneOnClick}>+</NewLaneButton>
+              <NewLaneButton onClick={addLaneOnClick}><a>+</a></NewLaneButton>
             </div>
             
           </BaseDiv>
