@@ -7,11 +7,15 @@ import TaskPage from './components/TaskPage'
 import NotFoundPage from './NotFoundPage'
 import UserAuth from './components/UserAuth';
 import ResetPassword from './components/ResetPassword';
+import axios from 'axios';
 
 class App extends React.Component {
 
   componentDidMount() {
     this.props.fetchLoginStatus();
+
+    // Set CSRF token for all axios request
+    axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name='csrf-token']").getAttribute("content");
   }
 
   error = () => {

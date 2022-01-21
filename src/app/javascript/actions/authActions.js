@@ -3,7 +3,7 @@ import axios from 'axios';
 export const addUser = (data, handleSuccess) => (dispatch) => {
   axios.post(
     '/api/v1/users',
-    { user: data }
+    { user: data },
     // { withCredentials: true }
   )
   .then((resp) => {
@@ -30,7 +30,7 @@ export const loginUser = (data, handleSuccess) => (dispatch) => {
     if (resp.data.status === 401) {
       throw new Error(resp.data.error)
     }
-    dispatch({type: 'LOGIN_USER', user: resp.data.user});
+    dispatch({ type: 'LOGIN_USER', user: resp.data.user });
     dispatch({ type: 'CLEAR_ERRORS' });
     handleSuccess();
   })
@@ -107,7 +107,7 @@ export const logoutUser = (data) => (dispatch) => {
     dispatch({ type: 'RESET_PROJECT_LAYOUT' })
     dispatch({ type: 'CLEAR_ERRORS' });
   })
-  .catch((error) =>
+  .catch((resp) =>
     dispatch({ type: 'ADD_ERROR', error_type: 'app', critical: false, message: 'Something went wrong, please try again.', data: resp.message })
   )
 }
@@ -123,11 +123,12 @@ export const fetchLoginStatus = () => (dispatch) => {
         dispatch({
           type: 'LOGIN_USER',
           user: resp.data.user,
+          auth_token: resp.data.auth_token
         });
-        dispatch({ type: 'CLEAR_ERRORS' });
+        dispatch({ type: 'CLEAR_ERRORS' }); 
       }
     })
-    .catch((error) =>
+    .catch((resp) =>
       dispatch({ type: 'ADD_ERROR', error_type: 'app', critical: false, message: 'Failed to fetch login status, please try again.', data: resp.message })
     )
 }

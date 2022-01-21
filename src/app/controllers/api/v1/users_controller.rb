@@ -26,7 +26,7 @@ class Api::V1::UsersController < ApplicationController
           user: @user
         }
       else
-        puts @user.errors.messages
+        # puts @user.errors.messages
         render json: { status: 500, error: @user.errors.full_messages }
       end
     else 

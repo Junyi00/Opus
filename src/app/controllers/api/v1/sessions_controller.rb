@@ -5,7 +5,7 @@ class Api::V1::SessionsController < ApplicationController
     if @user && @user.authenticate(session_params[:password])
       session[:user_id] = @user.id
       render json: {
-        user: UserSerializer.new(@user)
+        user: UserSerializer.new(@user),
       }
     else
       render json: { 
@@ -16,12 +16,12 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def is_logged_in?
-    logger.info(' [session] :  ' + session.inspect)
+    logger.info('[session] :  ' + session.inspect)
     @current_user = User.find(session[:user_id]) if session[:user_id]
     if @current_user
       render json: {
         logged_in: true,
-        user: UserSerializer.new(@current_user)
+        user: UserSerializer.new(@current_user),
       }
     else
       render json: {
@@ -32,6 +32,7 @@ class Api::V1::SessionsController < ApplicationController
 
   def destroy
     session.delete :user_id
+
     render json: {
       status: 200,
       logged_out: true
