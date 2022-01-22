@@ -18,10 +18,6 @@ class App extends React.Component {
     axios.defaults.headers.common['X-CSRF-Token'] = document.querySelector("meta[name='csrf-token']").getAttribute("content");
   }
 
-  error = () => {
-    return this.props.errors.length > 0
-  }
-
   render() {
     return (
       <Router>
