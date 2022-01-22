@@ -29,11 +29,12 @@ Others:
 
 1. Install [Docker](https://www.docker.com/)
 2. Clone this repository
-3. Build the necessary images
+3. Edit _HOST_ key in `.docker_env` if necessary (eg. http://localhost, http://example.com)
+4. Build the necessary images
     ```
     docker-compose build
     ```
-4. Run Opus
+5. Run Opus
     ```
     docker-compose up -d
     ```
@@ -61,7 +62,12 @@ Others:
     ```
     heroku run rake db:migrate -a <APP_NAME>
     ```
-8. Done! Heroku should have Opus up and running by now 
+8. Set the necessary configuration
+    ```
+    heroku config:set HOST=<HOST_ADDRESS>
+    ```
+    eg. HOST=http://opus-site.herokuapp.com
+9.  Done! Heroku should have Opus up and running by now 
 
 ### Setting up an email for Opus (OPTIONAL)
 

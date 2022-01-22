@@ -2,3 +2,4 @@ POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=secret
 DATABASE_URL=postgres://postgres:secret@db:5432/postgres
+HOST=http://localhost
