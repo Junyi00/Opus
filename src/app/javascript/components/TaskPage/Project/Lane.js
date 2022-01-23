@@ -53,7 +53,7 @@ const NewTaskBtn = styled.button`
   align-items: center;
   justify-content: center;
 
-  &:hover {
+  &:hover, &:focus {
     width: 95%;
     transition: 150ms all;
   }
@@ -110,11 +110,17 @@ const Lane = ({
     createTask(data.id , data.children.filter((task, index) => !task.completed).length)
   }
 
+  const keyboardUpEvent = (e) => {
+    if (e.key === 'Enter' && e.shiftKey) {
+      setShowModal(true)
+    }
+  }
+
   return (
     <React.Fragment>
       { searchQuery == ''
         ? <BaseDiv ref={drag}>
-            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}>{data.name}</LaneHeaderBtn>
+            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)} onKeyUp={keyboardUpEvent} >{data.name}</LaneHeaderBtn>
             <LaneContentDiv
               onTouchStart={(e)=>{if (e.target.className.includes('dropZone')) { e.stopPropagation(); }}} // allow touch scrolling without affecting drag n drop touch interactions
             >
@@ -148,7 +154,7 @@ const Lane = ({
           </BaseDiv>
         
         : <BaseDiv> 
-            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)}><b>{data.name}</b></LaneHeaderBtn>
+            <LaneHeaderBtn onDoubleClick={() => setShowModal(true)} onKeyUp={keyboardUpEvent}><b>{data.name}</b></LaneHeaderBtn>
             <LaneContentDiv>
               <div style={{minHeight:'30px', maxHeight:'30px'}} />
               {

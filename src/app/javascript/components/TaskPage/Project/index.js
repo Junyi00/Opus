@@ -48,7 +48,7 @@ const NewLaneButton = styled.button`
   align-items: center;
   justify-content: center;
 
-  &:hover {
+  &:hover, &:focus {
     height: 100%;
     transition: 150ms height;
   }

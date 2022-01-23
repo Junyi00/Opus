@@ -87,7 +87,8 @@ const UserMenuStyle = {
   rowGap: '5px', 
 
   // backgroundColor: 'var(--bg-gray)',
-  padding: '5px'
+  padding: '5px',
+  outline: 'none',
 }
 
 const MenuItemBtn = styled.button``
@@ -138,10 +139,14 @@ const Header = ({
               style={UserMenuStyle}
             >
               <Menu.Item>
-                <MenuItemBtn className="popup_button" onClick={updatePasswordAction}>Reset Password</MenuItemBtn>
+                {({active}) => (
+                  <MenuItemBtn className={`${active ? 'popup_button-active' : '' } popup_button`} onClick={updatePasswordAction}>Reset Password</MenuItemBtn>
+                )}
               </Menu.Item>
               <Menu.Item>
-                <MenuItemBtn className="popup_button" onClick={logoutAction}>Logout</MenuItemBtn>
+                {({active}) => (
+                  <MenuItemBtn className={`${active ? 'popup_button-active' : '' } popup_button`} onClick={logoutAction}>Logout</MenuItemBtn>
+                )}
               </Menu.Item>
             </Menu.Items>
           </Menu>

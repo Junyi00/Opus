@@ -15,7 +15,7 @@ import Tag from "./Tag";
 import EditTaskModal from "../Modals/EditTaskModal";
 import ClockIcon from "images/Clock_Icon.png"
 
-const BaseDiv = styled.div`
+const BaseDiv = styled.button`
   border-radius: 5px;
   // border: 1px solid var(--bg-gray);
   box-shadow: rgba(100, 100, 111, 0.1) 0px 0px 29px 0px;
@@ -53,6 +53,7 @@ const TaskHeader = styled.a`
 
   position: relative;
 
+  text-align: start;
   text-overflow: ellipsis;
   overflow-x: clip;
 `
@@ -92,6 +93,7 @@ const TaskContent = styled.div`
 const TaskDesc = styled.a`
   font-size: 12px;
   line-height: 12px;
+  text-align: left;
   white-space: pre-wrap;
   overflow-y: auto;
   color: rgb(136, 136, 136);
@@ -182,7 +184,7 @@ const Task = ({
       <a>
         {`${months[getMonth(date)]} ${getYear(date)} `}
         { dueDate !== null && !isNaN(dueDate) &&
-          <button style={{color:'var(--dark-red)', border:'1px solid var(--dark-red)', borderRadius:'15px', padding:'0px 3px 0px 3px'}} onClick={()=> setDueDate(null)}>
+          <button style={{color:'var(--dark-red)', border:'1px solid var(--dark-red)', borderRadius:'15px', padding:'0px 5px 0px 5px'}} onClick={()=> setDueDate(null)}>
             X
           </button>
         }
@@ -200,9 +202,20 @@ const Task = ({
     })
   }
 
+  const keyboardUpEvent = (e) => {
+    if (e.key === 'Enter' && e.shiftKey) {
+      setShowModal(true)
+    }
+  }
+
   return (
     <React.Fragment>
-      <BaseDiv ref={ref} starred={taskStarred} onDoubleClick={()=> setShowModal(true)}>
+      <BaseDiv 
+        ref={ref} 
+        starred={taskStarred} 
+        onDoubleClick={() => setShowModal(true)}
+        onKeyUp={keyboardUpEvent}
+      >
         <TaskHeader>
             {taskName}
           <CompleteBtn onClick={() => completeTaskOnClick(data.id)} starred={taskStarred} />

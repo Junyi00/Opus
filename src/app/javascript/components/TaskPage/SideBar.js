@@ -60,7 +60,8 @@ const ProjectButton = styled.button`
   font-size: 15px;
   color: darkgray;
 
-  &:hover {
+  &:hover, &:focus {
+    outline: none !important;
     color: var(--highlight-color);
   }
 
@@ -83,7 +84,8 @@ const NewProjectBtn = styled.button`
 
   color: var(--highlight-color);
 
-  &:hover {
+  &:hover, &:focus {
+    outline: none !important;
     border: 1px solid var(--highlight-color);
     border-radius: 15px;
 
@@ -100,7 +102,8 @@ const GuideBtn = styled.button`
   color: darkgray;
   font-style: bold;
 
-  &:hover {
+  &:hover, &:focus {
+    outline: none !important;
     padding: 0px;
     margin-bottom: 5px;
     border-color: var(--highlight-color);
@@ -126,6 +129,12 @@ const SideBar = ({
     return () => selectProject(index)
   }
 
+  const keyboardUpEvent = (e) => {
+    if (e.key === 'Enter' && e.shiftKey) {
+      setShowProjModal(true)
+    }
+  }
+
   const createProjectsElements = () => {
     return projects.map((project, index) => {
       return (
@@ -134,6 +143,7 @@ const SideBar = ({
             selected={index == selectedIndex}
             onClick={createButtonOnClick(index)} 
             onDoubleClick={() => setShowProjModal(true)}
+            onKeyUp={keyboardUpEvent}
           >
             {project.name}
           </ProjectButton>

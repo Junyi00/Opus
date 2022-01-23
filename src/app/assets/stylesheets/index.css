@@ -68,7 +68,7 @@ html, body, #root, .App {
   padding: 5px 10px; 
 }
 
-.popup_button:hover {
+.popup_button:hover, .popup_button-active {
   /* background-color: var(--light-gray); */
   color: var(--highlight-color);
 }
