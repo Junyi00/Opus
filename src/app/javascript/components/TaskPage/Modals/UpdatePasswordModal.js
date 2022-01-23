@@ -21,11 +21,12 @@ const GridContainer = styled.form`
   display: grid;
 
   grid-template-columns: 1fr 2fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-areas:
     "cPassLbl  cPassField "
     "nPassLbl  nPassField "
-    "   .     cnPassField";
+    "   .     cnPassField "
+    " Footer     Footer   ";
 
   gap: 10px 5px;
 
@@ -77,6 +78,11 @@ const UpdatePasswordModal = ({
 
   const closeAction = () => {
     setShowModal(false)
+
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmNewPassword('')
+    setShowSuccessMessage(false)
   }
 
   const submitAction = (e) => {
@@ -132,7 +138,7 @@ const UpdatePasswordModal = ({
               placeholder=""
               autoComplete="off"
             />
-            <FormLabel htmlFor='cnPassField' gridArea='nPassLbl' style={{visibility:'hidden'}} />
+            <FormLabel htmlFor='cnPassField' style={{visibility:'hidden'}} />
             <input 
               id='cnPassField'
               className="text_input"
@@ -145,10 +151,10 @@ const UpdatePasswordModal = ({
               placeholder="Again..."
               autoComplete="off"
             />
+            <div style={{gridArea:'Footer', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
+              <ModalBtn type='submit' color='var(--highlight-color)'>Reset</ModalBtn>
+            </div>
           </GridContainer>
-          <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', columnGap: '5px'}}>
-						<ModalBtn type='submit' color='var(--highlight-color)'>Reset</ModalBtn>
-					</div>
           { updatePwErrorState !== null &&
             <MessageDiv>
               <a style={{color:'var(--dark-red)'}}>Error: </a>{updatePwErrorState.message}
