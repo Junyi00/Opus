@@ -9,10 +9,12 @@ import Signup from "./Signup";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 import OpusIcon from 'images/Opus_Icon.png'
+import OpusLogo from 'images/Opus_Logo.png'
 
 const BaseDiv = styled.div`
   position: absolute;
-  top: var(--header-height);
+  // top: var(--header-height);
+  top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -60,13 +62,14 @@ const UserAuth = ({ user }) => {
   return (
     <React.Fragment>
       { user.isLoggedIn && (<Navigate to="/" replace={true} />)}
-      <Header 
+      {/* <Header 
         projectLoaded={null}
         searchQuery=''
-      />
+      /> */}
       <BaseDiv>
         <img style={{position:'absolute', opacity:'10%', width:'60%', zIndex:'-1'}} src={OpusIcon} />
         <ContentDiv>
+          <img style={{width:'150px', zIndex:'-1'}} src={OpusLogo} />
           <Tab.Group>
             <Tab.List style={TabListStyle}>
               <Tab
