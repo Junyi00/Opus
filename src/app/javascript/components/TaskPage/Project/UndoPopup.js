@@ -10,7 +10,7 @@ const UndoAlert = styled.button`
   translate: transform(-50%, 0%); 
 `
 
-const MAX_DISPLAY_TIME_MILIS = 5000; // 10 seconds
+const MAX_DISPLAY_TIME_MILIS = 10000; // 10 seconds
 
 const UndoPopup = ({
   showAlert,
