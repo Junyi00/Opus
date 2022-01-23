@@ -56,7 +56,7 @@ Others:
 6. Push to heroku remote   
     _You may have to run this on `git bash`_
     ```
-    git push heroku `git subtree split --prefix src main`:refs/heads/main
+    git push heroku `git subtree split --prefix src master`:refs/heads/main
     ```
 7. Setup your database
     ```
