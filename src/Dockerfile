@@ -20,7 +20,11 @@ RUN yarn install
 COPY . /app
 WORKDIR /app
 
-RUN bundle exec rake RAILS_ENV=production assets:precompile
+# Generate fresh credententials (no credentials needed currently)
+RUN EDITOR=vim bundle exec rails credentials:edit 
+
+# Generate assets required in production
+RUN bundle exec rake RAILS_ENV=production assets:precompile 
 
 COPY entrypoint_docker.sh /usr/bin/
 ENTRYPOINT [ "entrypoint_docker.sh" ]

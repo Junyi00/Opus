@@ -10,4 +10,4 @@ src/yarn.lock linguist-generated
 src/vendor/* linguist-vendored
 
 # Mark any .sh EOL as LF
-*.sh eol=LF
+*.sh text eol=lf
