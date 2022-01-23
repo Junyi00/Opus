@@ -110,20 +110,17 @@ const HelpModal = ({
 
   const onMouseMove = (event) => {
     if (isScrolling) {
-      console.log(scrollDivRef.current.scrollLeft, clientX, event.clientX)
       const dragDiff = (clientX - event.clientX) * 1.5 // increase sensitivity
       scrollDivRef.current.scrollLeft = scrollDivRef.current.scrollLeft + dragDiff
     }
   };
 
   const onMouseUp =  () => {
-    console.log("RESET")
     setIsScrolling(false)
     setClientX(0)
   };
 
   const onMouseDown = (event) => {
-    console.log("INITIAL CLIENTX: " + event.clientX)
     setIsScrolling(true)
     setClientX(event.clientX)
   };
