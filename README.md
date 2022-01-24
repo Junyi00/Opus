@@ -1,5 +1,6 @@
 # Opus - Task Management Platform
 
+`CVWO` Goh Jun Yi, A0234438A  
 Opus is a task management web application created with React JS, Ruby on Rails & PostgreSQL
 
 ## Features
